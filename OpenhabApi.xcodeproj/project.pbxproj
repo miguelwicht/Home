@@ -1,0 +1,426 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		227DDC2A1ADBE25A001EAE08 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DDC291ADBE25A001EAE08 /* AppDelegate.swift */; };
+		227DDC2C1ADBE25A001EAE08 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DDC2B1ADBE25A001EAE08 /* ViewController.swift */; };
+		227DDC2F1ADBE25A001EAE08 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 227DDC2D1ADBE25A001EAE08 /* Main.storyboard */; };
+		227DDC311ADBE25A001EAE08 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 227DDC301ADBE25A001EAE08 /* Images.xcassets */; };
+		227DDC341ADBE25A001EAE08 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 227DDC321ADBE25A001EAE08 /* LaunchScreen.xib */; };
+		227DDC401ADBE25B001EAE08 /* OpenhabApiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DDC3F1ADBE25B001EAE08 /* OpenhabApiTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		227DDC3A1ADBE25B001EAE08 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 227DDC1C1ADBE25A001EAE08 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 227DDC231ADBE25A001EAE08;
+			remoteInfo = OpenhabApi;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		227DDC241ADBE25A001EAE08 /* OpenhabApi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenhabApi.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		227DDC281ADBE25A001EAE08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		227DDC291ADBE25A001EAE08 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		227DDC2B1ADBE25A001EAE08 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		227DDC2E1ADBE25A001EAE08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		227DDC301ADBE25A001EAE08 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		227DDC331ADBE25A001EAE08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		227DDC391ADBE25B001EAE08 /* OpenhabApiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OpenhabApiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		227DDC3E1ADBE25B001EAE08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		227DDC3F1ADBE25B001EAE08 /* OpenhabApiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenhabApiTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		227DDC211ADBE25A001EAE08 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		227DDC361ADBE25B001EAE08 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		227DDC1B1ADBE25A001EAE08 = {
+			isa = PBXGroup;
+			children = (
+				227DDC261ADBE25A001EAE08 /* OpenhabApi */,
+				227DDC3C1ADBE25B001EAE08 /* OpenhabApiTests */,
+				227DDC251ADBE25A001EAE08 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		227DDC251ADBE25A001EAE08 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				227DDC241ADBE25A001EAE08 /* OpenhabApi.app */,
+				227DDC391ADBE25B001EAE08 /* OpenhabApiTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		227DDC261ADBE25A001EAE08 /* OpenhabApi */ = {
+			isa = PBXGroup;
+			children = (
+				227DDC291ADBE25A001EAE08 /* AppDelegate.swift */,
+				227DDC2B1ADBE25A001EAE08 /* ViewController.swift */,
+				227DDC2D1ADBE25A001EAE08 /* Main.storyboard */,
+				227DDC301ADBE25A001EAE08 /* Images.xcassets */,
+				227DDC321ADBE25A001EAE08 /* LaunchScreen.xib */,
+				227DDC271ADBE25A001EAE08 /* Supporting Files */,
+			);
+			path = OpenhabApi;
+			sourceTree = "<group>";
+		};
+		227DDC271ADBE25A001EAE08 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				227DDC281ADBE25A001EAE08 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		227DDC3C1ADBE25B001EAE08 /* OpenhabApiTests */ = {
+			isa = PBXGroup;
+			children = (
+				227DDC3F1ADBE25B001EAE08 /* OpenhabApiTests.swift */,
+				227DDC3D1ADBE25B001EAE08 /* Supporting Files */,
+			);
+			path = OpenhabApiTests;
+			sourceTree = "<group>";
+		};
+		227DDC3D1ADBE25B001EAE08 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				227DDC3E1ADBE25B001EAE08 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		227DDC231ADBE25A001EAE08 /* OpenhabApi */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 227DDC431ADBE25B001EAE08 /* Build configuration list for PBXNativeTarget "OpenhabApi" */;
+			buildPhases = (
+				227DDC201ADBE25A001EAE08 /* Sources */,
+				227DDC211ADBE25A001EAE08 /* Frameworks */,
+				227DDC221ADBE25A001EAE08 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OpenhabApi;
+			productName = OpenhabApi;
+			productReference = 227DDC241ADBE25A001EAE08 /* OpenhabApi.app */;
+			productType = "com.apple.product-type.application";
+		};
+		227DDC381ADBE25B001EAE08 /* OpenhabApiTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 227DDC461ADBE25B001EAE08 /* Build configuration list for PBXNativeTarget "OpenhabApiTests" */;
+			buildPhases = (
+				227DDC351ADBE25B001EAE08 /* Sources */,
+				227DDC361ADBE25B001EAE08 /* Frameworks */,
+				227DDC371ADBE25B001EAE08 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				227DDC3B1ADBE25B001EAE08 /* PBXTargetDependency */,
+			);
+			name = OpenhabApiTests;
+			productName = OpenhabApiTests;
+			productReference = 227DDC391ADBE25B001EAE08 /* OpenhabApiTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		227DDC1C1ADBE25A001EAE08 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = "Miguel dos Santos Vaz Dias Wicht";
+				TargetAttributes = {
+					227DDC231ADBE25A001EAE08 = {
+						CreatedOnToolsVersion = 6.3;
+					};
+					227DDC381ADBE25B001EAE08 = {
+						CreatedOnToolsVersion = 6.3;
+						TestTargetID = 227DDC231ADBE25A001EAE08;
+					};
+				};
+			};
+			buildConfigurationList = 227DDC1F1ADBE25A001EAE08 /* Build configuration list for PBXProject "OpenhabApi" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 227DDC1B1ADBE25A001EAE08;
+			productRefGroup = 227DDC251ADBE25A001EAE08 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				227DDC231ADBE25A001EAE08 /* OpenhabApi */,
+				227DDC381ADBE25B001EAE08 /* OpenhabApiTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		227DDC221ADBE25A001EAE08 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				227DDC2F1ADBE25A001EAE08 /* Main.storyboard in Resources */,
+				227DDC341ADBE25A001EAE08 /* LaunchScreen.xib in Resources */,
+				227DDC311ADBE25A001EAE08 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		227DDC371ADBE25B001EAE08 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		227DDC201ADBE25A001EAE08 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				227DDC2C1ADBE25A001EAE08 /* ViewController.swift in Sources */,
+				227DDC2A1ADBE25A001EAE08 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		227DDC351ADBE25B001EAE08 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				227DDC401ADBE25B001EAE08 /* OpenhabApiTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		227DDC3B1ADBE25B001EAE08 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 227DDC231ADBE25A001EAE08 /* OpenhabApi */;
+			targetProxy = 227DDC3A1ADBE25B001EAE08 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		227DDC2D1ADBE25A001EAE08 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				227DDC2E1ADBE25A001EAE08 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		227DDC321ADBE25A001EAE08 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				227DDC331ADBE25A001EAE08 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		227DDC411ADBE25B001EAE08 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		227DDC421ADBE25B001EAE08 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		227DDC441ADBE25B001EAE08 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = OpenhabApi/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		227DDC451ADBE25B001EAE08 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = OpenhabApi/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		227DDC471ADBE25B001EAE08 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = OpenhabApiTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OpenhabApi.app/OpenhabApi";
+			};
+			name = Debug;
+		};
+		227DDC481ADBE25B001EAE08 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = OpenhabApiTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OpenhabApi.app/OpenhabApi";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		227DDC1F1ADBE25A001EAE08 /* Build configuration list for PBXProject "OpenhabApi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				227DDC411ADBE25B001EAE08 /* Debug */,
+				227DDC421ADBE25B001EAE08 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		227DDC431ADBE25B001EAE08 /* Build configuration list for PBXNativeTarget "OpenhabApi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				227DDC441ADBE25B001EAE08 /* Debug */,
+				227DDC451ADBE25B001EAE08 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		227DDC461ADBE25B001EAE08 /* Build configuration list for PBXNativeTarget "OpenhabApiTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				227DDC471ADBE25B001EAE08 /* Debug */,
+				227DDC481ADBE25B001EAE08 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 227DDC1C1ADBE25A001EAE08 /* Project object */;
+}

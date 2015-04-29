@@ -7,12 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		223C7FB61AE79FF90079A41C /* OHRestParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223C7FB51AE79FF90079A41C /* OHRestParser.swift */; };
+		223C7FB81AE7C4040079A41C /* OHHomepage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223C7FB71AE7C4040079A41C /* OHHomepage.swift */; };
+		223C7FBA1AE7E2820079A41C /* OHSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223C7FB91AE7E2820079A41C /* OHSectionView.swift */; };
+		223C7FBC1AE7F0220079A41C /* OHCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223C7FBB1AE7F0220079A41C /* OHCollectionViewController.swift */; };
 		227DDC2A1ADBE25A001EAE08 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DDC291ADBE25A001EAE08 /* AppDelegate.swift */; };
 		227DDC2C1ADBE25A001EAE08 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DDC2B1ADBE25A001EAE08 /* ViewController.swift */; };
 		227DDC2F1ADBE25A001EAE08 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 227DDC2D1ADBE25A001EAE08 /* Main.storyboard */; };
 		227DDC311ADBE25A001EAE08 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 227DDC301ADBE25A001EAE08 /* Images.xcassets */; };
 		227DDC341ADBE25A001EAE08 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 227DDC321ADBE25A001EAE08 /* LaunchScreen.xib */; };
 		227DDC401ADBE25B001EAE08 /* OpenhabApiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DDC3F1ADBE25B001EAE08 /* OpenhabApiTests.swift */; };
+		227DDC4A1ADBE2A1001EAE08 /* OHRestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DDC491ADBE2A1001EAE08 /* OHRestManager.swift */; };
+		227DDC4C1ADBE8D1001EAE08 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DDC4B1ADBE8D1001EAE08 /* SwiftyJSON.swift */; };
+		227DDC501ADC09BC001EAE08 /* OHBeacon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DDC4F1ADC09BC001EAE08 /* OHBeacon.swift */; };
+		227DDC5A1ADD3C32001EAE08 /* OHSitemap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DDC591ADD3C32001EAE08 /* OHSitemap.swift */; };
+		227DDC5C1ADD4EB6001EAE08 /* OHSitemapsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DDC5B1ADD4EB6001EAE08 /* OHSitemapsTableViewController.swift */; };
+		22B3BAE11AE64B4E006150AC /* OHSitemapParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B3BAE01AE64B4E006150AC /* OHSitemapParser.swift */; };
+		22B3BAE31AE64D82006150AC /* OHWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B3BAE21AE64D82006150AC /* OHWidget.swift */; };
+		22B3BAE51AE68AA5006150AC /* OHRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B3BAE41AE68AA5006150AC /* OHRoomViewController.swift */; };
+		22D782ED1AEF7FF8006BFDF8 /* OHWidgetCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D782EC1AEF7FF8006BFDF8 /* OHWidgetCollectionViewController.swift */; };
+		22D782EF1AEFA9F9006BFDF8 /* OHWidgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D782EE1AEFA9F9006BFDF8 /* OHWidgetCell.swift */; };
+		22D782F11AEFBE5E006BFDF8 /* OHWidgetCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D782F01AEFBE5E006BFDF8 /* OHWidgetCollectionViewLayout.swift */; };
+		22E83C0A1ADE65710055B77A /* OHItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E83C091ADE65710055B77A /* OHItem.swift */; };
+		22E83C0C1ADEACFD0055B77A /* OHLinkedPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E83C0B1ADEACFD0055B77A /* OHLinkedPage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,6 +43,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		223C7FB51AE79FF90079A41C /* OHRestParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHRestParser.swift; sourceTree = "<group>"; };
+		223C7FB71AE7C4040079A41C /* OHHomepage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHHomepage.swift; sourceTree = "<group>"; };
+		223C7FB91AE7E2820079A41C /* OHSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHSectionView.swift; sourceTree = "<group>"; };
+		223C7FBB1AE7F0220079A41C /* OHCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHCollectionViewController.swift; sourceTree = "<group>"; };
 		227DDC241ADBE25A001EAE08 /* OpenhabApi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenhabApi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		227DDC281ADBE25A001EAE08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		227DDC291ADBE25A001EAE08 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -36,6 +57,19 @@
 		227DDC391ADBE25B001EAE08 /* OpenhabApiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OpenhabApiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		227DDC3E1ADBE25B001EAE08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		227DDC3F1ADBE25B001EAE08 /* OpenhabApiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenhabApiTests.swift; sourceTree = "<group>"; };
+		227DDC491ADBE2A1001EAE08 /* OHRestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHRestManager.swift; sourceTree = "<group>"; };
+		227DDC4B1ADBE8D1001EAE08 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		227DDC4F1ADC09BC001EAE08 /* OHBeacon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHBeacon.swift; sourceTree = "<group>"; };
+		227DDC591ADD3C32001EAE08 /* OHSitemap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHSitemap.swift; sourceTree = "<group>"; };
+		227DDC5B1ADD4EB6001EAE08 /* OHSitemapsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHSitemapsTableViewController.swift; sourceTree = "<group>"; };
+		22B3BAE01AE64B4E006150AC /* OHSitemapParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHSitemapParser.swift; sourceTree = "<group>"; };
+		22B3BAE21AE64D82006150AC /* OHWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHWidget.swift; sourceTree = "<group>"; };
+		22B3BAE41AE68AA5006150AC /* OHRoomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHRoomViewController.swift; sourceTree = "<group>"; };
+		22D782EC1AEF7FF8006BFDF8 /* OHWidgetCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHWidgetCollectionViewController.swift; sourceTree = "<group>"; };
+		22D782EE1AEFA9F9006BFDF8 /* OHWidgetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHWidgetCell.swift; sourceTree = "<group>"; };
+		22D782F01AEFBE5E006BFDF8 /* OHWidgetCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHWidgetCollectionViewLayout.swift; sourceTree = "<group>"; };
+		22E83C091ADE65710055B77A /* OHItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHItem.swift; sourceTree = "<group>"; };
+		22E83C0B1ADEACFD0055B77A /* OHLinkedPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHLinkedPage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,8 +111,10 @@
 		227DDC261ADBE25A001EAE08 /* OpenhabApi */ = {
 			isa = PBXGroup;
 			children = (
+				22E83C081ADE54C20055B77A /* ViewControllers */,
+				22E83C071ADE54AD0055B77A /* Vendor */,
+				22E83C061ADE54950055B77A /* OH */,
 				227DDC291ADBE25A001EAE08 /* AppDelegate.swift */,
-				227DDC2B1ADBE25A001EAE08 /* ViewController.swift */,
 				227DDC2D1ADBE25A001EAE08 /* Main.storyboard */,
 				227DDC301ADBE25A001EAE08 /* Images.xcassets */,
 				227DDC321ADBE25A001EAE08 /* LaunchScreen.xib */,
@@ -110,6 +146,45 @@
 				227DDC3E1ADBE25B001EAE08 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		22E83C061ADE54950055B77A /* OH */ = {
+			isa = PBXGroup;
+			children = (
+				227DDC4F1ADC09BC001EAE08 /* OHBeacon.swift */,
+				227DDC591ADD3C32001EAE08 /* OHSitemap.swift */,
+				227DDC491ADBE2A1001EAE08 /* OHRestManager.swift */,
+				22E83C091ADE65710055B77A /* OHItem.swift */,
+				22E83C0B1ADEACFD0055B77A /* OHLinkedPage.swift */,
+				22B3BAE01AE64B4E006150AC /* OHSitemapParser.swift */,
+				22B3BAE21AE64D82006150AC /* OHWidget.swift */,
+				223C7FB51AE79FF90079A41C /* OHRestParser.swift */,
+				223C7FB71AE7C4040079A41C /* OHHomepage.swift */,
+				223C7FB91AE7E2820079A41C /* OHSectionView.swift */,
+				223C7FBB1AE7F0220079A41C /* OHCollectionViewController.swift */,
+			);
+			name = OH;
+			sourceTree = "<group>";
+		};
+		22E83C071ADE54AD0055B77A /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				227DDC4B1ADBE8D1001EAE08 /* SwiftyJSON.swift */,
+			);
+			name = Vendor;
+			sourceTree = "<group>";
+		};
+		22E83C081ADE54C20055B77A /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				227DDC2B1ADBE25A001EAE08 /* ViewController.swift */,
+				227DDC5B1ADD4EB6001EAE08 /* OHSitemapsTableViewController.swift */,
+				22B3BAE41AE68AA5006150AC /* OHRoomViewController.swift */,
+				22D782EC1AEF7FF8006BFDF8 /* OHWidgetCollectionViewController.swift */,
+				22D782EE1AEFA9F9006BFDF8 /* OHWidgetCell.swift */,
+				22D782F01AEFBE5E006BFDF8 /* OHWidgetCollectionViewLayout.swift */,
+			);
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,8 +287,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				223C7FB81AE7C4040079A41C /* OHHomepage.swift in Sources */,
+				22E83C0C1ADEACFD0055B77A /* OHLinkedPage.swift in Sources */,
+				223C7FB61AE79FF90079A41C /* OHRestParser.swift in Sources */,
 				227DDC2C1ADBE25A001EAE08 /* ViewController.swift in Sources */,
+				227DDC4A1ADBE2A1001EAE08 /* OHRestManager.swift in Sources */,
 				227DDC2A1ADBE25A001EAE08 /* AppDelegate.swift in Sources */,
+				22D782F11AEFBE5E006BFDF8 /* OHWidgetCollectionViewLayout.swift in Sources */,
+				22D782EF1AEFA9F9006BFDF8 /* OHWidgetCell.swift in Sources */,
+				22D782ED1AEF7FF8006BFDF8 /* OHWidgetCollectionViewController.swift in Sources */,
+				22B3BAE51AE68AA5006150AC /* OHRoomViewController.swift in Sources */,
+				227DDC4C1ADBE8D1001EAE08 /* SwiftyJSON.swift in Sources */,
+				22B3BAE11AE64B4E006150AC /* OHSitemapParser.swift in Sources */,
+				22B3BAE31AE64D82006150AC /* OHWidget.swift in Sources */,
+				223C7FBC1AE7F0220079A41C /* OHCollectionViewController.swift in Sources */,
+				223C7FBA1AE7E2820079A41C /* OHSectionView.swift in Sources */,
+				227DDC5A1ADD3C32001EAE08 /* OHSitemap.swift in Sources */,
+				22E83C0A1ADE65710055B77A /* OHItem.swift in Sources */,
+				227DDC501ADC09BC001EAE08 /* OHBeacon.swift in Sources */,
+				227DDC5C1ADD4EB6001EAE08 /* OHSitemapsTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +503,7 @@
 				227DDC451ADBE25B001EAE08 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		227DDC461ADBE25B001EAE08 /* Build configuration list for PBXNativeTarget "OpenhabApiTests" */ = {
 			isa = XCConfigurationList;
@@ -419,6 +512,7 @@
 				227DDC481ADBE25B001EAE08 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

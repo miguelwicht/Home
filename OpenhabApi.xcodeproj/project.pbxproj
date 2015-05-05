@@ -28,6 +28,7 @@
 		22D782ED1AEF7FF8006BFDF8 /* OHWidgetCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D782EC1AEF7FF8006BFDF8 /* OHWidgetCollectionViewController.swift */; };
 		22D782EF1AEFA9F9006BFDF8 /* OHWidgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D782EE1AEFA9F9006BFDF8 /* OHWidgetCell.swift */; };
 		22D782F11AEFBE5E006BFDF8 /* OHWidgetCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D782F01AEFBE5E006BFDF8 /* OHWidgetCollectionViewLayout.swift */; };
+		22DFE53F1AF0CA1300390AC6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DFE53E1AF0CA1300390AC6 /* Settings.bundle */; };
 		22E83C0A1ADE65710055B77A /* OHItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E83C091ADE65710055B77A /* OHItem.swift */; };
 		22E83C0C1ADEACFD0055B77A /* OHLinkedPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E83C0B1ADEACFD0055B77A /* OHLinkedPage.swift */; };
 /* End PBXBuildFile section */
@@ -68,6 +69,7 @@
 		22D782EC1AEF7FF8006BFDF8 /* OHWidgetCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHWidgetCollectionViewController.swift; sourceTree = "<group>"; };
 		22D782EE1AEFA9F9006BFDF8 /* OHWidgetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHWidgetCell.swift; sourceTree = "<group>"; };
 		22D782F01AEFBE5E006BFDF8 /* OHWidgetCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHWidgetCollectionViewLayout.swift; sourceTree = "<group>"; };
+		22DFE53E1AF0CA1300390AC6 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		22E83C091ADE65710055B77A /* OHItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHItem.swift; sourceTree = "<group>"; };
 		22E83C0B1ADEACFD0055B77A /* OHLinkedPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHLinkedPage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -183,6 +185,7 @@
 				22D782EC1AEF7FF8006BFDF8 /* OHWidgetCollectionViewController.swift */,
 				22D782EE1AEFA9F9006BFDF8 /* OHWidgetCell.swift */,
 				22D782F01AEFBE5E006BFDF8 /* OHWidgetCollectionViewLayout.swift */,
+				22DFE53E1AF0CA1300390AC6 /* Settings.bundle */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -267,6 +270,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22DFE53F1AF0CA1300390AC6 /* Settings.bundle in Resources */,
 				227DDC2F1ADBE25A001EAE08 /* Main.storyboard in Resources */,
 				227DDC341ADBE25A001EAE08 /* LaunchScreen.xib in Resources */,
 				227DDC311ADBE25A001EAE08 /* Images.xcassets in Resources */,

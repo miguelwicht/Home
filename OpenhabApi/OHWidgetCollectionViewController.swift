@@ -9,68 +9,143 @@
 import UIKit
 
 class OHWidgetCollectionViewController: UICollectionViewController {
-    var widgets: [OHWidget]?
-    var numberOfItemsPerSection: Int = 6
     
-    var layout: UICollectionViewLayout
+    var widgets: [OHWidget]?
+    var layout: UICollectionViewFlowLayout?
+    var numberOfItemsPerSection: Int = 6 // Deprecated
+    var reuseIdentifier: String = "reuseIdentifier"
+    var leftArrowButton = UIButton(frame: CGRectMake(0, 0, 20, 20))
+    var rightArrowButton = UIButton(frame: CGRectMake(0, 0, 20, 20))
 
-    required init(coder aDecoder: NSCoder) {
+    required init(coder aDecoder: NSCoder)
+    {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override init(collectionViewLayout layout: UICollectionViewLayout) {
-        self.layout = layout
+    override init(collectionViewLayout layout: UICollectionViewLayout)
+    {
         self.widgets = [OHWidget]()
+        self.layout = layout as? UICollectionViewFlowLayout
         super.init(collectionViewLayout: layout)
-        println("initCollectionView")
-        //collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
-        collectionView!.registerClass(OHWidgetCell.self, forCellWithReuseIdentifier: "Cell")
+
+        collectionView!.registerClass(OHWidgetCell.self, forCellWithReuseIdentifier: self.reuseIdentifier)
         configurateCollectionView()
     }
 
-    override func loadView() {
+    override func loadView()
+    {
         super.loadView()
         
-//        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-//        layout.scrollDirection = UICollectionViewScrollDirection.Horizontal
-//        layout.sectionInset = UIEdgeInsets(top: 20, left: 40, bottom: 20, right: 40)
-//        layout.itemSize = CGSize(width: 60, height: 60)
-        //collectionView = UICollectionView(frame: CGRectMake(20, 100, self.view.frame.width - 40, 180), collectionViewLayout: layout)
-//        collectionView!.dataSource = self
-//        collectionView!.delegate = self
-//        collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
-//        collectionView!.backgroundColor = UIColor.whiteColor()
-//        collectionView!.pagingEnabled = true
-//        
-//        self.view.addSubview(collectionView!)
-        self.view.backgroundColor = UIColor.whiteColor()
-        self.collectionView?.backgroundColor = UIColor.whiteColor()
         self.collectionView!.reloadData()
-        println("WIDGETS:")
-        println(self.widgets)
+
+        leftArrowButton.setImage(UIImage(named: "arrow_left"), forState: .Normal)
+        leftArrowButton.imageView?.contentMode = UIViewContentMode.Center
+        self.view.addSubview(leftArrowButton)
+        
+        rightArrowButton.setImage(UIImage(named: "arrow_right"), forState: .Normal)
+        rightArrowButton.imageView?.contentMode = UIViewContentMode.Center
+        self.view.addSubview(rightArrowButton)
     }
     
-    func configurateCollectionView() {
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        self.collectionView!.frame = CGRectMake(20, 0, self.view.frame.width - 40, self.view.frame.height)
+        self.layout?.prepareLayout()
+        self.leftArrowButton.frame.origin.y = (self.view.frame.height / 2) - (self.leftArrowButton.frame.height / 2)
+        self.rightArrowButton.frame.origin.y = (self.view.frame.height / 2) - (self.leftArrowButton.frame.height / 2)
+        self.rightArrowButton.frame.origin.x = self.view.frame.width - self.rightArrowButton.frame.width
+    }
+    
+    func configurateCollectionView()
+    {
         collectionView!.dataSource = self
         collectionView!.delegate = self
-//        collectionView!.backgroundColor = UIColor.greenColor()
+        collectionView!.backgroundColor = UIColor.whiteColor()
         collectionView!.pagingEnabled = true
-        self.collectionView!.frame = CGRectMake(self.collectionView!.frame.origin.x + 20, self.collectionView!.frame.origin.y, self.collectionView!.frame.width - 40, self.collectionView!.frame.height)
-//        self.collectionView!.delegate = self
+        collectionView!.showsHorizontalScrollIndicator = false
     }
     
     func setDataForWidgets(widgets: [OHWidget]){
         self.widgets = widgets
         println("DATA FOR WIDGETS")
-        println(self.widgets)
+//        println(self.widgets)
         self.collectionView!.reloadData()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+//        addGradientMask()
     }
 }
 
+//MARK: Gradient Fade
+extension OHWidgetCollectionViewController {
+    
+    func addGradientMask()
+    {
+        let gradientMask = CAGradientLayer()
+        gradientMask.bounds = self.view.bounds
+        println(gradientMask.bounds)
+        gradientMask.position = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
+        gradientMask.shouldRasterize = true;
+        gradientMask.rasterizationScale =  UIScreen.mainScreen().scale  //[UIScreen mainScreen].scale;
+        gradientMask.startPoint = CGPointMake(0.0, CGRectGetMidY(self.view.bounds))
+        gradientMask.endPoint = CGPointMake(1.0, CGRectGetMidY(self.view.bounds))
+        
+        gradientMask.colors = [UIColor.clearColor().CGColor, UIColor.blackColor().CGColor, UIColor.blackColor().CGColor, UIColor.clearColor().CGColor]
+        
+        //        let fadePoint: CGFloat = 100 / CGRectGetWidth(viewWithMask.bounds);
+        let fadePoint: CGFloat = 0.1
+        let leftFadePoint: CGFloat = fadePoint
+        let rightFadePoint: CGFloat = CGFloat(1 - fadePoint)
+        // apply calculations to mask
+        gradientMask.locations = [0, leftFadePoint, rightFadePoint, 1]
+        //        viewWithMask.layer.mask = gradientMask;
+        //        viewWithMask.layer.cornerRadius = 50
+        //        viewWithMask.layer.masksToBounds = false
+        //        self.view.addSubview(viewWithMask)
+        //        viewWithMask.addSubview(imageView)
+        //        self.view.layer.masksToBounds = true
+        self.view.layer.mask = gradientMask
+    }
+}
+
+// MARK: UICollectionViewDataSource
 extension OHWidgetCollectionViewController: UICollectionViewDataSource {
     
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+    {
+        return self.widgets!.count
+    }
+    
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
+    {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(self.reuseIdentifier, forIndexPath: indexPath) as! OHWidgetCell
         
+        cell.imageView.image = UIImage(named: self.widgets![indexPath.item].icon!)
+        cell.label.text = self.widgets![indexPath.item].label
+        
+        return cell
+    }
+    
+    override func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath)
+    {
+        println("\(indexPath.item)")
+    }
+    
+    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int
+    {
+        return 1
+    }
+}
+
+// MARK: Deprecated
+extension OHWidgetCollectionViewController {
+    
+    func calculateNumberOfItemsPerSection(collectionView: UICollectionView, section: Int) -> Int
+    {
         var itemsInSection: Int?
         
         if (self.numberOfSectionsInCollectionView(collectionView) - (section + 1) > 0)
@@ -80,57 +155,15 @@ extension OHWidgetCollectionViewController: UICollectionViewDataSource {
         else {
             itemsInSection =  self.numberOfItemsPerSection - (self.numberOfItemsPerSection * (section + 1) - self.widgets!.count)
         }
-        println("itemsInSections: \(itemsInSection!)")
+        
         return itemsInSection!
     }
     
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        println("CellForRow")
-        //let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! UICollectionViewCell
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! OHWidgetCell
-//        var hue: CGFloat = CGFloat(indexPath.item * 10)
-//        hue = hue / 255
-        
-        //        cell.backgroundColor = UIColor(hue: hue, saturation: CGFloat(1.0), brightness: CGFloat(0.9), alpha: 1.0)
-//                cell.backgroundColor = UIColor.redColor()
-        
-        //var imageView: UIImageView = UIImageView(image: UIImage(named: self.widgets![indexPath.item].icon!))
-        //        cell.i
-        //cell.addSubview(imageView)
-        
-//        cell.frame = CGRectMake(0, 0, 70 , 90)
-        
-        cell.imageView!.image = UIImage(named: self.widgets![indexPath.item].icon!)
-//        cell.backgroundColor = UIColor.redColor()
-        cell.label?.text = self.widgets![indexPath.item].label
-        
-//        println(hue)
-        return cell
-    }
-    
-    override func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
-        println("\(indexPath.item)")
-    }
-    
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        
-        //        var q: CGFloat = CGFloat(self.items) % CGFloat(self.numberOfItemsInSection)
-        
+    func calculateNumberSectionsInCollectionView() -> Int
+    {
         var numberOfSections = Int(ceil(CGFloat(self.widgets!.count) / CGFloat(self.numberOfItemsPerSection)))
         println("numberOfSections: \(numberOfSections)")
         
         return numberOfSections
     }
-}
-
-extension OHWidgetCollectionViewController: UICollectionViewDelegateFlowLayout {
-//    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
-//        println("blub")
-//        return CGFloat(30)
-//    }
-//    
-//    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-//        
-//        return UIEdgeInsetsMake(0, 50, 0, 50)
-//    }
 }

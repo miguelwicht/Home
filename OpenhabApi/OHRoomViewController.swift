@@ -24,14 +24,10 @@ class OHRoomViewController: UIViewController {
 //        self.restManager.delegate = self
     }
     
-    override func viewDidLoad() {
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
 //        // Do any additional setup after loading the view, typically from a nib.
-//        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
-//        
-//        restManager.getSitemaps()
-        
-        println("viewDidLoad")
         self.view.backgroundColor = UIColor.whiteColor()
     }
     
@@ -40,79 +36,26 @@ class OHRoomViewController: UIViewController {
         self.init(nibName: nil, bundle: nil)
         
         self.widgets = widgets
-        
-        println("convenience init")
-        println(widgets)
     }
     
-    override func loadView() {
-        
+    override func loadView()
+    {
         super.loadView()
         
-        println("loadView")
-        
-        var labels: [UILabel] = [UILabel]()
-        
-        var sections: [OHSectionView]
-        
-        self.widgets?.count
-        
-//        for (index, element) in enumerate(self.widgets!)
-//        {
-//            var label = UILabel(frame: CGRectMake(0, 20, self.view.frame.width, 20))
-//            label.text = element.label
-//            label.sizeToFit()
-//            //self.view.addSubview(label)
-//            
-//            println(element.linkedPage)
-//            
-//            labels.append(label)
-//            
-//            var section: OHSectionView = OHSectionView(widgets: element.linkedPage!.widgets!, headline: element.label!)
-//            
-//            section.frame.origin.y = CGFloat(300 * index)
-//            
-//            self.view.addSubview(section)
-//        }
-        println(self.widgets!)
+        // TODO: create other collectionViews e.g. for scenes
         createCollectionView(self.widgets![0].linkedPage!.widgets!)
     }
     
-    func createCollectionView(widgets: [OHWidget]){
-        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.scrollDirection = UICollectionViewScrollDirection.Horizontal
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-//        layout.minimumInteritemSpacing = 20
-        layout.itemSize = CGSize(width: 80, height: 90)
-        
-        
-        
-//        var collectionViewController: OHWidgetCollectionViewController = OHWidgetCollectionViewController(collectionViewLayout: layout)
+    func createCollectionView(widgets: [OHWidget])
+    {
         var collectionViewController: OHWidgetCollectionViewController = OHWidgetCollectionViewController(collectionViewLayout: OHWidgetCollectionViewLayout())
-        collectionViewController.view.frame = CGRectMake(20, 20, self.view.frame.width - 40, 280)
+        collectionViewController.view.frame = CGRectMake(0, 20, self.view.frame.width, 220)
+//        collectionViewController.view.backgroundColor = UIColor.redColor()
         collectionViewController.setDataForWidgets(widgets)
-        collectionViewController.collectionView?.reloadData()
-//        collectionViewController.view.backgroundColor = UIColor.greenColor()
-//        collectionViewController.collectionView?.backgroundColor = UIColor.blackColor()
+//        collectionViewController.collectionView?.reloadData()
         
         self.collectionViewControllers.append(collectionViewController)
         
         self.view.addSubview(collectionViewController.view)
     }
-//    func createCollectionView()
-//    {
-//        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-//        layout.scrollDirection = UICollectionViewScrollDirection.Horizontal
-//        layout.sectionInset = UIEdgeInsets(top: 20, left: 40, bottom: 20, right: 40)
-//        layout.itemSize = CGSize(width: 60, height: 60)
-//        collectionView = UICollectionView(frame: CGRectMake(20, 100, self.view.frame.width - 40, 180), collectionViewLayout: layout)
-//        collectionView!.dataSource = self
-//        collectionView!.delegate = self
-//        collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
-//        collectionView!.backgroundColor = UIColor.whiteColor()
-//        collectionView!.pagingEnabled = true
-//        
-//        self.view.addSubview(collectionView!)
-//
-//    }
 }

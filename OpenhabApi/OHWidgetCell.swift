@@ -10,50 +10,50 @@ import UIKit
 
 class OHWidgetCell: UICollectionViewCell {
     
-    var imageView: UIImageView?
-    var label: UILabel?
+    let imageView: UIImageView = UIImageView()
+    let label: UILabel = UILabel()
+    var textHeight: CGFloat?
+    var font: UIFont = UIFont(name: "HelveticaNeue-Light", size: 13)!
     
-    override init(frame: CGRect) {
+    override init(frame: CGRect)
+    {
         super.init(frame: frame)
+        calculateTextHeight()
         initOutlets()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init(coder aDecoder: NSCoder)
+    {
         super.init(coder: aDecoder)
+        calculateTextHeight()
         initOutlets()
     }
     
-    func initOutlets() {
-        self.imageView = UIImageView()
-        self.label = UILabel()
-        
-        self.addSubview(self.imageView!)
-        self.addSubview(self.label!)
-    }
-    
-    override func prepareForReuse()
+    func initOutlets()
     {
-        super.prepareForReuse()
+        self.imageView.contentMode = UIViewContentMode.Center
+        self.addSubview(self.imageView)
         
-//        self.initOutlets()
+        self.label.font = self.font
+        self.label.textAlignment = NSTextAlignment.Center
+        self.label.adjustsFontSizeToFitWidth = true;
+        self.addSubview(self.label)
+//        self.backgroundColor = UIColor.purpleColor()
     }
     
-    override func layoutSubviews() {
+    func calculateTextHeight()
+    {
+        var dummyText: NSString = "LoremIpsumg"
+        var font: UIFont = UIFont(name: self.font.fontName, size: CGFloat(self.font.pointSize + 2))!
+        var textSize: CGSize = dummyText.sizeWithAttributes([NSFontAttributeName:font])
+        textHeight = textSize.height
+    }
+    
+    override func layoutSubviews()
+    {
         super.layoutSubviews()
         
-        println("layoutSubviews")
-        
-        if var imageView = self.imageView {
-            imageView.frame = CGRectMake(0, 0, self.frame.width, self.frame.height - 40)
-//            imageView.backgroundColor = UIColor.blueColor()
-            imageView.contentMode = UIViewContentMode.ScaleAspectFit
-//            imageView.sizeToFit()
-        }
-        
-        if var label = self.label {
-            label.frame = CGRectMake(0, self.frame.height - 40, self.frame.width, 40)
-//            label.backgroundColor = UIColor.brownColor()
-            label.textAlignment = NSTextAlignment.Center
-        }
+        imageView.frame = CGRectMake(0, 0, self.frame.width, self.frame.height - self.textHeight!)
+        label.frame = CGRectMake(0, self.frame.height - self.textHeight!, self.frame.width, self.textHeight!)
     }
 }

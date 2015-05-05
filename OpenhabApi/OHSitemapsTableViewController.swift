@@ -11,22 +11,31 @@ import UIKit
 class OHSitemapsTableViewController: UIViewController {
     
     @IBOutlet var tableView:UITableView!
-    let restManager: OHRestManager
+    var restManager: OHRestManager?
     var sitemaps: [OHSitemap] = []
     
     required init(coder aDecoder: NSCoder)
     {
-        self.restManager = OHRestManager(baseUrl: "http://10.10.32.251:8888")
+        let defaults = NSUserDefaults.standardUserDefaults()
+        
+        if let url = defaults.objectForKey("SettingsOpenHABURL") as? String {
+            self.restManager = OHRestManager(baseUrl: url)
+            println("URL: \(url)")
+        }
+        
         super.init(coder: aDecoder)
-        self.restManager.delegate = self
+        
+        if var restManager = self.restManager {
+            restManager.delegate = self
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        
-        restManager.getSitemaps()
+        println("SitemapsController: viewDidLoad")
+        restManager?.getSitemaps()
     }
 }
 
@@ -89,7 +98,7 @@ extension OHSitemapsTableViewController: OHRestManagerDelegate
     func didGetSitemaps(sitemaps: [OHSitemap]) {
         for (i, e) in enumerate(sitemaps)
         {
-            self.restManager.getSitemap(e.name)
+            self.restManager!.getSitemap(e.name)
         }
     }
     

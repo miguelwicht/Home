@@ -16,6 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        loadUserDefaults()
+        
         return true
     }
 
@@ -42,5 +45,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
+}
+
+extension AppDelegate {
+    
+    func loadUserDefaults() {
+//        let userDefaults = NSUserDefaults.standardUserDefaults()
+//        
+//        let defaults = NSUserDefaults.standardUserDefaults()
+//        let settingsBundle = NSBundle.mainBundle().pathForResource("Root", ofType: "plist")
+//        let settings = NSDictionary(contentsOfFile: settingsBundle!)
+//        
+//        println(settings)
+        
+//        let preferences = settings?.objectForKey("PreferenceSpecifiers") as! NSArray
+//        
+//        let defaultsToRegister = NSMutableDictionary(capacity: preferences.count)
+//        
+//        defaults.registerDefaults(defaultsToRegister as [NSObject : AnyObject])
+//        
+//        defaults.synchronize()
+//        
+//        println(defaults)
+    }
 }
 

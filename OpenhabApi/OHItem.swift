@@ -14,6 +14,7 @@ public class OHItem {
     let name: String
     let state: String
     let link: String
+    var tags: [String]?
     
     public init(type: String, name: String, state: String, link: String)
     {
@@ -31,6 +32,24 @@ public class OHItem {
         self.name = i["name"]!.stringValue
         self.state = i["state"]!.stringValue
         self.link = i["link"]!.stringValue
+        
+        if var tags = i["tags"]?.arrayValue {
+            
+            if tags.count > 0 {
+                self.addTags(tags)
+                println(self.tags)
+            }
+            
+        }
+    }
+    
+    func addTags(tags: [JSON]) {
+        
+        self.tags = [String]()
+        
+        for(index, tag) in enumerate(tags) {
+            self.tags?.append(tag.stringValue)
+        }
     }
     
     public func stateAsInt() -> Int
@@ -63,5 +82,23 @@ public class OHItem {
         
         return fallbackColor
         
+    }
+}
+
+//MARK: OHSitemap: Printable
+extension OHItem : Printable {
+    
+    public var description:String
+        {
+            let className = reflect(self).summary
+            var desc:String = ""
+            desc += "\n\(className):\n{\n"
+            desc += "\tname: \(self.type),\n"
+            desc += "\tlabel: \(self.name),\n"
+            desc += "\tstate: \(self.state),\n"
+            desc += "\tlink: \(self.link),\n"
+            desc += "\ttags: \(self.tags),\n"
+            
+            return desc
     }
 }

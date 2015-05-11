@@ -26,9 +26,19 @@
 			<key>Title</key>
 			<string>URL</string>
 			<key>DefaultValue</key>
-			<string></string>
+			<string>http://10.10.32.251:8888</string>
 			<key>Key</key>
 			<string>SettingsOpenHABURL</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Sitemap</string>
+			<key>DefaultValue</key>
+			<string>ios_lab</string>
+			<key>Key</key>
+			<string>SettingsOpenHABSitemap</string>
 		</dict>
 	</array>
 	<key>StringsTable</key>

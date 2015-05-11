@@ -22,13 +22,11 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
     override func prepareLayout() {
         super.prepareLayout()
         
-        println("prepareLayout)")
-        
         self.itemSize = CGSizeMake(80, 100)
         self.sectionInset = UIEdgeInsetsMake(30, 5, 10, 5)
         self.scrollDirection = UICollectionViewScrollDirection.Horizontal
         
-//        self.minimumInteritemSpacing = 20
+        self.minimumInteritemSpacing = 20
 //        self.minimumLineSpacing = 10
         
         calculateColumnOffsets()
@@ -42,18 +40,19 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
         self.rows = Int(CGFloat(self.collectionView!.bounds.height - self.minimumLineSpacing) / self.itemSize.height)
         
         var spacing: CGFloat = self.collectionView!.bounds.width - CGFloat(columns) * itemSize.width
-        spacing = spacing / CGFloat(columns - 1)
+        //spacing = spacing / CGFloat(columns - 1)
+        spacing = spacing / CGFloat(columns + 1)
         
         var verticalSpacing: CGFloat = self.collectionView!.bounds.height - CGFloat(rows) * itemSize.height
-        verticalSpacing = verticalSpacing / CGFloat(rows - 1)
+        verticalSpacing = verticalSpacing / CGFloat(rows + 1)
         
         for var row = 0; row < self.rows; row++ {
             var offsetPoint: CGPoint = CGPointZero
             
             for var col = 0; col < columns; col++ {
                 
-                offsetPoint.x = (col == 0) ? CGFloat(col) : CGFloat(col) * spacing
-                offsetPoint.y = (row == 0) ? CGFloat(row) : CGFloat(row) * verticalSpacing
+                offsetPoint.x = (col == 0) ? CGFloat(col + 1) * spacing : CGFloat(col + 1) * spacing
+                offsetPoint.y = (row == 0) ? CGFloat(row + 1) * verticalSpacing : CGFloat(row + 1) * verticalSpacing
                 
                 columnOffsetsForCells.append(offsetPoint)
             }

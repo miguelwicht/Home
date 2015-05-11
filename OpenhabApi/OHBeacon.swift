@@ -34,3 +34,17 @@ extension OHBeacon : Printable {
         "}"
     }
 }
+
+//MARK: OHBeacon: Hashable
+extension OHBeacon: Hashable {
+    public var hashValue: Int {
+        get {
+            return "\(self.uuid) - \(self.major) - \(self.minor)".hashValue
+        }
+    }
+}
+
+//MARK: OHBeacon: Equatable
+public func ==(lhs: OHBeacon, rhs: OHBeacon) -> Bool {
+    return lhs.hashValue == rhs.hashValue
+}

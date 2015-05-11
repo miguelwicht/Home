@@ -43,19 +43,72 @@ class OHRoomViewController: UIViewController {
         super.loadView()
         
         // TODO: create other collectionViews e.g. for scenes
-        createCollectionView(self.widgets![0].linkedPage!.widgets!)
+//        createCollectionView(self.widgets![0].linkedPage!.widgets!)
+        println(self.widgets!)
+//        println(self.widgets![0].linkedPage!.title)
+//        println(self.widgets![0].linkedPage!.widgets![1].widgets![0].linkedPage!.widgets!)
+        
+//        var beaconFrame: OHWidget;
+//        var outletFrame: OHWidget;
+//        
+//        
+//        for var i = 0; i < self.widgets![0].linkedPage!.widgets!.count {
+//        
+//        }
+        
+        var beaconFrame: OHWidget = self.widgets![0].linkedPage!.widgets![0]
+        var outletFrame: OHWidget = self.widgets![0].linkedPage!.widgets![1]
+        
+        var outlets: [OHWidget] = outletFrame.widgets!
+        
+        for var i = 0; i < outlets.count; i++ {
+            createCollectionView(outlets[i].linkedPage!.widgets!, rows: i + 1)
+        }
+        
+        
+//        createCollectionView(self.widgets![0].linkedPage!.widgets![1].widgets![0].linkedPage!.widgets!)
     }
     
-    func createCollectionView(widgets: [OHWidget])
+    func createCollectionView(widgets: [OHWidget], rows: Int)
     {
         var collectionViewController: OHWidgetCollectionViewController = OHWidgetCollectionViewController(collectionViewLayout: OHWidgetCollectionViewLayout())
-        collectionViewController.view.frame = CGRectMake(0, 20, self.view.frame.width, 220)
+        
+        var navbarOffset = CGFloat(20)
+        
+        if (self.navigationController?.navigationBarHidden != nil) {
+            navbarOffset += self.navigationController!.navigationBar.frame.height
+        }
+//        collectionViewController.layout?.itemSize.height + 
+        collectionViewController.view.frame = CGRectMake(0, 0, self.view.frame.width - 20, 220)
+        
+        self.view.addSubview(collectionViewController.view)
+        
+        collectionViewController.view.marginLeft = 0
+        collectionViewController.view.marginTop = navbarOffset
+        collectionViewController.view.centerViewVerticallyInSuperview()
+        collectionViewController.view.centerViewHorizontallyInSuperview()
+        
 //        collectionViewController.view.backgroundColor = UIColor.redColor()
         collectionViewController.setDataForWidgets(widgets)
 //        collectionViewController.collectionView?.reloadData()
         
         self.collectionViewControllers.append(collectionViewController)
         
-        self.view.addSubview(collectionViewController.view)
+        
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        for var i = 0; i < collectionViewControllers.count; i++ {
+            
+            var offset = CGFloat(20)
+            
+            if (self.navigationController?.navigationBarHidden != nil) {
+                offset += self.navigationController!.navigationBar.frame.height
+            }
+
+            collectionViewControllers[i].view.marginTop = i == 0 ? offset : collectionViewControllers[i - 1].view.marginBottom + 60
+        }
     }
 }

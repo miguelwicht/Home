@@ -31,13 +31,12 @@ import Foundation
     
     init(linkedPage: JSON)
     {
-        let linkedPageDict = linkedPage.dictionaryValue
+        var linkedPageDict = linkedPage.dictionaryValue
         
-        self.pageId = linkedPageDict["pageId"]!.stringValue
+        self.pageId = linkedPageDict["id"]!.stringValue
         self.icon = linkedPageDict["icon"]!.stringValue
         self.title = linkedPageDict["title"]!.stringValue
         self.link = linkedPageDict["icon"]!.stringValue
-        //self.widgets = linkedPageDict["widgets"]?.arrayValue
         
         if var subPage = linkedPageDict["linkedPage"] {
             self.linkedPage = OHLinkedPage(linkedPage: subPage)

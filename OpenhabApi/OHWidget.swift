@@ -43,9 +43,12 @@ public class OHWidget {
         self.icon = widget["icon"]?.stringValue
         
         // parse linkedPage to OHLinkedPage
-        if var linkedPage = widget["linkedPage"]?.dictionaryValue
+        if var linkedPage = widget["linkedPage"]//?.dictionaryValue
         {
-            self.linkedPage = OHLinkedPage(pageId: linkedPage["id"]!.stringValue, icon: linkedPage["icon"]!.stringValue, title: linkedPage["icon"]!.stringValue, link: linkedPage["link"]!.stringValue, widgets: linkedPage["widgets"]!.arrayValue)
+//            println(linkedPage)
+//            self.linkedPage = OHLinkedPage(pageId: linkedPage["id"]!.stringValue, icon: linkedPage["icon"]!.stringValue, title: linkedPage["icon"]!.stringValue, link: linkedPage["link"]!.stringValue, widgets: linkedPage["widgets"]!.arrayValue)
+            
+            self.linkedPage = OHLinkedPage(linkedPage: linkedPage)
         }
         
         // parse widgets to OHWidget

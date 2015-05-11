@@ -21,6 +21,8 @@ class OHSitemapsTableViewController: UIViewController {
         if let url = defaults.objectForKey("SettingsOpenHABURL") as? String {
             self.restManager = OHRestManager(baseUrl: url)
             println("URL: \(url)")
+        } else {
+            println("no url")
         }
         
         super.init(coder: aDecoder)

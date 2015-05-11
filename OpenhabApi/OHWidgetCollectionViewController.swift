@@ -130,9 +130,16 @@ extension OHWidgetCollectionViewController: UICollectionViewDataSource {
         return cell
     }
     
-    override func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath)
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
     {
-        println("\(indexPath.item)")
+//        println("\(self.widgets![indexPath.item].widgets!.first!)")
+        if var item = self.widgets![indexPath.item].widgets!.first!.item {
+            if var tags = item.tags {
+                if tags.count > 0 {
+                    println(tags)
+                }
+            }
+        }
     }
     
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int

@@ -25,13 +25,17 @@ import Foundation
 //MARK: OHBeacon: Printable
 extension OHBeacon : Printable {
 
-    public var description: String {
-        return "OpenhabBeacon: {\n" +
-            "\tuuid: \(uuid), \n" +
-            "\tmajor: \(major), \n" +
-            "\tminor: \(minor), \n" +
-            "\tlink: \(link) \n" +
-        "}"
+    public var description: String
+    {
+        var desc = ""
+        desc += "OpenhabBeacon: {\n"
+        desc += "\tuuid: \(uuid), \n"
+        desc += "\tmajor: \(major), \n"
+        desc += "\tminor: \(minor), \n"
+        desc += "\tlink: \(link) \n"
+        desc += "}"
+        
+        return desc
     }
 }
 

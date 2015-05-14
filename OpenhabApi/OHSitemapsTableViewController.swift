@@ -65,7 +65,7 @@ extension OHSitemapsTableViewController: UITableViewDelegate
         
         println("widgets to pass: \(widgets)")
         
-        var vc: OHRoomViewController = OHRoomViewController(widgets: widgets!)
+        var vc: OHRoomsViewController = OHRoomsViewController(widgets: widgets!)
         self.presentViewController(vc, animated: true, completion: nil)
     }
 }

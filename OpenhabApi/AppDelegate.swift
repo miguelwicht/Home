@@ -18,10 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
-        loadUserDefaults()
-        
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        
         self.window?.rootViewController = OHRootViewController.new()
         self.window?.makeKeyAndVisible()
         
@@ -52,86 +49,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 }
-
-extension AppDelegate {
-    
-    func loadUserDefaults() {
-//        let userDefaults = NSUserDefaults.standardUserDefaults()
-//        
-//        let defaults = NSUserDefaults.standardUserDefaults()
-//        let settingsBundle = NSBundle.mainBundle().pathForResource("Root", ofType: "plist")
-//        let settings = NSDictionary(contentsOfFile: settingsBundle!)
-//        
-//        println(settings)
-        
-//        let preferences = settings?.objectForKey("PreferenceSpecifiers") as! NSArray
-//        
-//        let defaultsToRegister = NSMutableDictionary(capacity: preferences.count)
-//        
-//        defaults.registerDefaults(defaultsToRegister as [NSObject : AnyObject])
-//        
-//        defaults.synchronize()
-//        
-//        println(defaults)
-    }
-    
-//    func loadViewControllerForSitemap(sitemap: String) {
-//        self.restManager!.getSitemap(sitemap)
-//    }
-//    
-//    func initRestManager() {
-//        let defaults = NSUserDefaults.standardUserDefaults()
-//        
-//        if let url = defaults.objectForKey("SettingsOpenHABURL") as? String {
-//            self.restManager = OHRestManager(baseUrl: url)
-//            println("URL: \(url)")
-//        } else {
-//            println("no url")
-//        }
-//        
-//        if var restManager = self.restManager {
-//            restManager.delegate = self
-//        }
-//    }
-}
-
-//extension AppDelegate: OHRestManagerDelegate {
-//    
-//    func didGetItems(items: [JSON]) {
-//        println(items)
-//    }
-//    
-//    func didGetBeacons(beacons: [OHBeacon]) {
-//        println(beacons)
-//    }
-//    
-//    func didGetSitemaps(sitemaps: [OHSitemap]) {
-//        for (i, e) in enumerate(sitemaps)
-//        {
-//            self.restManager!.getSitemap(e.name)
-//        }
-//    }
-//    
-//    func didGetSitemap(sitemap: OHSitemap)
-//    {
-//        var homepage = sitemap.homepage!
-//        
-//        var widget: OHWidget?
-//        
-//        for (i, e) in enumerate(homepage.widgets!)
-//        {
-//            widget = e
-//        }
-//        
-//        //        var widget: OHWidget = self.sitemaps[indexPath.row].homepage!.wi
-//        
-//        var widgets = widget!.widgets
-//        
-//        println("widgets to pass: \(widgets)")
-//        
-//        var vc: OHRoomViewController = OHRoomViewController(widgets: widgets!)
-////        self.presentViewController(vc, animated: true, completion: nil)
-//        self
-//    }
-//}
-

@@ -13,21 +13,33 @@ class OHRootViewController: UINavigationController {
     var dataManager: OHDataManager?
     var restManager: OHRestManager?
     
-    required init(coder aDecoder: NSCoder) {
+    required init(coder aDecoder: NSCoder)
+    {
         super.init(coder: aDecoder)
         initManagers()
     }
     
-    convenience init() {
-        self.init(nibName: nil, bundle: nil)
-    }
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?)
+    {
         super.init(nibName: nil, bundle: nil)
         initManagers()
     }
     
-    func initManagers() {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+}
+
+extension OHRootViewController {
+    
+    func initManagers()
+    {
         dataManager = OHDataManager()
         restManager = OHRestManager(baseUrl: "http://192.168.0.251:8888")
         
@@ -36,41 +48,19 @@ class OHRootViewController: UINavigationController {
         }
         
         loadDefaultViewController()
-        
-        println("initManagers")
     }
     
-    func loadDefaultViewController() {
+    func loadDefaultViewController()
+    {
         let defaults = NSUserDefaults.standardUserDefaults()
         
         if let sitemap = defaults.objectForKey("SettingsOpenHABSitemap") as? String {
             self.restManager?.getSitemap(sitemap)
             println("GetSitemap: \(sitemap)")
+        } else {
+            println("no sitemap")
         }
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-        self.view.backgroundColor = UIColor.purpleColor()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     func pushViewControllerWithSitemap(sitemap: OHSitemap)
     {
@@ -85,12 +75,11 @@ class OHRootViewController: UINavigationController {
         
         var widgets = widget!.widgets
         
-        var vc: OHRoomViewController = OHRoomViewController(widgets: widgets!)
+        var vc: OHRoomsViewController = OHRoomsViewController(widgets: widgets!)
         vc.title = sitemap.label
         
         self.pushViewController(vc, animated: true)
     }
-
 }
 
 //MARK: OHRestManagerDelegate

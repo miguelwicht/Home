@@ -1,4 +1,3 @@
-//
 //  OHWidgetCollectionViewLayout.swift
 //  OpenhabApi
 //
@@ -17,13 +16,15 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
     
     var rows: Int = 2
     var columns: Int = 3
-    var columnOffsetsForCells: [CGPoint] = [CGPoint]()
+    var columnOffsetsForCells: [CGPoint]?
+    
+    var fixedRows: Int?
     
     override func prepareLayout() {
         super.prepareLayout()
         
         self.itemSize = CGSizeMake(80, 100)
-        self.sectionInset = UIEdgeInsetsMake(30, 5, 10, 5)
+        self.sectionInset = UIEdgeInsetsMake(0, 5, 10, 5)
         self.scrollDirection = UICollectionViewScrollDirection.Horizontal
         
         self.minimumInteritemSpacing = 20
@@ -37,7 +38,24 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
         self.columnOffsetsForCells = [CGPoint]()
         
         self.columns = Int(CGFloat(self.collectionView!.bounds.width - self.minimumInteritemSpacing) / self.itemSize.width)
+        
+        println("itemSize:\(self.itemSize), lineSpacing: \(self.minimumLineSpacing)")
+        
+//        if self.collectionView!.bounds.height < self.minimumLineSpacing + self.itemSize.height {
+//            self.rows = 1
+//        } else {
+//            
+//        }
+        
+        if var rows = self.fixedRows {
+            self.rows = rows
+        } else {
+            self.rows = Int(CGFloat(self.collectionView!.bounds.height - self.minimumLineSpacing) / self.itemSize.height)
+        }
+        
         self.rows = Int(CGFloat(self.collectionView!.bounds.height - self.minimumLineSpacing) / self.itemSize.height)
+        
+        println("calculateColumnOffsets \(self.collectionView!.frame)")
         
         var spacing: CGFloat = self.collectionView!.bounds.width - CGFloat(columns) * itemSize.width
         //spacing = spacing / CGFloat(columns - 1)
@@ -54,7 +72,13 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
                 offsetPoint.x = (col == 0) ? CGFloat(col + 1) * spacing : CGFloat(col + 1) * spacing
                 offsetPoint.y = (row == 0) ? CGFloat(row + 1) * verticalSpacing : CGFloat(row + 1) * verticalSpacing
                 
-                columnOffsetsForCells.append(offsetPoint)
+                if var offets = self.columnOffsetsForCells {
+                    
+                } else {
+                    self.columnOffsetsForCells = [CGPoint]()
+                }
+                
+                self.columnOffsetsForCells!.append(offsetPoint)
             }
         }
     }
@@ -62,7 +86,7 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
     override func collectionViewContentSize() -> CGSize
     {
         var numberOfItems = CGFloat(self.collectionView!.numberOfItemsInSection(0))
-        var itemsPerPage = CGFloat(self.rows * self.columns)
+        var itemsPerPage = self.rows > 0 ? CGFloat(self.rows * self.columns) : CGFloat(self.columns)
         
         var pageCount = ceil(CGFloat(numberOfItems / itemsPerPage))
         
@@ -75,9 +99,7 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [AnyObject]? {
         
 //        return super.layoutAttributesForElementsInRect(rect)
-        
 //        return attributesForElementsInRectWithSections(rect)
-        
         
         var elementsInRect: [UICollectionViewLayoutAttributes] = [UICollectionViewLayoutAttributes]()
         
@@ -85,12 +107,18 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
         
         for var i = 0; i < numberOfItems; i++ {
             
-            var pageIndex = Int(i / (self.rows * self.columns))
+            var itemsPerPage = self.rows > 0 ? CGFloat(self.rows * self.columns) : CGFloat(self.columns)
+            var pageIndex = Int(i / Int(itemsPerPage))
             var offset = pageIndex * self.rows * self.columns
             var index = i - offset
-//            var index = self.collectionView!.numberOfItemsInSection(0) - 1 - i
             
-            var offsetPoint = CGPointMake(self.columnOffsetsForCells[index].x, self.columnOffsetsForCells[index].y)
+            if var offsets = self.columnOffsetsForCells {
+            
+            } else {
+                self.prepareLayout()
+            }
+            
+            var offsetPoint = CGPointMake(self.columnOffsetsForCells![index].x, self.columnOffsetsForCells![index].y)
             
             var cellFrame: CGRect = CGRectMake(CGFloat(pageIndex) * self.collectionView!.bounds.width + CGFloat(offsetPoint.x), offsetPoint.y, self.itemSize.width, self.itemSize.height)
             
@@ -98,24 +126,14 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
             
             cellFrame.origin.x = cellFrame.origin.x + CGFloat(mod) * self.itemSize.width
             
-//            if (index < self.columns) {
-//               cellFrame.origin.x = cellFrame.origin.x + CGFloat(index) * self.itemSize.width
-//            }
-//            else {
-//                cellFrame.origin.x = cellFrame.origin.x + CGFloat(index - self.columns) * self.itemSize.width
-//            }
-            
             var currentRow = Int(index / self.columns)
             
             cellFrame.origin.y = cellFrame.origin.y + CGFloat(currentRow) * self.itemSize.height
-            
-//            cellFrame.origin.x = cellFrame.origin.x + CGFloat(index) * self.itemSize.width
         
             // only calculate attributes if cell is visible
             if(CGRectIntersectsRect(cellFrame, rect))
             {
                 //create the attributes object
-                //                    var indexPath: NSIndexPath = NSIndexPath(indexPathForRow:j inSection:i)
                 var indexPath = NSIndexPath(forRow: i, inSection: Int(0))
                 var attr = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
                 

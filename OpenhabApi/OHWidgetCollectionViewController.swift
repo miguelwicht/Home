@@ -16,6 +16,7 @@ class OHWidgetCollectionViewController: UICollectionViewController {
     var reuseIdentifier: String = "reuseIdentifier"
     var leftArrowButton = UIButton(frame: CGRectMake(0, 0, 20, 20))
     var rightArrowButton = UIButton(frame: CGRectMake(0, 0, 20, 20))
+    var parentVC: UIViewController?
 
     required init(coder aDecoder: NSCoder)
     {
@@ -24,17 +25,25 @@ class OHWidgetCollectionViewController: UICollectionViewController {
     
     override init(collectionViewLayout layout: UICollectionViewLayout)
     {
-        self.widgets = [OHWidget]()
+//        self.widgets = [OHWidget]()
         self.layout = layout as? UICollectionViewFlowLayout
         super.init(collectionViewLayout: layout)
 
         collectionView!.registerClass(OHWidgetCell.self, forCellWithReuseIdentifier: self.reuseIdentifier)
         configurateCollectionView()
     }
+    
+    convenience init(collectionViewLayout layout: UICollectionViewLayout, widgets: [OHWidget]) {
+        
+        self.init(collectionViewLayout: layout)
+        self.setDataForWidgets(widgets)
+    }
 
     override func loadView()
     {
         super.loadView()
+//        println("CollectionViewController.LoadView: collectionViewFrame: \(self.collectionView!.frame)")
+//        println("CollectionViewController.LoadView: viewFrame: \(self.view.frame)")
         
         self.collectionView!.reloadData()
 
@@ -45,16 +54,24 @@ class OHWidgetCollectionViewController: UICollectionViewController {
         rightArrowButton.setImage(UIImage(named: "arrow_right"), forState: .Normal)
         rightArrowButton.imageView?.contentMode = UIViewContentMode.Center
         self.view.addSubview(rightArrowButton)
+        
+//        collectionView?.backgroundColor = UIColor.redColor()
+        
+//        println("CollectionViewController.LoadView: collectionViewFrame: \(self.collectionView!.frame)")
+//        println("CollectionViewController.LoadView: viewFrame: \(self.view.frame)")
+        
     }
     
-    override func viewWillLayoutSubviews() {
+    override func viewWillLayoutSubviews()
+    {
         super.viewWillLayoutSubviews()
         
-        self.collectionView!.frame = CGRectMake(20, 0, self.view.frame.width - 40, self.view.frame.height)
-        self.layout?.prepareLayout()
-        self.leftArrowButton.frame.origin.y = (self.view.frame.height / 2) - (self.leftArrowButton.frame.height / 2)
-        self.rightArrowButton.frame.origin.y = (self.view.frame.height / 2) - (self.leftArrowButton.frame.height / 2)
-        self.rightArrowButton.frame.origin.x = self.view.frame.width - self.rightArrowButton.frame.width
+        self.leftArrowButton.marginTop = (self.view.frame.height / 2) - (self.leftArrowButton.frame.height / 2)
+        self.rightArrowButton.marginTop = (self.view.frame.height / 2) - (self.leftArrowButton.frame.height / 2)
+        self.rightArrowButton.marginLeft = self.view.frame.width - self.rightArrowButton.frame.width
+        
+//        println("CollectionViewController.ViewWillLayoutSubViews: collectionViewFrame: \(self.collectionView!.frame)")
+//        println("CollectionViewController.ViewWillLayoutSubViews: viewFrame: \(self.view.frame)")
     }
     
     func configurateCollectionView()
@@ -64,20 +81,23 @@ class OHWidgetCollectionViewController: UICollectionViewController {
         collectionView!.backgroundColor = UIColor.whiteColor()
         collectionView!.pagingEnabled = true
         collectionView!.showsHorizontalScrollIndicator = false
+//        self.collectionView?.backgroundColor = UIColor.greenColor()
+//        self.view.backgroundColor = UIColor.purpleColor()
     }
     
-    func setDataForWidgets(widgets: [OHWidget]){
+    func setDataForWidgets(widgets: [OHWidget])
+    {
         self.widgets = widgets
         println("DATA FOR WIDGETS")
 //        println(self.widgets)
         self.collectionView!.reloadData()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-//        addGradientMask()
-    }
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//        
+////        addGradientMask()
+//    }
 }
 
 //MARK: Gradient Fade
@@ -117,14 +137,38 @@ extension OHWidgetCollectionViewController: UICollectionViewDataSource {
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
-        return self.widgets!.count
+        var numberOfItems = 0
+        
+        if var widgets =  self.widgets {
+            numberOfItems = widgets.count
+        }
+        
+        return numberOfItems
     }
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
     {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(self.reuseIdentifier, forIndexPath: indexPath) as! OHWidgetCell
         
-        cell.imageView.image = UIImage(named: self.widgets![indexPath.item].icon!)
+        var imageName: String = self.widgets![indexPath.item].icon!
+        
+        if self.widgets![indexPath.item].icon! == "none" {
+            if var item = self.widgets![indexPath.item].item {
+                if var tags = item.tags {
+                    
+                    for (index, tag) in enumerate(tags)
+                    {
+                       
+                        if tag.rangeOfString("OH_Light") != nil {
+                            imageName = "bulb"
+                            break
+                        }
+                    }
+                }
+            }
+        }
+        
+        cell.imageView.image = UIImage(named: imageName)
         cell.label.text = self.widgets![indexPath.item].label
         
         return cell
@@ -132,12 +176,11 @@ extension OHWidgetCollectionViewController: UICollectionViewDataSource {
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
     {
-//        println("\(self.widgets![indexPath.item].widgets!.first!)")
+        println("\(self.widgets![indexPath.item].widgets!.first!)")
+        
         if var item = self.widgets![indexPath.item].widgets!.first!.item {
             if var tags = item.tags {
-                if tags.count > 0 {
-                    println(tags)
-                }
+                self.getControllerForTags(tags)
             }
         }
     }
@@ -145,6 +188,22 @@ extension OHWidgetCollectionViewController: UICollectionViewDataSource {
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int
     {
         return 1
+    }
+}
+
+extension OHWidgetCollectionViewController {
+    
+    func getControllerForTags(tags: [String]) {
+        if tags.count > 0 {
+            println(tags)
+            var vc = OHLightController()
+            
+//            println(self.parentViewController)
+            
+            self.parentVC?.navigationController?.pushViewController(vc, animated: true)
+//                self.navigationController?
+//            self.presentViewController(vc, animated: true, completion: nil)
+        }
     }
 }
 

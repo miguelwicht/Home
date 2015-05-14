@@ -37,8 +37,8 @@ class OHWidgetCell: UICollectionViewCell {
         self.label.font = self.font
         self.label.textAlignment = NSTextAlignment.Center
         self.label.adjustsFontSizeToFitWidth = true;
+        self.label.textColor = UIColor(red: (133.0 / 255.0), green: (133.0 / 255.0), blue: (133.0 / 255.0), alpha: 1.0)
         self.addSubview(self.label)
-//        self.backgroundColor = UIColor.purpleColor()
     }
     
     func calculateTextHeight()

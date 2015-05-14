@@ -69,14 +69,19 @@ public class OHWidget {
 extension OHWidget : Printable {
     
     public var description: String {
-        return "OHWidget: {\n" +
-            "\twidgetId: \(widgetId) \n" +
-            "\tlabel: \(label) \n" +
-            "\ticon: \(icon) \n" +
-            "\ttype: \(type) \n" +
-            "\tlinkedPage: \(linkedPage) \n" +
-            "\titem: \(item) \n" +
-            "\twidgets: \(widgets) \n" +
-        "}"
+        
+        var desc: String = ""
+        
+        desc += "OHWidget: {\n"
+        desc += "\titem: \(item) \n"
+        desc += "\twidgetId: \(widgetId) \n"
+        desc += "\tlabel: \(label) \n"
+        desc += "\ticon: \(icon)"
+        desc += "\ttype: \(type) \n"
+        desc += "\tlinkedPage: \(linkedPage) \n"
+        desc += "\twidgets: \(widgets) \n"
+        desc += "}"
+
+        return desc
     }
 }

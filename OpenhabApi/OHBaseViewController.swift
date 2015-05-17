@@ -50,7 +50,8 @@ extension OHBaseViewController {
     
     func initNavigationBar()
     {
-        self.navigationController?.navigationBar.barTintColor = UIColor.whiteColor()
+//        self.navigationController?.navigationBar.barTintColor = UIColor.whiteColor()
+        
         addLeftNavigationBarItems()
     }
     

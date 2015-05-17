@@ -17,11 +17,17 @@ class OHLightController: UIViewController {
     override func loadView() {
         super.loadView()
         
-        self.color = UISlider(frame: CGRectMake(0, 0, self.view.frame.width - CGFloat(20), 30))
-        self.view.addSubview(self.color!)
+        var colorWheel = ColorWheel(frame: CGRect(x: 45, y: 138, width: 237, height: 237))
+        self.view.addSubview(colorWheel)
         
-        self.dimmer = UISlider(frame: CGRectMake(0, 0, self.view.frame.width - CGFloat(20), 30))
-        self.view.addSubview(self.dimmer!)
+        colorWheel.centerViewHorizontallyInSuperview()
+        colorWheel.centerViewVerticallyInSuperview()
+        
+//        self.color = UISlider(frame: CGRectMake(0, 0, self.view.frame.width - CGFloat(20), 30))
+//        self.view.addSubview(self.color!)
+//        
+//        self.dimmer = UISlider(frame: CGRectMake(0, 0, self.view.frame.width - CGFloat(20), 30))
+//        self.view.addSubview(self.dimmer!)
         
         self.view.backgroundColor = UIColor.whiteColor()
 

@@ -62,7 +62,7 @@ extension UIView {
     
     var neededSpaceWidth: CGFloat {
         get {
-            return self.frame.origin.y + self.frame.width
+            return self.frame.origin.x + self.frame.width
         }
     }
     
@@ -74,4 +74,17 @@ extension UIView {
         self.marginTop = CGFloat((self.superview!.frame.height - self.frame.height) / CGFloat(2))
     }
     
+    func setHeight(height: CGFloat)
+    {
+        var frame = self.frame;
+        frame.size.height = height
+        self.frame = frame
+    }
+    
+    func setWidth(width: CGFloat)
+    {
+        var frame = self.frame;
+        frame.size.width = width
+        self.frame = frame
+    }
 }

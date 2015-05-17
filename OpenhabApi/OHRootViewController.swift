@@ -56,7 +56,7 @@ extension OHRootViewController {
         
         if let sitemap = defaults.objectForKey("SettingsOpenHABSitemap") as? String {
             self.restManager?.getSitemap(sitemap)
-            println("GetSitemap: \(sitemap)")
+//            println("GetSitemap: \(sitemap)")
         } else {
             println("no sitemap")
         }
@@ -86,7 +86,7 @@ extension OHRootViewController {
 extension OHRootViewController: OHRestManagerDelegate
 {
     func didGetItems(items: [JSON]) {
-        println(items)
+//        println(items)
     }
     
     func didGetBeacons(beacons: [OHBeacon]) {

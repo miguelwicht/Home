@@ -36,7 +36,7 @@ class OHSitemapsTableViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        println("SitemapsController: viewDidLoad")
+//        println("SitemapsController: viewDidLoad")
         restManager?.getSitemaps()
     }
 }
@@ -45,7 +45,7 @@ class OHSitemapsTableViewController: UIViewController {
 extension OHSitemapsTableViewController: UITableViewDelegate
 {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        println("You selected cell #\(indexPath.row)!")
+//        println("You selected cell #\(indexPath.row)!")
         //self.restManager.getSitemap(self.sitemaps[indexPath.row].name)
         
         println(self.sitemaps[indexPath.row])
@@ -63,7 +63,7 @@ extension OHSitemapsTableViewController: UITableViewDelegate
         
         var widgets = widget!.widgets
         
-        println("widgets to pass: \(widgets)")
+//        println("widgets to pass: \(widgets)")
         
         var vc: OHRoomsViewController = OHRoomsViewController(widgets: widgets!)
         self.presentViewController(vc, animated: true, completion: nil)

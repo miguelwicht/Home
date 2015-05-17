@@ -88,7 +88,7 @@ class OHWidgetCollectionViewController: UICollectionViewController {
     func setDataForWidgets(widgets: [OHWidget])
     {
         self.widgets = widgets
-        println("DATA FOR WIDGETS")
+//        println("DATA FOR WIDGETS")
 //        println(self.widgets)
         self.collectionView!.reloadData()
     }
@@ -176,13 +176,17 @@ extension OHWidgetCollectionViewController: UICollectionViewDataSource {
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
     {
-        println("\(self.widgets![indexPath.item].widgets!.first!)")
+        var vc = OHLightController()
+        self.parentViewController!.navigationController?.pushViewController(vc, animated: true)
+        //self.parentVC?.navigationController?.pushViewController(vc, animated: true)
         
-        if var item = self.widgets![indexPath.item].widgets!.first!.item {
-            if var tags = item.tags {
-                self.getControllerForTags(tags)
-            }
-        }
+//        println("\(self.widgets![indexPath.item].widgets!.first!)")
+//        
+//        if var item = self.widgets![indexPath.item].widgets!.first!.item {
+//            if var tags = item.tags {
+//                self.getControllerForTags(tags)
+//            }
+//        }
     }
     
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int
@@ -195,7 +199,7 @@ extension OHWidgetCollectionViewController {
     
     func getControllerForTags(tags: [String]) {
         if tags.count > 0 {
-            println(tags)
+//            println(tags)
             var vc = OHLightController()
             
 //            println(self.parentViewController)
@@ -228,7 +232,7 @@ extension OHWidgetCollectionViewController {
     func calculateNumberSectionsInCollectionView() -> Int
     {
         var numberOfSections = Int(ceil(CGFloat(self.widgets!.count) / CGFloat(self.numberOfItemsPerSection)))
-        println("numberOfSections: \(numberOfSections)")
+//        println("numberOfSections: \(numberOfSections)")
         
         return numberOfSections
     }

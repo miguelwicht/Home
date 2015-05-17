@@ -39,7 +39,7 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
         
         self.columns = Int(CGFloat(self.collectionView!.bounds.width - self.minimumInteritemSpacing) / self.itemSize.width)
         
-        println("itemSize:\(self.itemSize), lineSpacing: \(self.minimumLineSpacing)")
+//        println("itemSize:\(self.itemSize), lineSpacing: \(self.minimumLineSpacing)")
         
 //        if self.collectionView!.bounds.height < self.minimumLineSpacing + self.itemSize.height {
 //            self.rows = 1
@@ -55,7 +55,7 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
         
         self.rows = Int(CGFloat(self.collectionView!.bounds.height - self.minimumLineSpacing) / self.itemSize.height)
         
-        println("calculateColumnOffsets \(self.collectionView!.frame)")
+//        println("calculateColumnOffsets \(self.collectionView!.frame)")
         
         var spacing: CGFloat = self.collectionView!.bounds.width - CGFloat(columns) * itemSize.width
         //spacing = spacing / CGFloat(columns - 1)

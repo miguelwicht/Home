@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		221AA85E1B0745DC008805A5 /* OHDropdownMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221AA85D1B0745DC008805A5 /* OHDropdownMenuTableViewController.swift */; };
+		221AA8601B074617008805A5 /* OHDropdownMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221AA85F1B074617008805A5 /* OHDropdownMenuTableViewCell.swift */; };
+		221AA8631B074651008805A5 /* OHDropdownMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221AA8621B074651008805A5 /* OHDropdownMenuButton.swift */; };
 		223C7FB61AE79FF90079A41C /* OHRestParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223C7FB51AE79FF90079A41C /* OHRestParser.swift */; };
 		223C7FB81AE7C4040079A41C /* OHHomepage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223C7FB71AE7C4040079A41C /* OHHomepage.swift */; };
 		227DDC2A1ADBE25A001EAE08 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DDC291ADBE25A001EAE08 /* AppDelegate.swift */; };
@@ -26,6 +29,9 @@
 		22B3BAE31AE64D82006150AC /* OHWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B3BAE21AE64D82006150AC /* OHWidget.swift */; };
 		22B3BAE51AE68AA5006150AC /* OHRoomsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B3BAE41AE68AA5006150AC /* OHRoomsViewController.swift */; };
 		22C632F01B04B8BD00BB0A17 /* OHBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C632EF1B04B8BD00BB0A17 /* OHBaseViewController.swift */; };
+		22C632F91B04E42500BB0A17 /* AngleGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 22C632F61B04E42500BB0A17 /* AngleGradientLayer.m */; };
+		22C632FA1B04E42500BB0A17 /* ButtonWithCustomBackgroundSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C632F71B04E42500BB0A17 /* ButtonWithCustomBackgroundSize.swift */; };
+		22C632FB1B04E42500BB0A17 /* ColorWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C632F81B04E42500BB0A17 /* ColorWheel.swift */; };
 		22D782ED1AEF7FF8006BFDF8 /* OHWidgetCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D782EC1AEF7FF8006BFDF8 /* OHWidgetCollectionViewController.swift */; };
 		22D782EF1AEFA9F9006BFDF8 /* OHWidgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D782EE1AEFA9F9006BFDF8 /* OHWidgetCell.swift */; };
 		22D782F11AEFBE5E006BFDF8 /* OHWidgetCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D782F01AEFBE5E006BFDF8 /* OHWidgetCollectionViewLayout.swift */; };
@@ -47,6 +53,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		221AA85D1B0745DC008805A5 /* OHDropdownMenuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHDropdownMenuTableViewController.swift; sourceTree = "<group>"; };
+		221AA85F1B074617008805A5 /* OHDropdownMenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHDropdownMenuTableViewCell.swift; sourceTree = "<group>"; };
+		221AA8621B074651008805A5 /* OHDropdownMenuButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHDropdownMenuButton.swift; sourceTree = "<group>"; };
 		223C7FB51AE79FF90079A41C /* OHRestParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHRestParser.swift; sourceTree = "<group>"; };
 		223C7FB71AE7C4040079A41C /* OHHomepage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHHomepage.swift; sourceTree = "<group>"; };
 		227DDC241ADBE25A001EAE08 /* OpenhabApi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenhabApi.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,6 +79,11 @@
 		22B3BAE21AE64D82006150AC /* OHWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHWidget.swift; sourceTree = "<group>"; };
 		22B3BAE41AE68AA5006150AC /* OHRoomsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHRoomsViewController.swift; sourceTree = "<group>"; };
 		22C632EF1B04B8BD00BB0A17 /* OHBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHBaseViewController.swift; sourceTree = "<group>"; };
+		22C632F41B04E42400BB0A17 /* OpenhabApi-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenhabApi-Bridging-Header.h"; sourceTree = "<group>"; };
+		22C632F51B04E42500BB0A17 /* AngleGradientLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AngleGradientLayer.h; sourceTree = "<group>"; };
+		22C632F61B04E42500BB0A17 /* AngleGradientLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AngleGradientLayer.m; sourceTree = "<group>"; };
+		22C632F71B04E42500BB0A17 /* ButtonWithCustomBackgroundSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonWithCustomBackgroundSize.swift; sourceTree = "<group>"; };
+		22C632F81B04E42500BB0A17 /* ColorWheel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorWheel.swift; sourceTree = "<group>"; };
 		22D782EC1AEF7FF8006BFDF8 /* OHWidgetCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHWidgetCollectionViewController.swift; sourceTree = "<group>"; };
 		22D782EE1AEFA9F9006BFDF8 /* OHWidgetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHWidgetCell.swift; sourceTree = "<group>"; };
 		22D782F01AEFBE5E006BFDF8 /* OHWidgetCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHWidgetCollectionViewLayout.swift; sourceTree = "<group>"; };
@@ -98,6 +112,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		221AA8611B074624008805A5 /* OHDropdownMenu */ = {
+			isa = PBXGroup;
+			children = (
+				221AA8621B074651008805A5 /* OHDropdownMenuButton.swift */,
+				221AA85D1B0745DC008805A5 /* OHDropdownMenuTableViewController.swift */,
+				221AA85F1B074617008805A5 /* OHDropdownMenuTableViewCell.swift */,
+			);
+			name = OHDropdownMenu;
+			sourceTree = "<group>";
+		};
 		227DDC1B1ADBE25A001EAE08 = {
 			isa = PBXGroup;
 			children = (
@@ -121,11 +145,13 @@
 			children = (
 				227DDC291ADBE25A001EAE08 /* AppDelegate.swift */,
 				22E83C081ADE54C20055B77A /* ViewControllers */,
+				22C632FC1B04E45000BB0A17 /* ColorWheelButton */,
 				22E83C061ADE54950055B77A /* Models */,
 				22C632F11B04BC0B00BB0A17 /* Helper */,
 				22E83C071ADE54AD0055B77A /* Vendor */,
 				227DDC271ADBE25A001EAE08 /* Supporting Files */,
 				22C632F21B04BD6A00BB0A17 /* Deprecated */,
+				22C632F41B04E42400BB0A17 /* OpenhabApi-Bridging-Header.h */,
 			);
 			path = OpenhabApi;
 			sourceTree = "<group>";
@@ -189,6 +215,17 @@
 			name = Deprecated;
 			sourceTree = "<group>";
 		};
+		22C632FC1B04E45000BB0A17 /* ColorWheelButton */ = {
+			isa = PBXGroup;
+			children = (
+				22C632F51B04E42500BB0A17 /* AngleGradientLayer.h */,
+				22C632F61B04E42500BB0A17 /* AngleGradientLayer.m */,
+				22C632F71B04E42500BB0A17 /* ButtonWithCustomBackgroundSize.swift */,
+				22C632F81B04E42500BB0A17 /* ColorWheel.swift */,
+			);
+			name = ColorWheelButton;
+			sourceTree = "<group>";
+		};
 		22E83C061ADE54950055B77A /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -218,6 +255,7 @@
 				22B3BAE41AE68AA5006150AC /* OHRoomsViewController.swift */,
 				22EC1D081B02004C00A39857 /* OHRoomViewController.swift */,
 				22EC1D061B01174300A39857 /* OHLightController.swift */,
+				221AA8611B074624008805A5 /* OHDropdownMenu */,
 				22A899D31AFA6229004FFC16 /* OHCollectionView */,
 			);
 			name = ViewControllers;
@@ -326,8 +364,10 @@
 			files = (
 				223C7FB81AE7C4040079A41C /* OHHomepage.swift in Sources */,
 				22E83C0C1ADEACFD0055B77A /* OHLinkedPage.swift in Sources */,
+				221AA8631B074651008805A5 /* OHDropdownMenuButton.swift in Sources */,
 				223C7FB61AE79FF90079A41C /* OHRestParser.swift in Sources */,
 				227DDC4A1ADBE2A1001EAE08 /* OHRestManager.swift in Sources */,
+				22C632FB1B04E42500BB0A17 /* ColorWheel.swift in Sources */,
 				227DDC2A1ADBE25A001EAE08 /* AppDelegate.swift in Sources */,
 				22D782F11AEFBE5E006BFDF8 /* OHWidgetCollectionViewLayout.swift in Sources */,
 				22D782EF1AEFA9F9006BFDF8 /* OHWidgetCell.swift in Sources */,
@@ -339,11 +379,15 @@
 				22B3BAE11AE64B4E006150AC /* OHSitemapParser.swift in Sources */,
 				22C632F01B04B8BD00BB0A17 /* OHBaseViewController.swift in Sources */,
 				22B3BAE31AE64D82006150AC /* OHWidget.swift in Sources */,
+				221AA85E1B0745DC008805A5 /* OHDropdownMenuTableViewController.swift in Sources */,
 				22EC1D091B02004C00A39857 /* OHRoomViewController.swift in Sources */,
+				221AA8601B074617008805A5 /* OHDropdownMenuTableViewCell.swift in Sources */,
+				22C632F91B04E42500BB0A17 /* AngleGradientLayer.m in Sources */,
 				227DDC5A1ADD3C32001EAE08 /* OHSitemap.swift in Sources */,
 				22A899D01AFA0DA7004FFC16 /* OHDataManager.swift in Sources */,
 				22E83C0A1ADE65710055B77A /* OHItem.swift in Sources */,
 				227DDC501ADC09BC001EAE08 /* OHBeacon.swift in Sources */,
+				22C632FA1B04E42500BB0A17 /* ButtonWithCustomBackgroundSize.swift in Sources */,
 				22A899CE1AFA0934004FFC16 /* OHRootViewController.swift in Sources */,
 				227DDC5C1ADD4EB6001EAE08 /* OHSitemapsTableViewController.swift in Sources */,
 			);
@@ -474,9 +518,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = OpenhabApi/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "OpenhabApi/OpenhabApi-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -484,9 +531,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = OpenhabApi/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "OpenhabApi/OpenhabApi-Bridging-Header.h";
 			};
 			name = Release;
 		};

@@ -37,7 +37,6 @@ public class OHItem {
             
             if tags.count > 0 {
                 self.addTags(tags)
-                println(self.tags)
             }
             
         }

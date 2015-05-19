@@ -38,22 +38,21 @@ class OHRoomsViewController: OHBaseViewController {
         
         self.automaticallyAdjustsScrollViewInsets = false
         
-//        println(self.widgets!.count)
-//        
-//        println(self.widgets!.last?.label)
-        
         roomSwitchButton = OHDropdownMenuButton(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 90))
         self.view.addSubview(roomSwitchButton!)
         
         roomSwitchButton!.marginTop = 60
-//        roomSwitchButton!.backgroundColor = UIColor.purpleColor()
-//        roomSwitchButton.titleLabel?.text = "Blub"
         roomSwitchButton!.setTitle("Living Room", forState: .Normal)
-//        roomSwitchButton.backgroundColor = UIColor.purpleColor()
         
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        var dataManager = appDelegate.dataManager
         
+        var navController = self.navigationController as! OHRootViewController
+        var beacon = OHBeacon(uuid: "85FC11DD-4CCA-4B27-AFB3-876854BB5C3B", major: 0, minor: 0, link: "000")
+        var roomWidget = dataManager.beaconWidget![beacon]
         
-        switchToRoom(self.widgets!.first!)
+        switchToRoom(roomWidget!)
+//        switchToRoom(self.widgets!.last!)
         
         roomSwitcherController = OHDropdownMenuTableViewController()
         
@@ -74,6 +73,7 @@ class OHRoomsViewController: OHBaseViewController {
         }
         
         roomSwitchButton!.addTarget(self, action: "toggleDropdownMenu:", forControlEvents: UIControlEvents.TouchUpInside)
+        toggleDropdownMenu(roomSwitchButton!)
     }
     
     func toggleDropdownMenu(control: OHDropdownMenuButton)

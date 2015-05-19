@@ -11,5 +11,5 @@ import Foundation
 class OHDataManager : NSObject {
     var sitemaps: [OHSitemap]?
     var beacons: [OHBeacon]?
-    var beaconWidget: [OHBeacon: OHSitemap]?
+    var beaconWidget: [OHBeacon: OHWidget]?
 }

@@ -10,7 +10,6 @@ import UIKit
 
 class OHRootViewController: UINavigationController {
     
-    var dataManager: OHDataManager?
     var restManager: OHRestManager?
     
     required init(coder aDecoder: NSCoder)
@@ -40,8 +39,9 @@ extension OHRootViewController {
     
     func initManagers()
     {
-        dataManager = OHDataManager()
-        restManager = OHRestManager(baseUrl: "http://192.168.0.251:8888")
+//        dataManager = OHDataManager()
+//        restManager = OHRestManager(baseUrl: "http://192.168.0.251:8888")
+        restManager = OHRestManager(baseUrl: "http://10.10.32.251:8888")
         
         if var restManager = self.restManager {
             restManager.delegate = self
@@ -90,7 +90,7 @@ extension OHRootViewController: OHRestManagerDelegate
     }
     
     func didGetBeacons(beacons: [OHBeacon]) {
-        self.dataManager!.beacons = beacons
+//        dataManager.beacons = beacons
     }
     
     func didGetSitemaps(sitemaps: [OHSitemap]) {
@@ -102,7 +102,52 @@ extension OHRootViewController: OHRestManagerDelegate
     
     func didGetSitemap(sitemap: OHSitemap)
     {
-        self.dataManager!.sitemaps?.append(sitemap)
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        var dataManager = appDelegate.dataManager
+        
+        dataManager.sitemaps?.append(sitemap)
+        
+        
+        
+        if var sitemaps = dataManager.sitemaps {
+            sitemaps.append(sitemap)
+        } else {
+            dataManager.sitemaps = [OHSitemap]()
+            dataManager.sitemaps?.append(sitemap)
+            
+            
+            dataManager.beaconWidget = OHRestParser.getBeaconsForRoomsFromSitemap(sitemap)
+            
+            if var beaconManager = appDelegate.beaconManager {
+                
+            }
+            else {
+                var beacons = [OHBeacon]()
+                
+                for(beacon, widget) in dataManager.beaconWidget! {
+                    beacons.append(beacon)
+                }
+                
+                appDelegate.dataManager.beacons = beacons
+                
+                appDelegate.beaconManager = OHBeaconManager(beacons: dataManager.beacons!)
+            }
+            
+//            var beacon = OHBeacon(uuid: "123123", major: 1, minor: 1, link: "asdasdasd")
+//            
+//            println(dataManager.beaconWidget![beacon])
+            
+        }
+        
+        
+        
         pushViewControllerWithSitemap(sitemap)
+    }
+}
+
+extension OHRootViewController {
+    
+    func initBeacons(sitemap: OHSitemap) {
+        
     }
 }

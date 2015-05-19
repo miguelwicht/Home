@@ -12,6 +12,7 @@
 		221AA8631B074651008805A5 /* OHDropdownMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221AA8621B074651008805A5 /* OHDropdownMenuButton.swift */; };
 		223C7FB61AE79FF90079A41C /* OHRestParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223C7FB51AE79FF90079A41C /* OHRestParser.swift */; };
 		223C7FB81AE7C4040079A41C /* OHHomepage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223C7FB71AE7C4040079A41C /* OHHomepage.swift */; };
+		22599E621B0A13EC00EE7558 /* OHBeaconManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22599E611B0A13EC00EE7558 /* OHBeaconManager.swift */; };
 		227DDC2A1ADBE25A001EAE08 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DDC291ADBE25A001EAE08 /* AppDelegate.swift */; };
 		227DDC2F1ADBE25A001EAE08 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 227DDC2D1ADBE25A001EAE08 /* Main.storyboard */; };
 		227DDC311ADBE25A001EAE08 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 227DDC301ADBE25A001EAE08 /* Images.xcassets */; };
@@ -58,6 +59,7 @@
 		221AA8621B074651008805A5 /* OHDropdownMenuButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHDropdownMenuButton.swift; sourceTree = "<group>"; };
 		223C7FB51AE79FF90079A41C /* OHRestParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHRestParser.swift; sourceTree = "<group>"; };
 		223C7FB71AE7C4040079A41C /* OHHomepage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHHomepage.swift; sourceTree = "<group>"; };
+		22599E611B0A13EC00EE7558 /* OHBeaconManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHBeaconManager.swift; sourceTree = "<group>"; };
 		227DDC241ADBE25A001EAE08 /* OpenhabApi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenhabApi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		227DDC281ADBE25A001EAE08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		227DDC291ADBE25A001EAE08 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 				223C7FB51AE79FF90079A41C /* OHRestParser.swift */,
 				227DDC491ADBE2A1001EAE08 /* OHRestManager.swift */,
 				22A899CF1AFA0DA7004FFC16 /* OHDataManager.swift */,
+				22599E611B0A13EC00EE7558 /* OHBeaconManager.swift */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -379,6 +382,7 @@
 				22B3BAE11AE64B4E006150AC /* OHSitemapParser.swift in Sources */,
 				22C632F01B04B8BD00BB0A17 /* OHBaseViewController.swift in Sources */,
 				22B3BAE31AE64D82006150AC /* OHWidget.swift in Sources */,
+				22599E621B0A13EC00EE7558 /* OHBeaconManager.swift in Sources */,
 				221AA85E1B0745DC008805A5 /* OHDropdownMenuTableViewController.swift in Sources */,
 				22EC1D091B02004C00A39857 /* OHRoomViewController.swift in Sources */,
 				221AA8601B074617008805A5 /* OHDropdownMenuTableViewCell.swift in Sources */,

@@ -10,11 +10,11 @@ import Foundation
 @objc public class OHBeacon {
     
     public let uuid: String
-    public let major: NSInteger
-    public let minor: NSInteger
+    public let major: Int
+    public let minor: Int
     public let link: String
     
-    public init(uuid: String, major: NSInteger, minor: NSInteger, link: String){
+    public init(uuid: String, major: Int, minor: Int, link: String) {
         self.uuid = uuid
         self.major = major
         self.minor = minor

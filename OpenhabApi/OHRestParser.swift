@@ -44,7 +44,7 @@ class OHRestParser {
             var beaconFrame = element.linkedPage!.widgets![0]
             var beaconFrameWidgets = beaconFrame.widgets!.first!.linkedPage!.widgets!
             
-            println(beaconWidgets)
+//            println(beaconWidgets)
             
             var uuid = beaconFrameWidgets[0].item!.state
             var major = beaconFrameWidgets[1].item!.state.toInt()

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class OHRoomsViewController: OHBaseViewController {
     
@@ -14,6 +15,8 @@ class OHRoomsViewController: OHBaseViewController {
     var roomSwitcherController: OHDropdownMenuTableViewController?
     var roomSwitchButton: OHDropdownMenuButton?
     var currentRoom: OHRoomViewController?
+    
+    var isWaitingForBeacons: Bool = true
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nil, bundle: nil)
@@ -30,6 +33,7 @@ class OHRoomsViewController: OHBaseViewController {
         
         self.widgets = widgets
         
+        initNotificationCenterNotifications()
     }
     
     override func loadView()
@@ -48,7 +52,7 @@ class OHRoomsViewController: OHBaseViewController {
         var dataManager = appDelegate.dataManager
         
         var navController = self.navigationController as! OHRootViewController
-        var beacon = OHBeacon(uuid: "85FC11DD-4CCA-4B27-AFB3-876854BB5C3B", major: 0, minor: 0, link: "000")
+        var beacon = OHBeacon(uuid: "85FC11DD-4CCA-4B27-AFB3-876854BB5C3B", major: 0, minor: 1, link: "000")
         var roomWidget = dataManager.beaconWidget![beacon]
         
         switchToRoom(roomWidget!)
@@ -141,5 +145,69 @@ extension OHRoomsViewController: UITableViewDelegate {
         if cell.respondsToSelector("setLayoutMargins:") {
             cell.layoutMargins = UIEdgeInsetsZero
         }
+    }
+}
+
+extension OHRoomsViewController {
+    
+    func initNotificationCenterNotifications() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didRangeBeaconsNotificationHandler:", name: OHBeaconManagerDidRangeBeaconsNotification, object: nil)
+    }
+    
+    func didRangeBeaconsNotificationHandler(notification: NSNotification?)
+    {
+        
+        println(notification?.object)
+        
+        if isWaitingForBeacons {
+        
+            if var beaconCL = notification!.object as? CLBeacon {
+        
+                let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+                var dataManager = appDelegate.dataManager
+            
+                var navController = self.navigationController as! OHRootViewController
+                var beacon = OHBeacon(uuid: beaconCL.proximityUUID.UUIDString, major: beaconCL.major.integerValue, minor: beaconCL.minor.integerValue, link: "000")
+                var roomWidget = dataManager.beaconWidget![beacon]
+                
+                if var room = roomWidget {
+                    println("room found")
+                    switchToRoom(room)
+                }
+                else {
+                    println("room not found")
+                }
+            }
+        }
+        else
+        {
+            println("not wating for beacons")
+        }
+    }
+    
+    func startDetectingRoom(){
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        var beaconManager = appDelegate.beaconManager
+        
+        beaconManager?.startRanging()
+    }
+}
+
+extension OHRoomsViewController {
+    override func addRightNavigationBarItems() {
+        var menuItemImage = UIImageView(image: UIImage(named: "menu"))
+        
+        var menuItemButton = UIButton.buttonWithType(UIButtonType.Custom)
+        
+        menuItemButton.setImage(UIImage(named: "Beacon"), forState: UIControlState.Normal)
+        menuItemButton.sizeToFit()
+        
+        println(menuItemButton.frame)
+        
+        var item = UIBarButtonItem(customView: menuItemButton as! UIView)
+        self.navigationItem.rightBarButtonItem = item
+        
+//        menuItemButton.addTarget(self, action: "startDetecting")
+        menuItemButton.addTarget(self, action: "startDetectingRoom", forControlEvents: UIControlEvents.TouchUpInside)
     }
 }

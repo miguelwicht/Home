@@ -23,12 +23,11 @@ class OHBeaconManager : NSObject {
         super.init()
     }
     
-    convenience init(beacons:[OHBeacon])
-    {
+    convenience init(beacons:[OHBeacon]) {
         self.init()
+        
         createBeaconRegionsFromBeacons(beacons)
         initLocationManager()
-        initNotifications()
     }
     
     func createBeaconRegionsFromBeacons(beacons: [OHBeacon]) {
@@ -87,21 +86,6 @@ class OHBeaconManager : NSObject {
         locationManager.startUpdatingLocation()
     }
     
-    func initNotifications() {
-        var application = UIApplication.sharedApplication()
-        
-        if(application.respondsToSelector("registerUserNotificationSettings:"))
-        {
-            application.registerUserNotificationSettings(
-                UIUserNotificationSettings(
-                    forTypes: UIUserNotificationType.Alert | UIUserNotificationType.Sound,
-                    categories: nil
-                )
-            );
-        }
-
-    }
-    
     func startRanging() {
         if var regions = beaconRegions {
             for (i, region) in enumerate(regions)
@@ -111,117 +95,23 @@ class OHBeaconManager : NSObject {
         }
     }
     
-//    func setupBeaconsForApplication(application: UIApplication)
-//    {
-//        let uuidString = "85FC11DD-4CCA-4B27-AFB3-876854BB5C3B"
-//        let beaconIdentifier = "miguelwicht.com"
-//        //let beaconUUID:NSUUID = NSUUID(UUIDString: "5FC11DD-4CCA-4B27-AFB3-876854BB5C3B");
-//        
-//        let beaconUUID:NSUUID = NSUUID(UUIDString: uuidString)!
-//        let beaconRegion: CLBeaconRegion = CLBeaconRegion(proximityUUID: beaconUUID, identifier: beaconIdentifier)
-//        
-//        
-//        NSLog("blub1")
-//
-//        if(locationManager.respondsToSelector("requestAlwaysAuthorization"))
-//        {
-//            NSLog("blub")
-//            locationManager.requestAlwaysAuthorization()
-//        }
-//        locationManager.delegate = self
-//        locationManager.pausesLocationUpdatesAutomatically = false
-//        
-//        locationManager.startMonitoringForRegion(beaconRegion)
-//        locationManager.startRangingBeaconsInRegion(beaconRegion)
-//        locationManager.startUpdatingLocation()
-//        
-////        var application = UIApplication.sharedApplication()
-////        
-////        if(application.respondsToSelector("registerUserNotificationSettings:"))
-////        {
-////            application.registerUserNotificationSettings(
-////                UIUserNotificationSettings(
-////                    forTypes: UIUserNotificationType.Alert | UIUserNotificationType.Sound,
-////                    categories: nil
-////                )
-////            );
-////        }
-//    }
-}
-
-extension OHBeaconManager {
-    
-    func sendLocalNotificationWithMessage(message: String!) {
-        let notification:UILocalNotification = UILocalNotification()
-        notification.alertBody = message
-        UIApplication.sharedApplication().scheduleLocalNotification(notification)
-    }
-    
 }
 
 extension OHBeaconManager: CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager!, didRangeBeacons beacons: [AnyObject]!, inRegion region: CLBeaconRegion!)
     {
-//        let viewController:ViewController = window!.rootViewController as! ViewController
-//        viewController.beacons = beacons as! [CLBeacon]!
-        //        viewController.tableView.reloadData()
-        
-        NSLog("didRangeBeacons: \(beacons.count), region: \(region.proximityUUID.UUIDString)");
-        var message:String = "";
-        
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         var dataManager = appDelegate.dataManager
         
-        
         if var beacon = beacons.first as? CLBeacon {
-                
-//            beacon = beacon as! CLBeacon
-//            as! CLBeacon
-                var beaconOH = OHBeacon(uuid: beacon.proximityUUID.UUIDString, major: beacon.major.integerValue, minor: beacon.minor.integerValue, link: "")
-                var room = dataManager.beaconWidget![beaconOH]
+            
+            var beaconOH = OHBeacon(uuid: beacon.proximityUUID.UUIDString, major: beacon.major.integerValue, minor: beacon.minor.integerValue, link: "")
+            var room = dataManager.beaconWidget![beaconOH]
         
-//        if(beacons.count > 0)
-//        {
-//            let nearestBeacon:CLBeacon = beacons[0] as! CLBeacon;
-//            
-//            
-//            if(nearestBeacon.proximity == lastProximity || nearestBeacon.proximity == CLProximity.Unknown)
-//            {
-//                return;
-//            }
-//            lastProximity = nearestBeacon.proximity;
-//            
-//            switch nearestBeacon.proximity
-//            {
-//            case CLProximity.Far:
-//                message = "You are far away from the beacon";
-//                
-//            case CLProximity.Near:
-//                message = "You are near the beacon";
-//                
-//            case CLProximity.Immediate:
-//                message = "You are in the immediate proximity of the beacon";
-//                
-//            case CLProximity.Unknown:
-//                return
-//            }
-//        }
-//        else
-//        {
-//            message = "No beacons found";
-//        }
-        
-        println("\(message)")
-        sendLocalNotificationWithMessage(message)
-        
-        locationManager.stopRangingBeaconsInRegion(region)
-        // TODO: use wrapper object to send beacons and region
-        
-
+            locationManager.stopRangingBeaconsInRegion(region)
+            // TODO: use wrapper object to send beacons and region
             NSNotificationCenter.defaultCenter().postNotificationName(OHBeaconManagerDidRangeBeaconsNotification, object: beacon)
-
-
         }
         
         locationManager.stopRangingBeaconsInRegion(region)
@@ -231,16 +121,14 @@ extension OHBeaconManager: CLLocationManagerDelegate {
         manager.startRangingBeaconsInRegion(region as! CLBeaconRegion)
         manager.startUpdatingLocation()
         
-        println("You entered a region: ")
-        sendLocalNotificationWithMessage("You entered a region")
+        NSNotificationCenter.defaultCenter().postNotificationName(OHBeaconManagerDidEnterRegionNotification, object: region)
     }
     
     func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
         manager.stopRangingBeaconsInRegion(region as! CLBeaconRegion)
         manager.stopUpdatingLocation()
         
-        NSLog("You exited the region")
-        sendLocalNotificationWithMessage("You exited the region")
+        NSNotificationCenter.defaultCenter().postNotificationName(OHBeaconManagerDidExitRegionNotification, object: region)
     }
     
 }

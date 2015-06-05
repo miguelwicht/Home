@@ -82,6 +82,29 @@ public class OHItem {
         return fallbackColor
         
     }
+    
+    public func sendCommand(command: String)
+    {
+        let urlPath = self.link
+        let request = NSMutableURLRequest(URL: NSURL(string: urlPath)!)
+        request.HTTPMethod = "POST"
+        request.setValue("text/plain; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        
+        let postString = "\(command)"
+        
+        request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
+            data, response, error in
+            
+            if error != nil {
+                println("error=\(error)")
+                return
+            }
+            
+            let responseString = NSString(data: data, encoding: NSUTF8StringEncoding)
+        }
+        task.resume()
+    }
 }
 
 //MARK: OHSitemap: Printable

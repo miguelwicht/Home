@@ -30,7 +30,7 @@ class OHDropdownMenuTableViewController: UIViewController {
 //        tableView.sizeToFit()
         tableView.marginTop = topBorderView.neededSpaceHeight
         tableView.marginLeft = 0
-        tableView.backgroundColor = UIColor.blueColor()
+        tableView.backgroundColor = UIColor.clearColor()
 //        tableView.setHeight(300)
         tableView.setWidth(self.view.frame.width)
         tableView.setHeight(300)
@@ -110,6 +110,14 @@ extension OHDropdownMenuTableViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as! OHDropdownMenuTableViewCell
+        cell.roundedCorners = false
+        
+        var numberOfItems = self.tableView(tableView, numberOfRowsInSection: indexPath.section)
+        
+        if numberOfItems == indexPath.row + 1 {
+            cell.roundedCorners = true
+        }
+        
         
         // Configure the cell...
         

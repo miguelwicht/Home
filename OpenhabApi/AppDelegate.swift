@@ -14,19 +14,73 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var dataManager = OHDataManager()
     var beaconManager: OHBeaconManager?
+    var statusBarBackgroundView: OHStatusBarView?
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
+        registerDefaults()
+        
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        self.window?.rootViewController = OHRootViewController.new()
+        setupAppearance()
+        
+        prepareViewController()
+        
+//        var settingsVC = OHSettingsViewController()
+//        
+//        
+//        self.window?.rootViewController = settingsVC
         self.window?.makeKeyAndVisible()
         
-        UINavigationBar.appearance().barTintColor = UIColor.whiteColor()
-        UINavigationBar.appearance().tintColor = UIColor(red: (51.0 / 255.0), green: (51.0 / 255.0), blue: (51.0 / 255.0), alpha: 1.0)
-        
         return true
+    }
+    
+    func prepareViewController()
+    {
+        
+        
+        
+        var rearViewController = OHRearMenuViewController.new()
+        var containerViewController = SWRevealViewController(rearViewController: rearViewController, frontViewController: OHSettingsViewController.new())
+        containerViewController.rearViewRevealOverdraw = 0
+        containerViewController.rearViewRevealWidth = self.window!.frame.width - CGFloat(60)
+        rearViewController.view.setWidth(containerViewController.rearViewRevealWidth)
+        
+        self.window?.rootViewController = containerViewController
+        
+        if var statusBarBackgroundView = self.statusBarBackgroundView {
+            containerViewController.view.addSubview(statusBarBackgroundView)
+        }
+    }
+    
+    func setupAppearance()
+    {
+//        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
+        statusBarBackgroundView = OHStatusBarView(frame: CGRect(x: 0, y: 0, width: self.window!.frame.width, height: 20))
+//        statusBarBackgroundView!.backgroundColor = OHDefaults.defaultNavigationBarColor()
+        
+        var font = UIFont(name: "Muli", size: UIFont.systemFontSize())
+        UILabel.appearance().font = font
+        
+        UINavigationBar.appearance().barTintColor = OHDefaults.defaultNavigationBarColor()
+        UINavigationBar.appearance().tintColor = UIColor(red: (51.0 / 255.0), green: (51.0 / 255.0), blue: (51.0 / 255.0), alpha: 1.0)
+        UINavigationBar.appearance().titleTextAttributes = [ NSFontAttributeName: UIFont(name: font!.fontName, size: 17.0)! ]
+    }
+    
+    func registerDefaults()
+    {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        
+        if let path = NSBundle.mainBundle().pathForResource("Defaults", ofType: "plist") {
+            if let defaultsDict = NSDictionary(contentsOfFile: path) as? Dictionary<String, AnyObject> {
+                // use swift dictionary as normal
+                defaults.registerDefaults(defaultsDict)
+                defaults.synchronize()
+            }
+        }
+        
+        
     }
 
     func applicationWillResignActive(application: UIApplication) {

@@ -15,17 +15,28 @@ class OHRootViewController: UINavigationController {
     required init(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
+//        initSettings()
         initManagers()
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?)
     {
         super.init(nibName: nil, bundle: nil)
+//        initSettings()
         initManagers()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        initSettings()
+    }
+    
+    override func loadView() {
+        super.loadView()
+        
+//        initSettings()
+//        initManagers()
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,15 +44,27 @@ class OHRootViewController: UINavigationController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+//        initSettings()
+    }
 }
 
 extension OHRootViewController {
     
+    func initSettings()
+    {
+        var settingsVC = OHSettingsViewController()
+        self.presentViewController(settingsVC, animated: true, completion: nil)
+    }
+    
     func initManagers()
     {
+//        loadLocalSitemap()
 //        dataManager = OHDataManager()
-//        restManager = OHRestManager(baseUrl: "http://192.168.0.251:8888")
-        restManager = OHRestManager(baseUrl: "http://10.10.32.251:8888")
+        restManager = OHRestManager(baseUrl: "http://192.168.0.251:8888")
+//        restManager = OHRestManager(baseUrl: "http://10.10.32.251:8888")
         
         if var restManager = self.restManager {
             restManager.delegate = self
@@ -53,13 +76,28 @@ extension OHRootViewController {
     func loadDefaultViewController()
     {
         let defaults = NSUserDefaults.standardUserDefaults()
-        
+
         if let sitemap = defaults.objectForKey("SettingsOpenHABSitemap") as? String {
             self.restManager?.getSitemap(sitemap)
-//            println("GetSitemap: \(sitemap)")
         } else {
             println("no sitemap")
         }
+    }
+    
+    func loadLocalSitemap()
+    {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        
+        var path = S3FileManager.applicationDocumentsDirectory().path?.stringByAppendingPathComponent("sitemaps/")
+        var sitemapName = defaults.objectForKey("SettingsOpenHABSitemap") as? String
+        sitemapName = sitemapName! + ".json"
+        
+        path = path?.stringByAppendingPathComponent(sitemapName!)
+        
+        var data = NSData(contentsOfFile: path!)
+        let json = JSON(data: data!)
+        let sitemap = OHSitemap(sitemap: json)
+        didGetSitemap(sitemap)
     }
     
     func pushViewControllerWithSitemap(sitemap: OHSitemap)
@@ -68,10 +106,15 @@ extension OHRootViewController {
         
         var widget: OHWidget?
         
+//        var items = [String: OHItem]()
+//        items = homepage.getItems()
+        
         for (i, e) in enumerate(homepage.widgets!)
         {
             widget = e
         }
+        
+//        var items = widget!.getItems()
         
         var widgets = widget!.widgets
         
@@ -105,16 +148,13 @@ extension OHRootViewController: OHRestManagerDelegate
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         var dataManager = appDelegate.dataManager
         
-        dataManager.sitemaps?.append(sitemap)
-        
-        
-        
         if var sitemaps = dataManager.sitemaps {
             sitemaps.append(sitemap)
         } else {
             dataManager.sitemaps = [OHSitemap]()
             dataManager.sitemaps?.append(sitemap)
             
+            dataManager.updateItemsFromSitemaps()
             
             dataManager.beaconWidget = OHRestParser.getBeaconsForRoomsFromSitemap(sitemap)
             
@@ -133,16 +173,18 @@ extension OHRootViewController: OHRestManagerDelegate
                 appDelegate.beaconManager = OHBeaconManager(beacons: dataManager.beacons!)
             }
             
-//            var beacon = OHBeacon(uuid: "123123", major: 1, minor: 1, link: "asdasdasd")
-//            
-//            println(dataManager.beaconWidget![beacon])
             
         }
         
-        
-        
         pushViewControllerWithSitemap(sitemap)
     }
+    
+    func saveSitemap(sitemap: OHSitemap)
+    {
+        var path = S3FileManager.applicationDocumentsDirectory().path?.stringByAppendingPathComponent("sitemaps/\(sitemap.name).json")
+        
+    }
+    
 }
 
 extension OHRootViewController {

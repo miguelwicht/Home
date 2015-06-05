@@ -63,6 +63,70 @@ public class OHWidget {
         }
     }
     
+    func getItems() -> [String: OHItem]
+    {
+        var items = [String: OHItem]()
+        
+        var widgets = getWidgetsRecursevly()
+        
+        items = extractItemsFromWidgets(widgets)
+        
+        return items
+    }
+    
+    func extractItemsFromWidgets(widgets: [OHWidget]) -> [String: OHItem]
+    {
+        var items = [String: OHItem]()
+        
+//        if var ws = widgets {
+            for (index, widget) in enumerate(widgets)
+            {
+                var widgetItem = widget.item
+                
+                if var item = widgetItem {
+                    items[item.link] = item
+                }
+            }
+//        }
+        
+        return items
+    }
+    
+    func getWidgetsRecursevly() -> [OHWidget]
+    {
+        var widgetList = [OHWidget]()
+        
+        if var widgets = self.widgets {
+            
+            for (index, widget) in enumerate(widgets)
+            {
+                widgetList.append(widget)
+                var widgetsFromWidget = widget.getWidgetsRecursevly()
+                
+                for (i, w) in enumerate(widgetsFromWidget)
+                {
+                    widgetList.append(w)
+                }
+            }
+        }
+        
+        if var linkedPage = self.linkedPage {
+            if var widgets = linkedPage.widgets {
+                for (index, widget) in enumerate(widgets)
+                {
+                    widgetList.append(widget)
+                    var widgetsFromWidget = widget.getWidgetsRecursevly()
+                    
+                    for (i, w) in enumerate(widgetsFromWidget)
+                    {
+                        widgetList.append(w)
+                    }
+                }
+            }
+        }
+        
+        return widgetList
+    }
 }
 
 //MARK: OHBeacon: Printable

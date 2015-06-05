@@ -52,11 +52,12 @@ class OHRoomsViewController: OHBaseViewController {
         var dataManager = appDelegate.dataManager
         
         var navController = self.navigationController as! OHRootViewController
-        var beacon = OHBeacon(uuid: "85FC11DD-4CCA-4B27-AFB3-876854BB5C3B", major: 0, minor: 1, link: "000")
-        var roomWidget = dataManager.beaconWidget![beacon]
-        
-        switchToRoom(roomWidget!)
-//        switchToRoom(self.widgets!.last!)
+//        var beacon = OHBeacon(uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4CFE974E5", major: 21355, minor: 51154, link: "000")
+//        var beacon = OHBeacon(uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4CBD6EA98", major: 21622, minor: 8451, link: "000")
+//        var roomWidget = dataManager.beaconWidget![beacon]
+//        
+//        switchToRoom(roomWidget!)
+        switchToRoom(self.widgets!.first!)
         
         roomSwitcherController = OHDropdownMenuTableViewController()
         
@@ -71,7 +72,7 @@ class OHRoomsViewController: OHBaseViewController {
             
 //            roomSwitcherController.view.backgroundColor = UIColor.redColor()
             roomSwitcherController.view.setHeight(self.view.frame.height - roomSwitchButton!.neededSpaceHeight)
-            roomSwitcherController.tableView.backgroundColor = UIColor.redColor()
+//            roomSwitcherController.tableView.backgroundColor = UIColor.redColor()
 //            roomSwitcherController.tableView.sizeToFit()
             roomSwitcherController.tableView.delegate = self
         }
@@ -146,6 +147,10 @@ extension OHRoomsViewController: UITableViewDelegate {
             cell.layoutMargins = UIEdgeInsetsZero
         }
     }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 60
+    }
 }
 
 extension OHRoomsViewController {
@@ -159,8 +164,29 @@ extension OHRoomsViewController {
         
         println(notification?.object)
         
+        var beaconButton = self.navigationItem.rightBarButtonItem?.customView as! UIButton
+        beaconButton.imageView!.stopAnimating()
+        
         if isWaitingForBeacons {
         
+            if var beaconOH = notification!.object as? OHBeacon {
+                let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+                var dataManager = appDelegate.dataManager
+                
+                var navController = self.navigationController as! OHRootViewController
+//                var beacon = OHBeacon(uuid: beaconCL.proximityUUID.UUIDString, major: beaconCL.major.integerValue, minor: beaconCL.minor.integerValue, link: "000")
+                var roomWidget = dataManager.beaconWidget![beaconOH]
+                
+                if var room = roomWidget {
+                    println("room found: \(room)")
+                    switchToRoom(room)
+                }
+                else {
+                    println("room not found")
+                }
+            }
+            
+            
             if var beaconCL = notification!.object as? CLBeacon {
         
                 let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -185,11 +211,12 @@ extension OHRoomsViewController {
         }
     }
     
-    func startDetectingRoom(){
+    func startDetectingRoom(button: UIButton){
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         var beaconManager = appDelegate.beaconManager
         
         beaconManager?.startRanging()
+        button.imageView!.startAnimating()
     }
 }
 
@@ -197,9 +224,24 @@ extension OHRoomsViewController {
     override func addRightNavigationBarItems() {
         var menuItemImage = UIImageView(image: UIImage(named: "menu"))
         
-        var menuItemButton = UIButton.buttonWithType(UIButtonType.Custom)
+        var menuItemButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+//        menuItemButton.backgroundColor = UIColor.purpleColor()
         
-        menuItemButton.setImage(UIImage(named: "Beacon"), forState: UIControlState.Normal)
+        
+        menuItemButton.setImage(UIImage(named: "beacon_state_3"), forState: UIControlState.Normal)
+        var imageList = [UIImage]()
+        
+        for i in 0...3 {
+            imageList.append(UIImage(named: "beacon_state_\(i)")!)
+        }
+        
+        if var imageView = menuItemButton.imageView {
+            imageView.animationImages = imageList
+            imageView.animationDuration = 2.0
+//            imageView.startAnimating()
+        }
+        
+        
         menuItemButton.sizeToFit()
         
         println(menuItemButton.frame)
@@ -207,7 +249,14 @@ extension OHRoomsViewController {
         var item = UIBarButtonItem(customView: menuItemButton as! UIView)
         self.navigationItem.rightBarButtonItem = item
         
+        menuItemButton.setWidth(40)
+        menuItemButton.setHeight(40)
+        menuItemButton.imageView!.setWidth(40)
+        menuItemButton.imageView!.setHeight(40)
+        menuItemButton.imageView!.contentMode = UIViewContentMode.ScaleAspectFit
+//        menuItemButton.imageView!.backgroundColor = UIColor.redColor()
+        
 //        menuItemButton.addTarget(self, action: "startDetecting")
-        menuItemButton.addTarget(self, action: "startDetectingRoom", forControlEvents: UIControlEvents.TouchUpInside)
+        menuItemButton.addTarget(self, action: "startDetectingRoom:", forControlEvents: UIControlEvents.TouchUpInside)
     }
 }

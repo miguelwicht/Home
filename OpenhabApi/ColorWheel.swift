@@ -61,7 +61,9 @@ import UIKit
     
     func initButton()
     {
-        button = ButtonWithCustomBackgroundSize.buttonWithType(.Custom) as! ButtonWithCustomBackgroundSize
+        button = PowerButton.buttonWithType(.Custom) as! PowerButton
+        
+        button!.addTarget(button, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         
         if var button = self.button {
             button.clipsToBounds = false
@@ -92,9 +94,9 @@ import UIKit
             button.setBackgroundImage(buttonImageSelected, forState: .Highlighted)
             button.setTitleColor(buttonColor, forState: .Highlighted)
             
-            button.setTitle("On", forState: .Normal)
-            button.setTitle("Off", forState: .Selected)
-            button.setTitle("Off", forState: .Highlighted)
+//            button.setTitle("On", forState: .Normal)
+//            button.setTitle("Off", forState: .Selected)
+//            button.setTitle("Off", forState: .Highlighted)
             
             self.insertSubview(button, belowSubview: circleView!)
         }
@@ -196,14 +198,23 @@ extension ColorWheel {
     func getAngleForColor(color: UIColor) -> Int
     {
         var col = CIColor(color: color)
+//        var testcol = CIColor(color: UIColor.greenColor())
+//        var colGreen = testcol!.green() * 255
+//        var colRed = testcol!.red() * 255
+//        var colBlue = testcol!.blue() *  255
         
-        var red = Int(col!.red() * 255)
-        var green = Int(col!.green() * 255)
-        var blue = Int(col!.blue() * 255)
         
-        var hue = calculateHue(red, green: green, blue: blue)
         
+        
+        var red = CGFloat(col!.red() * 255)
+        var green = CGFloat(col!.green() * 255)
+        var blue = CGFloat(col!.blue() * 255)
+        
+        var hue = calculateHue(Int(red), green: Int(green), blue: Int(blue))
+//        var hue = calculateHue(Int(colRed), green: Int(colGreen), blue: Int(colBlue))
         var angle = Int(hue * CGFloat(sectors))
+        
+//        angle = Int(360 - angle)
         
         return angle
     }

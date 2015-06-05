@@ -28,6 +28,26 @@ public class OHHomepage {
           self.widgets = OHRestParser.parseWidgets(widgets)
         }
     }
+    
+    func getItems() -> [String: OHItem]
+    {
+        var items = [String: OHItem]()
+        
+        if var widgets = self.widgets {
+            
+            for (index, widget) in enumerate(widgets)
+            {
+                var widgetItems = widget.getItems()
+                
+                for (index, item) in widgetItems {
+                    items[item.link] = item
+                }
+            }
+            
+        }
+        
+        return items
+    }
 }
 
 extension OHHomepage: Printable {

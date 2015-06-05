@@ -23,11 +23,11 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
     override func prepareLayout() {
         super.prepareLayout()
         
-        self.itemSize = CGSizeMake(80, 100)
+//        self.itemSize = CGSizeMake(80, 100)
         self.sectionInset = UIEdgeInsetsMake(0, 5, 10, 5)
         self.scrollDirection = UICollectionViewScrollDirection.Horizontal
         
-        self.minimumInteritemSpacing = 20
+//        self.minimumInteritemSpacing = 20
 //        self.minimumLineSpacing = 10
         
         calculateColumnOffsets()
@@ -37,7 +37,8 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
     {
         self.columnOffsetsForCells = [CGPoint]()
         
-        self.columns = Int(CGFloat(self.collectionView!.bounds.width - self.minimumInteritemSpacing) / self.itemSize.width)
+//        self.columns = Int(CGFloat(self.collectionView!.bounds.width - self.minimumInteritemSpacing) / self.itemSize.width)
+        self.columns = Int(CGFloat(self.collectionView!.bounds.width - self.minimumInteritemSpacing) / (self.itemSize.width + minimumInteritemSpacing))
         
 //        println("itemSize:\(self.itemSize), lineSpacing: \(self.minimumLineSpacing)")
         
@@ -57,9 +58,19 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
         
 //        println("calculateColumnOffsets \(self.collectionView!.frame)")
         
-        var spacing: CGFloat = self.collectionView!.bounds.width - CGFloat(columns) * itemSize.width
+        // get space that is not occupied by items
+        
+        var width = self.collectionView!.bounds.width
+        
+        var spacing: CGFloat = width - CGFloat(columns) * itemSize.width
+        
         //spacing = spacing / CGFloat(columns - 1)
-        spacing = spacing / CGFloat(columns + 1)
+        
+        // divide that space evenly
+        var calculatedSpacing = spacing / CGFloat(columns + 1)
+        spacing = calculatedSpacing >= minimumInteritemSpacing ? calculatedSpacing : minimumInteritemSpacing
+        
+//        spacing = calculatedSpacing
         
         var verticalSpacing: CGFloat = self.collectionView!.bounds.height - CGFloat(rows) * itemSize.height
         verticalSpacing = verticalSpacing / CGFloat(rows + 1)
@@ -69,7 +80,7 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
             
             for var col = 0; col < columns; col++ {
                 
-                offsetPoint.x = (col == 0) ? CGFloat(col + 1) * spacing : CGFloat(col + 1) * spacing
+                offsetPoint.x = (col == 0) ? spacing : CGFloat(col + 1) * spacing
                 offsetPoint.y = (row == 0) ? CGFloat(row + 1) * verticalSpacing : CGFloat(row + 1) * verticalSpacing
                 
                 if var offets = self.columnOffsetsForCells {

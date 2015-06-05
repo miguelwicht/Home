@@ -113,10 +113,13 @@ extension OHRoomViewController {
     func createCollectionView(widgets: [OHWidget], rows: Int)
     {
         var layout = OHWidgetCollectionViewLayout()
+        layout.itemSize = CGSize(width: 60, height: 80)
+        layout.minimumInteritemSpacing = 25
         var collectionViewController: OHWidgetCollectionViewController = OHWidgetCollectionViewController(collectionViewLayout: layout, widgets: widgets)
         
         // TODO: add function to calculate row height
-        var height = CGFloat(rows * 120)
+        var height = CGFloat(CGFloat(rows) * (layout.itemSize.height + layout.minimumLineSpacing))
+//        height = CGFloat(rows * 120)
         
         collectionViewController.view.frame = CGRectMake(0, 0, self.scrollView!.frame.width - 30, height)
         

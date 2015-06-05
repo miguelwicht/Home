@@ -138,12 +138,12 @@ extension OHWidget : Printable {
         
         desc += "OHWidget: {\n"
         desc += "\titem: \(item) \n"
-        desc += "\twidgetId: \(widgetId) \n"
+        desc += "\twidgetId: \(widgetId)\n"
         desc += "\tlabel: \(label) \n"
-        desc += "\ticon: \(icon)"
+        desc += "\ticon: \(icon) \n"
         desc += "\ttype: \(type) \n"
-        desc += "\tlinkedPage: \(linkedPage) \n"
-        desc += "\twidgets: \(widgets) \n"
+        desc += "\tlinkedPage: \(linkedPage)\n"
+        desc += "\twidgets: \(widgets)\n"
         desc += "}"
 
         return desc

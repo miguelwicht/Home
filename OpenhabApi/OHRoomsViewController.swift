@@ -104,7 +104,7 @@ class OHRoomsViewController: OHBaseViewController {
             roomSwitcherController.view.hidden = true
         }
         
-        self.roomSwitchButton!.setTitle(room.label, forState: .Normal)
+        self.roomSwitchButton!.setTitle(room.label?.uppercaseString, forState: .Normal)
         var offsetY = self.navigationController!.navigationBar.neededSpaceHeight + 90
         var height = self.view.frame.height - offsetY
         

@@ -48,13 +48,17 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
 //            
 //        }
         
-        if var rows = self.fixedRows {
-            self.rows = rows
-        } else {
-            self.rows = Int(CGFloat(self.collectionView!.bounds.height - self.minimumLineSpacing) / self.itemSize.height)
-        }
+//        if var rows = self.fixedRows {
+//            self.rows = rows
+//        } else {
+//            self.rows = Int(CGFloat(self.collectionView!.bounds.height - self.minimumLineSpacing) / self.itemSize.height)
+//        }
         
         self.rows = Int(CGFloat(self.collectionView!.bounds.height - self.minimumLineSpacing) / self.itemSize.height)
+        println(CGFloat(self.collectionView!.bounds.height - self.minimumLineSpacing) / self.itemSize.height)
+        
+        // fix so that we get at least 1 row for the calculations as Int() will round up
+        rows = rows == 0 ? 1 : rows
         
 //        println("calculateColumnOffsets \(self.collectionView!.frame)")
         
@@ -73,7 +77,9 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
 //        spacing = calculatedSpacing
         
         var verticalSpacing: CGFloat = self.collectionView!.bounds.height - CGFloat(rows) * itemSize.height
-        verticalSpacing = verticalSpacing / CGFloat(rows + 1)
+        var calculatedVerticalSpacing = verticalSpacing / CGFloat(rows)
+        
+        verticalSpacing = calculatedVerticalSpacing >= minimumLineSpacing ? calculatedVerticalSpacing : minimumLineSpacing
         
         for var row = 0; row < self.rows; row++ {
             var offsetPoint: CGPoint = CGPointZero
@@ -81,13 +87,11 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
             for var col = 0; col < columns; col++ {
                 
                 offsetPoint.x = (col == 0) ? spacing : CGFloat(col + 1) * spacing
-                offsetPoint.y = (row == 0) ? CGFloat(row + 1) * verticalSpacing : CGFloat(row + 1) * verticalSpacing
+//                offsetPoint.y = (row == 0) ? CGFloat(row + 1) * verticalSpacing : CGFloat(row + 1) * verticalSpacing
+                offsetPoint.y = (row == 0) ? 0 : CGFloat(row + 1) * verticalSpacing - verticalSpacing
                 
-                if var offets = self.columnOffsetsForCells {
-                    
-                } else {
-                    self.columnOffsetsForCells = [CGPoint]()
-                }
+                
+                self.columnOffsetsForCells = self.columnOffsetsForCells == nil ? [CGPoint]() : self.columnOffsetsForCells
                 
                 self.columnOffsetsForCells!.append(offsetPoint)
             }
@@ -113,6 +117,7 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
 //        return attributesForElementsInRectWithSections(rect)
         
         var elementsInRect: [UICollectionViewLayoutAttributes] = [UICollectionViewLayoutAttributes]()
+//        var elementsInRect: [UICollectionViewLayoutAttributes]?
         
         var numberOfItems = self.collectionView!.numberOfItemsInSection(0)
         
@@ -123,13 +128,30 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
             var offset = pageIndex * self.rows * self.columns
             var index = i - offset
             
-            if var offsets = self.columnOffsetsForCells {
-            
-            } else {
-                self.prepareLayout()
-            }
+//            if var offsets = self.columnOffsetsForCells {
+//            
+//            } else {
+//                self.prepareLayout()
+//            }
             
             var offsetPoint = CGPointMake(self.columnOffsetsForCells![index].x, self.columnOffsetsForCells![index].y)
+            
+//            var offsetPoint: CGPoint
+            
+//            if var columnOffsetsForCells = self.columnOffsetsForCells {
+//                if columnOffsetsForCells.count > index {
+//                    if elementsInRect == nil {
+//                        elementsInRect = [UICollectionViewLayoutAttributes]()
+//                    }
+//                    offsetPoint = CGPointMake(columnOffsetsForCells[index].x, columnOffsetsForCells[index].y)
+//                } else {
+//                     offsetPoint = CGPointZero
+//                }
+//            }
+//            else {
+//                offsetPoint = CGPointZero
+//            }
+            
             
             var cellFrame: CGRect = CGRectMake(CGFloat(pageIndex) * self.collectionView!.bounds.width + CGFloat(offsetPoint.x), offsetPoint.y, self.itemSize.width, self.itemSize.height)
             

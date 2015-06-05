@@ -111,7 +111,9 @@ extension OHRootViewController {
         
         for (i, e) in enumerate(homepage.widgets!)
         {
-            widget = e
+            if e.label == "Rooms" {
+                widget = e
+            }
         }
         
 //        var items = widget!.getItems()
@@ -175,6 +177,9 @@ extension OHRootViewController: OHRestManagerDelegate
             
             
         }
+        
+        var menuViewController = revealViewController().rearViewController as! OHRearMenuViewController
+        menuViewController.updateMenu()
         
         pushViewControllerWithSitemap(sitemap)
     }

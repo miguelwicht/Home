@@ -11,7 +11,7 @@ import UIKit
 class OHRearMenuSectionHeader: UIButton {
     
     var section: Int?
-    var showSection: Bool = true
+//    var showSection: Bool = true
     var showSectionImage = UIImage(named: "arrow_right")
     var hideSectionImage = UIImage(named: "arrow_down")
     var borderTop = UIView()
@@ -42,6 +42,8 @@ class OHRearMenuSectionHeader: UIButton {
         addSubview(borderTop)
         borderBottom.backgroundColor = UIColor(red: (39.0 / 255.0), green: (39.0 / 255.0), blue: (39.0 / 255.0), alpha: 0.5)
         addSubview(borderBottom)
+        
+        setImage(showSectionImage, forState: .Normal)
     }
 
     override func layoutSubviews() {
@@ -55,13 +57,7 @@ class OHRearMenuSectionHeader: UIButton {
             imageView!.centerViewVerticallyInSuperview()
         }
         
-        if showSection {
-            setImage(hideSectionImage, forState: .Normal)
-//            borderBottom.hidden = false
-        } else {
-            setImage(showSectionImage, forState: .Normal)
-//            borderBottom.hidden = true
-        }
+        
         
         borderTop.marginTop = 0
         borderTop.setHeight(0)
@@ -76,6 +72,18 @@ class OHRearMenuSectionHeader: UIButton {
     
     func toggle() {
         showSection = showSection ? false : true
-        layoutSubviews()
+//        layoutSubviews()
+    }
+    
+    var showSection: Bool = false {
+        didSet {
+            if showSection {
+                setImage(hideSectionImage, forState: .Normal)
+                //            borderBottom.hidden = false
+            } else {
+                setImage(showSectionImage, forState: .Normal)
+                //            borderBottom.hidden = true
+            }
+        }
     }
 }

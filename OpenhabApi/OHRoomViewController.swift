@@ -115,10 +115,15 @@ extension OHRoomViewController {
         var layout = OHWidgetCollectionViewLayout()
         layout.itemSize = CGSize(width: 60, height: 80)
         layout.minimumInteritemSpacing = 25
+        layout.minimumLineSpacing = 25
         var collectionViewController: OHWidgetCollectionViewController = OHWidgetCollectionViewController(collectionViewLayout: layout, widgets: widgets)
         
         // TODO: add function to calculate row height
-        var height = CGFloat(CGFloat(rows) * (layout.itemSize.height + layout.minimumLineSpacing))
+        var height = CGFloat(CGFloat(rows) * (layout.itemSize.height + layout.minimumLineSpacing)) - layout.minimumLineSpacing
+        
+        height = rows == 1 ? layout.itemSize.height : height
+        
+        collectionViewController.view.backgroundColor = UIColor.purpleColor()
 //        height = CGFloat(rows * 120)
         
         collectionViewController.view.frame = CGRectMake(0, 0, self.scrollView!.frame.width - 30, height)

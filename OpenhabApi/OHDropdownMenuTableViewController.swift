@@ -121,7 +121,7 @@ extension OHDropdownMenuTableViewController: UITableViewDataSource {
         
         // Configure the cell...
         
-        cell.textLabel?.text = data[indexPath.row].label
+        cell.textLabel?.text = data[indexPath.row].label?.uppercaseString
         
         return cell
     }

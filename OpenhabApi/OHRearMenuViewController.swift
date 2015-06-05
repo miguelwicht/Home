@@ -15,6 +15,8 @@ class OHRearMenuViewController: UIViewController {
     var footerView: OHRearMenuFooterView?
     var sectionHeaders: [Int:OHRearMenuSectionHeader?] = [Int:OHRearMenuSectionHeader?]()
     
+    var widgets: [OHWidget]?
+    
     override func loadView() {
         super.loadView()
         
@@ -46,6 +48,23 @@ class OHRearMenuViewController: UIViewController {
             
             headerView?.setWidth(tableView.frame.width)
         }
+        
+        updateMenu()
+        
+    }
+    
+    func updateMenu()
+    {
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        var dataManager = appDelegate.dataManager
+        
+        if var sitemap = dataManager.sitemaps?.first {
+            widgets = OHRestParser.getMenuFromSitemap(sitemap)
+        }
+        
+        tableView?.reloadData()
+        
+        println(widgets)
     }
 
     override func viewDidLoad() {
@@ -78,30 +97,23 @@ extension OHRearMenuViewController: UITableViewDelegate {
 
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        if var sectionHeader = self.sectionHeaders[section] {
-            return sectionHeader
-        }
-        else {
-            var button = OHRearMenuSectionHeader()
-            button.section = section
-            button.showSection = true
-            sectionHeaders[section] = button
-//            button.setTitle("Header \(section)".uppercaseString, forState: .Normal)
-            
-            
-            if section == 0 {
-                button.setTitle("Rooms".uppercaseString, forState: .Normal)
-            } else if section == 1 {
-                button.setTitle("Items".uppercaseString, forState: .Normal)
-            } else {
-                button.setTitle("Sitemaps".uppercaseString, forState: .Normal)
+        if var widgets = self.widgets {
+            if var sectionHeader = self.sectionHeaders[section] {
+                return sectionHeader
             }
-            
-            
-            
-            
-            button.addTarget(self, action: "toggleSection:", forControlEvents: .TouchUpInside)
-            button.borderTop.hidden = section == 0 ? true : false
+            else {
+                var button = OHRearMenuSectionHeader()
+                button.section = section
+                button.showSection = false
+                sectionHeaders[section] = button
+                
+                var widget = widgets[section]
+                
+                button.setTitle(widget.label!.uppercaseString, forState: .Normal)
+                
+                button.addTarget(self, action: "toggleSection:", forControlEvents: .TouchUpInside)
+                button.borderTop.hidden = section == 0 ? true : false
+            }
         }
         
         return sectionHeaders[section]!
@@ -151,14 +163,16 @@ extension OHRearMenuViewController: UITableViewDataSource {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
         
-        var numberOfRows = 5
+        var numberOfRows = 0
         
         
         if (sectionHeaders[section] != nil) {
             
             var button = sectionHeaders[section]!
             
-            numberOfRows = button!.showSection ? 5 : 0
+            var numberOfItems = widgets![section].linkedPage!.widgets!.count
+            
+            numberOfRows = button!.showSection ? numberOfItems : 0
         }
         
         return numberOfRows
@@ -173,8 +187,21 @@ extension OHRearMenuViewController: UITableViewDataSource {
         
         // Configure the cell...
         
-        cell.textLabel?.text = "Cellname:  adsas \(indexPath.item)"
-//        cell.backgroundColor = UIColor(red: (236.0 / 255.0), green: (236.0 / 255.0), blue: (236.0 / 255.0), alpha: 1.0)
+        var item = widgets![indexPath.section].linkedPage!.widgets![indexPath.row]
+        cell.textLabel?.text = item.label
+        
+        
+        if var menuItem = item.item {
+            if var tags = menuItem.tags {
+                for (index, tag) in enumerate(tags)
+                {
+                    if tag.rangeOfString("OH_Icon_") != nil {
+                        var tagString = tag.stringByReplacingOccurrencesOfString("OH_Icon_", withString: "")
+                        cell.imageView?.image = UIImage(named: tagString)?.imageWithRenderingMode(.AlwaysTemplate)
+                    }
+                }
+            }
+        }
         
         return cell
     }

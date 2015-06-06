@@ -56,8 +56,9 @@ class OHLightController: UIViewController {
         dimmer!.slider.addTarget(self, action: "dimmerValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
         
         brightnessLabel = UILabel()
-        brightnessLabel?.text = "BRIGHTNESS"
-        brightnessLabel!.font = UIFont(name: brightnessLabel!.font.familyName, size: 20)
+        brightnessLabel?.text = "Brightness".uppercaseString
+//        brightnessLabel!.font = UIFont(name: brightnessLabel!.font.familyName, size: 20)
+        brightnessLabel!.font = OHDefaults.defaultFontWithSize(20)
         view.addSubview(brightnessLabel!)
     }
     

@@ -12,6 +12,7 @@ class OHRoomViewController: UIViewController {
     
     var widget: OHWidget?
     var collectionViewControllers: [OHWidgetCollectionViewController] = [OHWidgetCollectionViewController]()
+    var labelsForControllers: [String: UILabel] = [String: UILabel]()
     var scrollView: UIScrollView?
     
     required init(coder aDecoder: NSCoder) {
@@ -31,7 +32,6 @@ class OHRoomViewController: UIViewController {
         
         initScrollView()
         initWidget(widget)
-        
 //        println(widget.linkedPage!.widgets![1])
         
     }
@@ -53,13 +53,39 @@ class OHRoomViewController: UIViewController {
         self.scrollView!.marginTop = 0
         self.scrollView!.marginLeft = 0
         
+        var offset = CGFloat(30)
+        
         for (index, element) in enumerate(collectionViewControllers)
         {
-            var offset = CGFloat(0)
+            
+            
+            var label = labelsForControllers["\(index)"]
+            label?.sizeToFit()
+            label?.centerViewHorizontallyInSuperview()
+            
+            if label != nil {
+                label!.marginTop = index == 0 ? offset : collectionViewControllers[index - 1].view.neededSpaceHeight + 30
+                offset = label!.neededSpaceHeight + 20
+            }
             
             element.view.centerViewHorizontallyInSuperview()
-            element.view.marginTop = index == 0 ? offset : collectionViewControllers[index - 1].view.neededSpaceHeight + 60
+            
+            element.view.marginTop = offset
+            
+//            element.view.marginTop = label != nil ? offset + 20 : collectionViewControllers[index - 1].view.neededSpaceHeight + 20
+            
+            offset = element.view.neededSpaceHeight
+            
+            
+//            element.view.marginTop = index == 0 ? offset : collectionViewControllers[index - 1].view.neededSpaceHeight + 60
         }
+        
+//        for (index, element) in collectionViewControllers {
+//            element.view.centerViewHorizontallyInSuperview()
+//        }
+        
+        
+        
         
         self.scrollView!.contentSize = calculateScrollViewContentSize()
     }
@@ -110,23 +136,22 @@ extension OHRoomViewController {
 
 extension OHRoomViewController {
     
-    func createCollectionView(widgets: [OHWidget], rows: Int)
+    func createCollectionView(widgets: [OHWidget], rows: Int) -> OHWidgetCollectionViewController
     {
         var layout = OHWidgetCollectionViewLayout()
+        layout.itemSize = CGSize(width: 60, height: 80)
+        layout.minimumInteritemSpacing = 25
+        layout.minimumLineSpacing = 25
         var collectionViewController: OHWidgetCollectionViewController = OHWidgetCollectionViewController(collectionViewLayout: layout, widgets: widgets)
         
         // TODO: add function to calculate row height
-        var height = CGFloat(rows * 120)
+        var height = CGFloat(CGFloat(rows) * (layout.itemSize.height + layout.minimumLineSpacing)) - layout.minimumLineSpacing
+        
+        height = rows == 1 ? layout.itemSize.height : height
         
         collectionViewController.view.frame = CGRectMake(0, 0, self.scrollView!.frame.width - 30, height)
         
-        self.addChildViewController(collectionViewController)
-        self.scrollView!.addSubview(collectionViewController.view)
-        
-//        println("collectionViewFrame: \(collectionViewController.view.frame)")
-//        println("scrollView: \(self.scrollView!.frame), bounds: \(self.scrollView!.bounds)")
-        
-        self.collectionViewControllers.append(collectionViewController)
+        return collectionViewController
     }
     
     func createCollectionViewControllers()
@@ -154,7 +179,22 @@ extension OHRoomViewController {
                 }
             }
             
-            createCollectionView(outlets[i].linkedPage!.widgets!, rows: rows)      
+            var collectionViewController = createCollectionView(outlets[i].linkedPage!.widgets!, rows: rows)
+            self.addChildViewController(collectionViewController)
+            self.scrollView!.addSubview(collectionViewController.view)
+            self.collectionViewControllers.append(collectionViewController)
+            
+            
+            if outlet.label != outlet.item?.name {
+                var label = UILabel()
+                label.font = OHDefaults.defaultFontWithSize(22)
+                label.text = outlet.label!.uppercaseString
+                self.scrollView!.addSubview(label)
+                var index = find(self.collectionViewControllers, collectionViewController)
+                self.labelsForControllers["\(index!)"] = label
+            }
+            
+            
         }
     }
     
@@ -176,7 +216,7 @@ extension OHRoomViewController: UIScrollViewDelegate {
     func calculateScrollViewContentSize() -> CGSize
     {
         var width = self.scrollView!.frame.width
-        var height = self.collectionViewControllers.last!.view.neededSpaceHeight + 50
+        var height = self.collectionViewControllers.last!.view.neededSpaceHeight //+ 50
         
         return CGSize(width: width, height: height)
     }

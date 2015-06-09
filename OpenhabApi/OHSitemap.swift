@@ -41,6 +41,20 @@ import Foundation
             self.homepage = OHHomepage(homepage: hp)
         }
     }
+    
+//    func getItems() -> [String: OHItem]?
+//    {
+//        var items = [String: OHItem]()
+//        
+//        var homepageWidgets = homepage?.widgets
+//        
+//        for (index, homepageWidget) in enumerate(homepageWidgets)
+//        {
+//            
+//        }
+//        
+//        return items
+//    }
 }
 
 //MARK: OHSitemap: Printable

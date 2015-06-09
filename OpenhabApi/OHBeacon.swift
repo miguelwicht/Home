@@ -13,6 +13,8 @@ import Foundation
     public let major: Int
     public let minor: Int
     public let link: String
+    public var proximity: Int?
+    public var rssi: Int?
     
     public init(uuid: String, major: Int, minor: Int, link: String) {
         self.uuid = uuid
@@ -32,6 +34,8 @@ extension OHBeacon : Printable {
         desc += "\tuuid: \(uuid), \n"
         desc += "\tmajor: \(major), \n"
         desc += "\tminor: \(minor), \n"
+        desc += "\tproximity: \(proximity)\n"
+        desc += "\trssi: \(rssi)\n"
         desc += "\tlink: \(link) \n"
         desc += "}"
         

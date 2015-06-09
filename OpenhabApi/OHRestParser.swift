@@ -34,7 +34,7 @@ class OHRestParser {
         
         for (i, e) in enumerate(homepage.widgets!)
         {
-            widget = e
+            widget = i == 0 ? e : widget
         }
         
         var widgets = widget!.widgets!
@@ -71,5 +71,23 @@ class OHRestParser {
 //        beaconWidgets[beacon] = widget
         
         return beaconWidgets
+    }
+    
+    static func getMenuFromSitemap(sitemap: OHSitemap) -> [OHWidget]?
+    {
+        var homepage = sitemap.homepage!
+        
+        var menuWidget: OHWidget?
+        
+        for (i, e) in enumerate(homepage.widgets!)
+        {
+            if e.label == "Menu" {
+                menuWidget = e
+            }
+        }
+        
+        //        var widgets = menuWidget?.widgets
+        
+        return menuWidget?.widgets
     }
 }

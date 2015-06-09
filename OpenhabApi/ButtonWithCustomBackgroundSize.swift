@@ -16,4 +16,5 @@ class ButtonWithCustomBackgroundSize: UIButton {
         
         return backgroundRect
     }
+
 }

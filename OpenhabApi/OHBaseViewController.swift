@@ -56,9 +56,53 @@ extension OHBaseViewController {
     
     func addLeftNavigationBarItems()
     {
-        var menuItemImage = UIImageView(image: UIImage(named: "menu"))
-        var item = UIBarButtonItem(customView: menuItemImage)
-        self.navigationItem.leftBarButtonItem = item
+//        var menuItemImage = UIImageView(image: UIImage(named: "menu"))
+//        var item = UIBarButtonItem(customView: menuItemImage)
+//        self.navigationItem.leftBarButtonItem = item
+//        
+//        let revealController = self.revealViewController
+//        item.target = revealController()
+//        item.action = "revealToggle:"
+        
+        
+        
+        let revealController = self.revealViewController
+        var menuItemButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+        
+        menuItemButton.setImage(UIImage(named: "menu"), forState: UIControlState.Normal)
+        menuItemButton.sizeToFit()
+        
+        println(menuItemButton.frame)
+        
+        var item = UIBarButtonItem(customView: menuItemButton as UIView)
+        self.navigationItem.leftBarButtonItems = [item]
+        
+        menuItemButton.setWidth(40)
+        menuItemButton.setHeight(40)
+        menuItemButton.imageView!.setWidth(40)
+        menuItemButton.imageView!.setHeight(40)
+        menuItemButton.imageView!.contentMode = UIViewContentMode.ScaleAspectFit
+        menuItemButton.backgroundColor = UIColor.purpleColor()
+        
+        
+        //        menuItemButton.addTarget(self, action: "startDetecting")
+        menuItemButton.addTarget(revealController(), action: "revealToggle:", forControlEvents: UIControlEvents.TouchUpInside)
+        menuItemButton.addTarget(self, action: "toggleStatusBar", forControlEvents: UIControlEvents.TouchUpInside)
+//        [revealController panGestureRecognizer];
+//        [revealController tapGestureRecognizer];
+        
+//        UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"reveal-icon.png"]
+//            style:UIBarButtonItemStylePlain target:revealController action:@selector(revealToggle:)];
+//        
+//        self.navigationItem.leftBarButtonItem = revealButtonItem;
+
+    }
+    
+    func toggleStatusBar()
+    {
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        var statusBar = appDelegate.statusBarBackgroundView
+        statusBar!.highlighted = statusBar!.highlighted ? false : true
     }
     
     func addRightNavigationBarItems()

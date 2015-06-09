@@ -75,6 +75,7 @@ extension OHRestManager {
                 }
                 
                 let responseString = NSString(data: data, encoding: NSUTF8StringEncoding)
+                
                 //println(responseString)
                 //let json = JSON(data: data).dictionaryValue
                 let json = JSON(data: data).arrayValue
@@ -126,6 +127,14 @@ extension OHRestManager {
             
             let responseString = NSString(data: data, encoding: NSUTF8StringEncoding)
 //            println("responseString = \(responseString)")
+            
+            var fileManager = S3FileManager();
+            var localError: NSError?
+            var jsonData = responseString!.dataUsingEncoding(NSASCIIStringEncoding, allowLossyConversion: false)
+            var jsonDictionary: NSDictionary = NSJSONSerialization.JSONObjectWithData(jsonData!, options: NSJSONReadingOptions.MutableContainers, error: &localError) as! NSDictionary
+            
+            var path: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("sitemaps/\(name).json") as NSString
+            S3FileManager.saveDictionary(jsonDictionary as [NSObject : AnyObject], toPath: path as NSString as String)
             
             let json = JSON(data: data)
             

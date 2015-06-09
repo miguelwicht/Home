@@ -13,7 +13,7 @@ class OHRoomsViewController: OHBaseViewController {
     
     var widgets: [OHWidget]?
     var roomSwitcherController: OHDropdownMenuTableViewController?
-    var roomSwitchButton: OHDropdownMenuButton?
+//    var roomSwitchButton: OHDropdownMenuButton?
     var currentRoom: OHRoomViewController?
     
     var isWaitingForBeacons: Bool = true
@@ -34,6 +34,7 @@ class OHRoomsViewController: OHBaseViewController {
         self.widgets = widgets
         
         initNotificationCenterNotifications()
+        addDropdownToNavigationBar()
     }
     
     override func loadView()
@@ -42,21 +43,21 @@ class OHRoomsViewController: OHBaseViewController {
         
         self.automaticallyAdjustsScrollViewInsets = false
         
-        roomSwitchButton = OHDropdownMenuButton(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 90))
-        self.view.addSubview(roomSwitchButton!)
-        
-        roomSwitchButton!.marginTop = 60
-        roomSwitchButton!.setTitle("Living Room", forState: .Normal)
+//        roomSwitchButton = OHDropdownMenuButton(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 90))
+//        self.view.addSubview(roomSwitchButton!)
+//        roomSwitchButton!.marginTop = 60
+//        roomSwitchButton!.setTitle("Living Room", forState: .Normal)
         
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         var dataManager = appDelegate.dataManager
         
         var navController = self.navigationController as! OHRootViewController
-        var beacon = OHBeacon(uuid: "85FC11DD-4CCA-4B27-AFB3-876854BB5C3B", major: 0, minor: 1, link: "000")
-        var roomWidget = dataManager.beaconWidget![beacon]
-        
-        switchToRoom(roomWidget!)
-//        switchToRoom(self.widgets!.last!)
+//        var beacon = OHBeacon(uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4CFE974E5", major: 21355, minor: 51154, link: "000")
+//        var beacon = OHBeacon(uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4CBD6EA98", major: 21622, minor: 8451, link: "000")
+//        var roomWidget = dataManager.beaconWidget![beacon]
+//        
+//        switchToRoom(roomWidget!)
+        switchToRoom(self.widgets!.first!)
         
         roomSwitcherController = OHDropdownMenuTableViewController()
         
@@ -65,22 +66,27 @@ class OHRoomsViewController: OHBaseViewController {
             addChildViewController(roomSwitcherController)
             view.addSubview(roomSwitcherController.view)
             
-            roomSwitcherController.view.marginTop = roomSwitchButton!.neededSpaceHeight
+//            roomSwitcherController.view.marginTop = roomSwitchButton!.neededSpaceHeight
+            roomSwitcherController.view.marginTop = self.navigationController!.navigationBar.neededSpaceHeight
+            
+            
             //            roomSwitcherController.view.setHeight(200)
             
             
 //            roomSwitcherController.view.backgroundColor = UIColor.redColor()
-            roomSwitcherController.view.setHeight(self.view.frame.height - roomSwitchButton!.neededSpaceHeight)
-            roomSwitcherController.tableView.backgroundColor = UIColor.redColor()
+//            roomSwitcherController.view.setHeight(self.view.frame.height - roomSwitchButton!.neededSpaceHeight)
+            roomSwitcherController.view.setHeight(CGFloat(self.view.frame.height - self.navigationController!.navigationBar.neededSpaceHeight))
+//            roomSwitcherController.tableView.backgroundColor = UIColor.redColor()
 //            roomSwitcherController.tableView.sizeToFit()
             roomSwitcherController.tableView.delegate = self
         }
         
-        roomSwitchButton!.addTarget(self, action: "toggleDropdownMenu:", forControlEvents: UIControlEvents.TouchUpInside)
-        toggleDropdownMenu(roomSwitchButton!)
+//        roomSwitchButton!.addTarget(self, action: "toggleDropdownMenu:", forControlEvents: UIControlEvents.TouchUpInside)
+//        toggleDropdownMenu(roomSwitchButton!)
+        toggleDropdownMenu(self.navigationItem.titleView as! UIButton)
     }
     
-    func toggleDropdownMenu(control: OHDropdownMenuButton)
+    func toggleDropdownMenu(control: UIButton)
     {
        
         if self.roomSwitcherController!.view.hidden {
@@ -103,8 +109,11 @@ class OHRoomsViewController: OHBaseViewController {
             roomSwitcherController.view.hidden = true
         }
         
-        self.roomSwitchButton!.setTitle(room.label, forState: .Normal)
-        var offsetY = self.navigationController!.navigationBar.neededSpaceHeight + 90
+//        self.roomSwitchButton!.setTitle(room.label?.uppercaseString, forState: .Normal)
+        if var button = self.navigationItem.titleView as? UIButton {
+            button.setTitle(room.label?.uppercaseString, forState: .Normal)
+        }
+        var offsetY = self.navigationController!.navigationBar.neededSpaceHeight
         var height = self.view.frame.height - offsetY
         
         if var currentRoom = self.currentRoom {
@@ -125,14 +134,11 @@ class OHRoomsViewController: OHBaseViewController {
 }
 
 extension OHRoomsViewController: UITableViewDelegate {
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        roomSwitchButton?.setTitle(roomSwitcherController?.data[indexPath.row].label, forState: .Normal)
-        switchToRoom(roomSwitcherController!.data[indexPath.row])
+        switchToRoom(roomSwitcherController!.data[indexPath.row] as! OHWidget)
     }
     
-//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        return 30
-//    }
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if cell.respondsToSelector("setSeparatorInset:") {
             cell.separatorInset = UIEdgeInsetsZero
@@ -145,6 +151,10 @@ extension OHRoomsViewController: UITableViewDelegate {
         if cell.respondsToSelector("setLayoutMargins:") {
             cell.layoutMargins = UIEdgeInsetsZero
         }
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 145
     }
 }
 
@@ -159,8 +169,29 @@ extension OHRoomsViewController {
         
         println(notification?.object)
         
+        var beaconButton = self.navigationItem.rightBarButtonItem?.customView as! UIButton
+        beaconButton.imageView!.stopAnimating()
+        
         if isWaitingForBeacons {
         
+            if var beaconOH = notification!.object as? OHBeacon {
+                let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+                var dataManager = appDelegate.dataManager
+                
+                var navController = self.navigationController as! OHRootViewController
+//                var beacon = OHBeacon(uuid: beaconCL.proximityUUID.UUIDString, major: beaconCL.major.integerValue, minor: beaconCL.minor.integerValue, link: "000")
+                var roomWidget = dataManager.beaconWidget![beaconOH]
+                
+                if var room = roomWidget {
+                    println("room found: \(room)")
+                    switchToRoom(room)
+                }
+                else {
+                    println("room not found")
+                }
+            }
+            
+            
             if var beaconCL = notification!.object as? CLBeacon {
         
                 let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -185,11 +216,12 @@ extension OHRoomsViewController {
         }
     }
     
-    func startDetectingRoom(){
+    func startDetectingRoom(button: UIButton){
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         var beaconManager = appDelegate.beaconManager
         
         beaconManager?.startRanging()
+        button.imageView!.startAnimating()
     }
 }
 
@@ -197,9 +229,24 @@ extension OHRoomsViewController {
     override func addRightNavigationBarItems() {
         var menuItemImage = UIImageView(image: UIImage(named: "menu"))
         
-        var menuItemButton = UIButton.buttonWithType(UIButtonType.Custom)
+        var menuItemButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+//        menuItemButton.backgroundColor = UIColor.purpleColor()
         
-        menuItemButton.setImage(UIImage(named: "Beacon"), forState: UIControlState.Normal)
+        
+        menuItemButton.setImage(UIImage(named: "beacon_state_3"), forState: UIControlState.Normal)
+        var imageList = [UIImage]()
+        
+        for i in 0...3 {
+            imageList.append(UIImage(named: "beacon_state_\(i)")!)
+        }
+        
+        if var imageView = menuItemButton.imageView {
+            imageView.animationImages = imageList
+            imageView.animationDuration = 2.0
+//            imageView.startAnimating()
+        }
+        
+        
         menuItemButton.sizeToFit()
         
         println(menuItemButton.frame)
@@ -207,7 +254,30 @@ extension OHRoomsViewController {
         var item = UIBarButtonItem(customView: menuItemButton as! UIView)
         self.navigationItem.rightBarButtonItem = item
         
+        menuItemButton.setWidth(40)
+        menuItemButton.setHeight(40)
+        menuItemButton.imageView!.setWidth(40)
+        menuItemButton.imageView!.setHeight(40)
+        menuItemButton.imageView!.contentMode = UIViewContentMode.ScaleAspectFit
+//        menuItemButton.imageView!.backgroundColor = UIColor.redColor()
+        
 //        menuItemButton.addTarget(self, action: "startDetecting")
-        menuItemButton.addTarget(self, action: "startDetectingRoom", forControlEvents: UIControlEvents.TouchUpInside)
+        menuItemButton.addTarget(self, action: "startDetectingRoom:", forControlEvents: UIControlEvents.TouchUpInside)
+    }
+}
+
+extension OHRoomsViewController {
+    func addDropdownToNavigationBar() {
+        
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        
+        var button = UIButton.buttonWithType(.Custom)
+        
+        button.setWidth(appDelegate.window!.frame.width - 100)
+        
+        button.setTitle("Button", forState: .Normal)
+        self.navigationItem.titleView = button as? UIView
+        button.addTarget(self, action: "toggleDropdownMenu:", forControlEvents: UIControlEvents.TouchUpInside)
     }
 }

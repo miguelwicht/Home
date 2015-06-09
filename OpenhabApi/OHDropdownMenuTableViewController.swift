@@ -10,7 +10,7 @@ import UIKit
 
 class OHDropdownMenuTableViewController: UIViewController {
     
-    var data = [OHWidget]()
+    var data = [AnyObject]()
     
     var tableView: UITableView = UITableView()
     var topBorderView = UIView()
@@ -30,19 +30,19 @@ class OHDropdownMenuTableViewController: UIViewController {
 //        tableView.sizeToFit()
         tableView.marginTop = topBorderView.neededSpaceHeight
         tableView.marginLeft = 0
-        tableView.backgroundColor = UIColor.blueColor()
+        tableView.backgroundColor = UIColor.clearColor()
 //        tableView.setHeight(300)
         tableView.setWidth(self.view.frame.width)
-        tableView.setHeight(300)
+//        tableView.setHeight(300)
+        tableView.setHeight(view.frame.height)
         tableView.dataSource = self
-        tableView.bounces = false
+        tableView.bounces = true
         var frame = tableView.frame
         
         tableView.separatorColor = borderColor
         tableView.separatorInset = UIEdgeInsetsZero
         
-        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-        
+        view.backgroundColor = OHDefaults.defaultTextColor()
     }
 
     override func viewDidLoad() {
@@ -79,12 +79,16 @@ class OHDropdownMenuTableViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+
+        tableView.sizeToFit()
         var frame = self.tableView.frame
         
-        tableView.sizeToFit()
+        var tableViewHeight: CGFloat = frame.height
+        var controllerHeight: CGFloat = view.frame.height
         
-        frame = self.tableView.frame
-        
+        if tableViewHeight >= controllerHeight {
+            tableView.setHeight(view.frame.height)
+        }
     }
 
 }
@@ -103,6 +107,8 @@ extension OHDropdownMenuTableViewController: UITableViewDataSource {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
         
+//        self.tableView.sizeToFit()
+        println(self.tableView.frame)
         var numberOfRows = data.count
         
         return numberOfRows
@@ -110,10 +116,38 @@ extension OHDropdownMenuTableViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as! OHDropdownMenuTableViewCell
+        cell.roundedCorners = false
+        
+        var numberOfItems = self.tableView(tableView, numberOfRowsInSection: indexPath.section)
+        
+//        if numberOfItems == indexPath.row + 1 {
+//            cell.roundedCorners = true
+//        }
+        
         
         // Configure the cell...
         
-        cell.textLabel?.text = data[indexPath.row].label
+        if var data = self.data as? [OHWidget] {
+            cell.textLabel?.text = data[indexPath.row].label?.uppercaseString
+            
+            if var icon = data[indexPath.row].icon {
+                
+                if icon != "none" {
+                    // TODO: check if file exists
+                    cell.imageView?.image = UIImage(named: icon)?.imageWithRenderingMode(.AlwaysTemplate)
+                }
+                else {
+                    cell.imageView?.image = nil
+                }
+                
+            }
+            
+            
+        }
+        else if var data = self.data as? [OHSitemap] {
+            cell.textLabel?.text = data[indexPath.row].label
+        }
+        
         
         return cell
     }

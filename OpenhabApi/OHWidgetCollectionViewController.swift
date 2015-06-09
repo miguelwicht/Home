@@ -17,7 +17,9 @@ class OHWidgetCollectionViewController: UICollectionViewController {
     var leftArrowButton = UIButton(frame: CGRectMake(0, 0, 20, 20))
     var rightArrowButton = UIButton(frame: CGRectMake(0, 0, 20, 20))
     var parentVC: UIViewController?
-
+    
+    var selectedWidgets = [OHWidget]()
+    
     required init(coder aDecoder: NSCoder)
     {
         fatalError("init(coder:) has not been implemented")
@@ -31,6 +33,7 @@ class OHWidgetCollectionViewController: UICollectionViewController {
 
         collectionView!.registerClass(OHWidgetCell.self, forCellWithReuseIdentifier: self.reuseIdentifier)
         configurateCollectionView()
+//        collectionView?.allowsMultipleSelection = true
     }
     
     convenience init(collectionViewLayout layout: UICollectionViewLayout, widgets: [OHWidget]) {
@@ -176,18 +179,45 @@ extension OHWidgetCollectionViewController: UICollectionViewDataSource {
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
     {
-        var vc = OHLightController()
-        self.parentViewController!.navigationController?.pushViewController(vc, animated: true)
-        //self.parentVC?.navigationController?.pushViewController(vc, animated: true)
+//        var cell = collectionView(collectionView, cellForItemAtIndexPath: indexPath)
+        var cell = self.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! OHWidgetCell
+        cell.imageView.backgroundColor = UIColor.purpleColor()
+        cell.imageView.image = UIImage(named: "TV")
+//        cell.layoutSubviews()
+//        cell.selectedBackgroundView.backgroundColor = UIColor.purpleColor()
+//        cell.selected
         
-//        println("\(self.widgets![indexPath.item].widgets!.first!)")
-//        
-//        if var item = self.widgets![indexPath.item].widgets!.first!.item {
-//            if var tags = item.tags {
-//                self.getControllerForTags(tags)
-//            }
-//        }
+        var vc = OHLightController()
+        vc.title = cell.label.text
+        self.parentViewController!.navigationController?.pushViewController(vc, animated: true)
+        
+        if var widgets = self.widgets {
+            
+            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            var dataManager = appDelegate.dataManager
+            
+            if var bulbs = widgets[indexPath.item].linkedPage?.widgets {
+                var lights = [OHLight]()
+                
+                for (index, bulb) in enumerate(bulbs)
+                {
+                    var light = OHLight(widget: bulb)
+                    lights.append(light)
+                }
+                
+                vc.initLights(lights)
+            }
+        }
+
     }
+    
+//    override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+//        return false
+//    }
+//    
+//    override func collectionView(collectionView: UICollectionView, shouldDeselectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+//        return false
+//    }
     
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int
     {
@@ -203,7 +233,6 @@ extension OHWidgetCollectionViewController {
             var vc = OHLightController()
             
 //            println(self.parentViewController)
-            
             self.parentVC?.navigationController?.pushViewController(vc, animated: true)
 //                self.navigationController?
 //            self.presentViewController(vc, animated: true, completion: nil)

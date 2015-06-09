@@ -29,12 +29,29 @@ class OHDropdownMenuTableViewCell: UITableViewCell {
         contentView.backgroundColor = OHDefaults.defaultCellBackgroundColor()
         
         textLabel?.font = OHDefaults.defaultFontWithSize(18)
+        
+        selectedBackgroundView = UIView()
+        selectedBackgroundView?.backgroundColor = OHDefaults.defaultCellBackgroundColorSelected()
     }
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func prepareViewsForSelectedState()
+    {
+        if self.selected || self.highlighted {
+            imageView?.tintColor = UIColor.whiteColor()
+            textLabel?.textColor = UIColor.whiteColor()
+            tintColor = UIColor.whiteColor()
+        }
+        else {
+            textLabel?.textColor = OHDefaults.defaultTextColor()
+            imageView?.tintColor = OHDefaults.defaultTextColor()
+            accessoryView?.tintColor = nil
+        }
+        
+    }
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -53,6 +70,16 @@ class OHDropdownMenuTableViewCell: UITableViewCell {
             
             layer.mask = nil
         }
+        
+        if var imageView = self.imageView {
+            imageView.setHeight(40)
+            imageView.setWidth(40)
+            imageView.centerViewVerticallyInSuperview()
+            
+            self.textLabel?.marginLeft = imageView.neededSpaceWidth + 15
+        }
+        
+        prepareViewsForSelectedState()
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

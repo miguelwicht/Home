@@ -16,12 +16,20 @@ extension OHDefaults {
         return "Muli"
     }
     
+    static func defaultLightFontName() -> String {
+        return "Muli-Light"
+    }
+    
     static func defaultFontSize() -> CGFloat {
         return CGFloat(17.0)
     }
     
     static func defaultFontWithSize(size: CGFloat) -> UIFont? {
         return UIFont(name: OHDefaults.defaultFontName(), size: size)
+    }
+    
+    static func defaultLightFontWithSize(size: CGFloat) -> UIFont? {
+        return UIFont(name: OHDefaults.defaultLightFontName(), size: size)
     }
 }
 
@@ -51,7 +59,7 @@ extension OHDefaults {
 //    }
     
     static func defaultCellBackgroundColor() -> UIColor {
-        return UIColor.colorFromRGB(red: 234, green: 234, blue: 234, alpha: 1.0)
+        return UIColor.colorFromRGB(red: 236, green: 240, blue: 241, alpha: 1.0)
     }
     
     static func defaultCellBackgroundColorSelected() -> UIColor {
@@ -63,8 +71,3 @@ extension OHDefaults {
     }
 }
 
-extension UIColor {
-    static func colorFromRGB(#red: Int, green: Int, blue: Int, alpha: CGFloat) -> UIColor {
-        return UIColor(red: (CGFloat(red) / 255.0), green: (CGFloat(green) / 255.0), blue: (CGFloat(blue) / 255.0), alpha: alpha)
-    }
-}

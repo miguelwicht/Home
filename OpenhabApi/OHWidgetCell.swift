@@ -37,7 +37,9 @@ class OHWidgetCell: UICollectionViewCell {
         self.addSubview(self.imageView)
         
 //        self.label.font = self.font
-        self.label.font = UIFont(name: self.font.fontName, size: 13)
+//        self.label.font = UIFont(name: self.font.fontName, size: 12)
+//        self.label.font = UIFont(name: "Muli-Light", size: 12)
+        self.label.font = OHDefaults.defaultLightFontWithSize(12)
         self.label.textAlignment = NSTextAlignment.Center
         self.label.adjustsFontSizeToFitWidth = false
 //        self.label.textColor = UIColor(red: (133.0 / 255.0), green: (133.0 / 255.0), blue: (133.0 / 255.0), alpha: 1.0)
@@ -54,7 +56,8 @@ class OHWidgetCell: UICollectionViewCell {
     func calculateTextHeight()
     {
         var dummyText: NSString = "LoremIpsumg"
-        var font: UIFont = UIFont(name: self.label.font.fontName, size: CGFloat(self.label.font.pointSize + 2))!
+//        var font: UIFont = UIFont(name: self.label.font.fontName, size: CGFloat(self.label.font.pointSize + 2))!
+        var font = OHDefaults.defaultLightFontWithSize(14)!
         var textSize: CGSize = dummyText.sizeWithAttributes([NSFontAttributeName:font])
         textHeight = textSize.height
     }

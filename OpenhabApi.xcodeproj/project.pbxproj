@@ -42,6 +42,8 @@
 		22C632F91B04E42500BB0A17 /* AngleGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 22C632F61B04E42500BB0A17 /* AngleGradientLayer.m */; };
 		22C632FA1B04E42500BB0A17 /* ButtonWithCustomBackgroundSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C632F71B04E42500BB0A17 /* ButtonWithCustomBackgroundSize.swift */; };
 		22C632FB1B04E42500BB0A17 /* ColorWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C632F81B04E42500BB0A17 /* ColorWheel.swift */; };
+		22C7EFF31B2589FD00A430C4 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C7EFF21B2589FD00A430C4 /* UIImage+Extension.swift */; };
+		22C7EFF51B258A5E00A430C4 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C7EFF41B258A5E00A430C4 /* UIColor+Extension.swift */; };
 		22CC649E1B1C7FD700635978 /* OHLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CC649D1B1C7FD700635978 /* OHLight.swift */; };
 		22CC64A01B1DCDD100635978 /* PowerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CC649F1B1DCDD100635978 /* PowerButton.swift */; };
 		22CC64A21B1DDC4A00635978 /* MDWSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CC64A11B1DDC4A00635978 /* MDWSlider.swift */; };
@@ -113,6 +115,8 @@
 		22C632F61B04E42500BB0A17 /* AngleGradientLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AngleGradientLayer.m; sourceTree = "<group>"; };
 		22C632F71B04E42500BB0A17 /* ButtonWithCustomBackgroundSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonWithCustomBackgroundSize.swift; sourceTree = "<group>"; };
 		22C632F81B04E42500BB0A17 /* ColorWheel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorWheel.swift; sourceTree = "<group>"; };
+		22C7EFF21B2589FD00A430C4 /* UIImage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
+		22C7EFF41B258A5E00A430C4 /* UIColor+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		22CC649D1B1C7FD700635978 /* OHLight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHLight.swift; sourceTree = "<group>"; };
 		22CC649F1B1DCDD100635978 /* PowerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PowerButton.swift; sourceTree = "<group>"; };
 		22CC64A11B1DDC4A00635978 /* MDWSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDWSlider.swift; sourceTree = "<group>"; };
@@ -268,6 +272,8 @@
 				22599E611B0A13EC00EE7558 /* OHBeaconManager.swift */,
 				22CC649D1B1C7FD700635978 /* OHLight.swift */,
 				228156081B2070B8005A137A /* OHDefaults.swift */,
+				22C7EFF21B2589FD00A430C4 /* UIImage+Extension.swift */,
+				22C7EFF41B258A5E00A430C4 /* UIColor+Extension.swift */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -392,6 +398,7 @@
 		227DDC1C1ADBE25A001EAE08 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = "Miguel dos Santos Vaz Dias Wicht";
 				TargetAttributes = {
@@ -456,6 +463,7 @@
 				228156031B20520C005A137A /* OHSettingsViewController.swift in Sources */,
 				223C7FB81AE7C4040079A41C /* OHHomepage.swift in Sources */,
 				22E83C0C1ADEACFD0055B77A /* OHLinkedPage.swift in Sources */,
+				22C7EFF51B258A5E00A430C4 /* UIColor+Extension.swift in Sources */,
 				221D82AC1B10AD89007135F1 /* OHRearMenuHeaderView.swift in Sources */,
 				221AA8631B074651008805A5 /* OHDropdownMenuButton.swift in Sources */,
 				223C7FB61AE79FF90079A41C /* OHRestParser.swift in Sources */,
@@ -469,6 +477,7 @@
 				22D782EF1AEFA9F9006BFDF8 /* OHWidgetCell.swift in Sources */,
 				22D782ED1AEF7FF8006BFDF8 /* OHWidgetCollectionViewController.swift in Sources */,
 				22B3BAE51AE68AA5006150AC /* OHRoomsViewController.swift in Sources */,
+				22C7EFF31B2589FD00A430C4 /* UIImage+Extension.swift in Sources */,
 				227DDC4C1ADBE8D1001EAE08 /* SwiftyJSON.swift in Sources */,
 				22CC64AC1B1F234B00635978 /* OHRearMenuFooterView.swift in Sources */,
 				22A899D21AFA30B1004FFC16 /* ViewSetter.swift in Sources */,

@@ -13,7 +13,7 @@ class OHRoomsViewController: OHBaseViewController {
     
     var widgets: [OHWidget]?
     var roomSwitcherController: OHDropdownMenuTableViewController?
-    var roomSwitchButton: OHDropdownMenuButton?
+//    var roomSwitchButton: OHDropdownMenuButton?
     var currentRoom: OHRoomViewController?
     
     var isWaitingForBeacons: Bool = true
@@ -34,6 +34,7 @@ class OHRoomsViewController: OHBaseViewController {
         self.widgets = widgets
         
         initNotificationCenterNotifications()
+        addDropdownToNavigationBar()
     }
     
     override func loadView()
@@ -42,11 +43,10 @@ class OHRoomsViewController: OHBaseViewController {
         
         self.automaticallyAdjustsScrollViewInsets = false
         
-        roomSwitchButton = OHDropdownMenuButton(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 90))
-        self.view.addSubview(roomSwitchButton!)
-        
-        roomSwitchButton!.marginTop = 60
-        roomSwitchButton!.setTitle("Living Room", forState: .Normal)
+//        roomSwitchButton = OHDropdownMenuButton(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 90))
+//        self.view.addSubview(roomSwitchButton!)
+//        roomSwitchButton!.marginTop = 60
+//        roomSwitchButton!.setTitle("Living Room", forState: .Normal)
         
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         var dataManager = appDelegate.dataManager
@@ -66,22 +66,27 @@ class OHRoomsViewController: OHBaseViewController {
             addChildViewController(roomSwitcherController)
             view.addSubview(roomSwitcherController.view)
             
-            roomSwitcherController.view.marginTop = roomSwitchButton!.neededSpaceHeight
+//            roomSwitcherController.view.marginTop = roomSwitchButton!.neededSpaceHeight
+            roomSwitcherController.view.marginTop = self.navigationController!.navigationBar.neededSpaceHeight
+            
+            
             //            roomSwitcherController.view.setHeight(200)
             
             
 //            roomSwitcherController.view.backgroundColor = UIColor.redColor()
-            roomSwitcherController.view.setHeight(self.view.frame.height - roomSwitchButton!.neededSpaceHeight)
+//            roomSwitcherController.view.setHeight(self.view.frame.height - roomSwitchButton!.neededSpaceHeight)
+            roomSwitcherController.view.setHeight(CGFloat(self.view.frame.height - self.navigationController!.navigationBar.neededSpaceHeight))
 //            roomSwitcherController.tableView.backgroundColor = UIColor.redColor()
 //            roomSwitcherController.tableView.sizeToFit()
             roomSwitcherController.tableView.delegate = self
         }
         
-        roomSwitchButton!.addTarget(self, action: "toggleDropdownMenu:", forControlEvents: UIControlEvents.TouchUpInside)
-        toggleDropdownMenu(roomSwitchButton!)
+//        roomSwitchButton!.addTarget(self, action: "toggleDropdownMenu:", forControlEvents: UIControlEvents.TouchUpInside)
+//        toggleDropdownMenu(roomSwitchButton!)
+        toggleDropdownMenu(self.navigationItem.titleView as! UIButton)
     }
     
-    func toggleDropdownMenu(control: OHDropdownMenuButton)
+    func toggleDropdownMenu(control: UIButton)
     {
        
         if self.roomSwitcherController!.view.hidden {
@@ -104,8 +109,11 @@ class OHRoomsViewController: OHBaseViewController {
             roomSwitcherController.view.hidden = true
         }
         
-        self.roomSwitchButton!.setTitle(room.label?.uppercaseString, forState: .Normal)
-        var offsetY = self.navigationController!.navigationBar.neededSpaceHeight + 90
+//        self.roomSwitchButton!.setTitle(room.label?.uppercaseString, forState: .Normal)
+        if var button = self.navigationItem.titleView as? UIButton {
+            button.setTitle(room.label?.uppercaseString, forState: .Normal)
+        }
+        var offsetY = self.navigationController!.navigationBar.neededSpaceHeight
         var height = self.view.frame.height - offsetY
         
         if var currentRoom = self.currentRoom {
@@ -126,14 +134,11 @@ class OHRoomsViewController: OHBaseViewController {
 }
 
 extension OHRoomsViewController: UITableViewDelegate {
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        roomSwitchButton?.setTitle(roomSwitcherController?.data[indexPath.row].label, forState: .Normal)
-        switchToRoom(roomSwitcherController!.data[indexPath.row])
+        switchToRoom(roomSwitcherController!.data[indexPath.row] as! OHWidget)
     }
     
-//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        return 30
-//    }
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if cell.respondsToSelector("setSeparatorInset:") {
             cell.separatorInset = UIEdgeInsetsZero
@@ -149,7 +154,7 @@ extension OHRoomsViewController: UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 60
+        return 145
     }
 }
 
@@ -258,5 +263,21 @@ extension OHRoomsViewController {
         
 //        menuItemButton.addTarget(self, action: "startDetecting")
         menuItemButton.addTarget(self, action: "startDetectingRoom:", forControlEvents: UIControlEvents.TouchUpInside)
+    }
+}
+
+extension OHRoomsViewController {
+    func addDropdownToNavigationBar() {
+        
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        
+        var button = UIButton.buttonWithType(.Custom)
+        
+        button.setWidth(appDelegate.window!.frame.width - 100)
+        
+        button.setTitle("Button", forState: .Normal)
+        self.navigationItem.titleView = button as? UIView
+        button.addTarget(self, action: "toggleDropdownMenu:", forControlEvents: UIControlEvents.TouchUpInside)
     }
 }

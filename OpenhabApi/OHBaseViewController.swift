@@ -67,15 +67,23 @@ extension OHBaseViewController {
         
         
         let revealController = self.revealViewController
-        var menuItemButton = UIButton.buttonWithType(UIButtonType.Custom)
+        var menuItemButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
         
         menuItemButton.setImage(UIImage(named: "menu"), forState: UIControlState.Normal)
         menuItemButton.sizeToFit()
         
         println(menuItemButton.frame)
         
-        var item = UIBarButtonItem(customView: menuItemButton as! UIView)
-        self.navigationItem.leftBarButtonItem = item
+        var item = UIBarButtonItem(customView: menuItemButton as UIView)
+        self.navigationItem.leftBarButtonItems = [item]
+        
+        menuItemButton.setWidth(40)
+        menuItemButton.setHeight(40)
+        menuItemButton.imageView!.setWidth(40)
+        menuItemButton.imageView!.setHeight(40)
+        menuItemButton.imageView!.contentMode = UIViewContentMode.ScaleAspectFit
+        menuItemButton.backgroundColor = UIColor.purpleColor()
+        
         
         //        menuItemButton.addTarget(self, action: "startDetecting")
         menuItemButton.addTarget(revealController(), action: "revealToggle:", forControlEvents: UIControlEvents.TouchUpInside)

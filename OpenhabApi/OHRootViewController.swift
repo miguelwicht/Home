@@ -63,8 +63,8 @@ extension OHRootViewController {
     {
 //        loadLocalSitemap()
 //        dataManager = OHDataManager()
-        restManager = OHRestManager(baseUrl: "http://192.168.0.251:8888")
-//        restManager = OHRestManager(baseUrl: "http://10.10.32.251:8888")
+//        restManager = OHRestManager(baseUrl: "http://192.168.0.251:8888")
+        restManager = OHRestManager(baseUrl: "http://10.10.32.251:8888")
         
         if var restManager = self.restManager {
             restManager.delegate = self

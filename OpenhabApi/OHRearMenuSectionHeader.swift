@@ -28,8 +28,8 @@ class OHRearMenuSectionHeader: UIButton {
     
     func configurateViews()
     {
-        setTitleColor(UIColor(red: (68.0 / 255.0), green: (68.0 / 255.0), blue: (68.0 / 255.0), alpha: 1.0), forState: .Normal)
-        setTitleColor(UIColor.whiteColor(), forState: .Highlighted)
+        setTitleColor(OHDefaults.defaultTextColor(), forState: .Normal)
+        setTitleColor(OHDefaults.defaultTextColor(), forState: .Highlighted)
 //        setImage(UIImage(named: "arrow_left"), forState: .Normal)
         
         if var titleLabel = self.titleLabel {

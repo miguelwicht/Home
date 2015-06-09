@@ -38,11 +38,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func prepareViewController()
     {
+        let defaults = NSUserDefaults.standardUserDefaults()
         
+        var frontViewController: UIViewController?
+        
+        var sitemapsArray = defaults.objectForKey("SettingsOpenHABSitemaps") as? [String]
+        println(sitemapsArray)
+        if var sitemaps = sitemapsArray {
+            if sitemaps.count > 0 {
+                frontViewController = OHRootViewController.new()
+            }
+        }
+        
+        if frontViewController == nil {
+            frontViewController = OHSettingsViewController.new()
+        }
         
         
         var rearViewController = OHRearMenuViewController.new()
-        var containerViewController = SWRevealViewController(rearViewController: rearViewController, frontViewController: OHSettingsViewController.new())
+        var containerViewController = SWRevealViewController(rearViewController: rearViewController, frontViewController: frontViewController)
         containerViewController.rearViewRevealOverdraw = 0
         containerViewController.rearViewRevealWidth = self.window!.frame.width - CGFloat(60)
         rearViewController.view.setWidth(containerViewController.rearViewRevealWidth)
@@ -66,6 +80,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().barTintColor = OHDefaults.defaultNavigationBarColor()
         UINavigationBar.appearance().tintColor = UIColor(red: (51.0 / 255.0), green: (51.0 / 255.0), blue: (51.0 / 255.0), alpha: 1.0)
         UINavigationBar.appearance().titleTextAttributes = [ NSFontAttributeName: UIFont(name: font!.fontName, size: 17.0)! ]
+        
+        UIButton.appearance().setTitleColor(OHDefaults.defaultTextColor(), forState: .Normal)
     }
     
     func registerDefaults()

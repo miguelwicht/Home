@@ -47,10 +47,26 @@ class OHRearMenuViewController: UIViewController {
             tableView.marginTop = headerView!.neededSpaceHeight
             
             headerView?.setWidth(tableView.frame.width)
+            
+            
+            var footerButton: UIButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+            footerButton.setTitle("Settings".uppercaseString, forState: .Normal)
+            footerButton.titleLabel?.font = OHDefaults.defaultFontWithSize(17)
+            footerButton.setTitleColor(OHDefaults.defaultTextColor(), forState: .Normal)
+            footerView!.addSubview(footerButton)
+            footerButton.sizeToFit()
+            footerButton.centerViewVerticallyInSuperview()
+            footerButton.marginLeft = 15
+            footerButton.addTarget(self, action: "footerButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         }
         
         updateMenu()
-        
+    }
+    
+    func footerButtonPressed(button: UIButton)
+    {
+        var settingsViewController = OHSettingsViewController()
+        self.presentViewController(settingsViewController, animated: true, completion: nil)
     }
     
     func updateMenu()
@@ -89,7 +105,6 @@ class OHRearMenuViewController: UIViewController {
         
         tableView!.setWidth(view.frame.width)
         headerView!.setWidth(tableView!.frame.width)
-        println("tableView: \(tableView!.frame)")
     }
 }
 
@@ -160,16 +175,12 @@ extension OHRearMenuViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
-        // Return the number of rows in the section.
         
         var numberOfRows = 0
         
-        
-        if (sectionHeaders[section] != nil) {
-            
+        if (sectionHeaders[section] != nil)
+        {
             var button = sectionHeaders[section]!
-            
             var numberOfItems = widgets![section].linkedPage!.widgets!.count
             
             numberOfRows = button!.showSection ? numberOfItems : 0

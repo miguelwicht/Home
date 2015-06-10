@@ -7,7 +7,7 @@
 
 import Foundation
 
-@objc public class OHLinkedPage {
+@objc public class OHLinkedPage: NSObject {
     
     let pageId: String
     let icon: String
@@ -15,6 +15,27 @@ import Foundation
     let link: String
     var widgets: [OHWidget]?
     var linkedPage: OHLinkedPage?
+    
+    
+    required public init(coder aDecoder: NSCoder)
+    {
+        self.pageId = aDecoder.decodeObjectForKey("pageId") as! String
+        self.icon = aDecoder.decodeObjectForKey("icon") as! String
+        self.title = aDecoder.decodeObjectForKey("title") as! String
+        self.link = aDecoder.decodeObjectForKey("link") as! String
+        self.widgets = aDecoder.decodeObjectForKey("widgets") as? [OHWidget]
+        self.linkedPage = aDecoder.decodeObjectForKey("widgets") as? OHLinkedPage
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder)
+    {
+        aCoder.encodeObject(pageId, forKey: "pageId")
+        aCoder.encodeObject(icon, forKey: "icon")
+        aCoder.encodeObject(title, forKey: "title")
+        aCoder.encodeObject(link, forKey: "link")
+        aCoder.encodeObject(widgets, forKey: "widgets")
+        aCoder.encodeObject(linkedPage, forKey: "linkedPage")
+    }
     
     init(pageId:String, icon:String, title:String, link:String, widgets: [JSON]?){
         self.pageId = pageId
@@ -51,7 +72,7 @@ import Foundation
 //MARK: OHSitemap: Printable
 extension OHLinkedPage : Printable {
     
-    public var description:String
+    override public var description:String
     {
             let className = reflect(self).summary
             var desc:String = ""

@@ -1,4 +1,4 @@
-//
+
 //  OHDataManager.swift
 //  OpenhabApi
 //
@@ -145,6 +145,22 @@ class OHDataManager: NSObject {
         }
     }
     
+    func saveData()
+    {
+        var path: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("sitemapsData") as NSString
+        NSKeyedArchiver.archiveRootObject(sitemaps!, toFile: path as String)
+    }
+    
+    func loadData()
+    {
+        var path: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("sitemapsData") as NSString
+        if var sitemaps = NSKeyedUnarchiver.unarchiveObjectWithFile(path as String) as? [String: OHSitemap] {
+            self.sitemaps = sitemaps
+            
+        } else {
+            print("could not load data")
+        }
+    }
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
@@ -185,7 +201,8 @@ extension OHDataManager: OHRestManagerDelegate {
         } else {
             self.sitemaps = [sitemap.name: sitemap]
         }
-        
+        saveData()
+        loadData()
         updateItemsFromSitemaps()
         parseBeaconsFromSitemap(sitemap)
         

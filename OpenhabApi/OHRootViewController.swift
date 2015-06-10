@@ -52,8 +52,8 @@ class OHRootViewController: UINavigationController {
         if var menuViewController = revealViewController().rearViewController as? OHRearMenuViewController {
             menuViewController.updateMenu()
         }
-
-        pushViewControllerWithSitemap(sitemaps[startIndex].1)
+        var sitemap = sitemaps[startIndex].1
+        pushViewControllerWithSitemap(sitemap)
     }
 
     override func didReceiveMemoryWarning() {

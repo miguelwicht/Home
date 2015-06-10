@@ -35,6 +35,8 @@ class OHSettingsViewController: UIViewController {
         
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         
+        initSitemapChooser()
+        
         initObservers()
         
         
@@ -79,7 +81,7 @@ class OHSettingsViewController: UIViewController {
         dismissButton!.addTarget(self, action: "dismissButtonPressed:", forControlEvents: .TouchUpInside)
         view.addSubview(dismissButton!)
         
-        initSitemapChooser()
+        
         OHDataManager.sharedInstance.loadLocalSitemaps()
     }
     
@@ -192,6 +194,10 @@ class OHSettingsViewController: UIViewController {
             sitemapChooserController.tableView.setHeight(height)
         }
     }
+    
+    deinit {
+        removeObservers()
+    }
 }
 
 extension OHSettingsViewController {
@@ -232,6 +238,11 @@ extension OHSettingsViewController {
         let options : NSKeyValueObservingOptions = .New | .Old | .Initial | .Prior
         
         OHDataManager.sharedInstance.addObserver(self, forKeyPath: "sitemaps", options: options, context: nil)
+    }
+    
+    func removeObservers()
+    {
+        OHDataManager.sharedInstance.removeObserver(self, forKeyPath: "sitemaps")
     }
     
     override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {

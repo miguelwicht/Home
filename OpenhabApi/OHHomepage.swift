@@ -8,13 +8,33 @@
 
 import Foundation
 
-public class OHHomepage {
+public class OHHomepage: NSObject {
     let id: String
     let title: String
     let link: String
     let leaf: Bool
     
     var widgets: [OHWidget]?
+    
+    required public init(coder aDecoder: NSCoder)
+    {
+        self.id = aDecoder.decodeObjectForKey("id") as! String
+        self.title = aDecoder.decodeObjectForKey("title") as! String
+        self.link = aDecoder.decodeObjectForKey("link") as! String
+        self.leaf = aDecoder.decodeObjectForKey("leaf") as! Bool
+        
+        self.widgets = aDecoder.decodeObjectForKey("widgets") as? [OHWidget]
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder)
+    {
+        aCoder.encodeObject(id, forKey: "id")
+        aCoder.encodeObject(title, forKey: "title")
+        aCoder.encodeObject(link, forKey: "link")
+        aCoder.encodeObject(leaf, forKey: "leaf")
+        
+        aCoder.encodeObject(widgets, forKey: "widgets")
+    }
     
     init(homepage: JSON)
     {
@@ -52,7 +72,7 @@ public class OHHomepage {
 
 extension OHHomepage: Printable {
     
-    public var description: String
+    override public var description: String
     {
         let className = reflect(self).summary
         var desc:String = ""

@@ -13,6 +13,8 @@ import Foundation
     public var dimmer: OHItem?
     public var color: OHItem?
     
+    public var widget: OHWidget?
+    
     public init(dimmer: OHItem?, color: OHItem?) {
         self.dimmer = dimmer
         self.color = color
@@ -20,7 +22,9 @@ import Foundation
     
     public init(widget: OHWidget)
     {
-        if var widgets = widget.linkedPage?.widgets {
+        self.widget = widget
+        
+        if var widgets = self.widget?.linkedPage?.widgets {
             for (index, w) in enumerate(widgets)
             {
                 if var item = w.item {

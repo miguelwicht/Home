@@ -59,7 +59,7 @@ extension OHBaseViewController {
         let revealController = self.revealViewController
         var menuItemButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
         
-        menuItemButton.setImage(UIImage(named: "menu"), forState: UIControlState.Normal)
+        menuItemButton.setImage(UIImage(named: "menu")?.imageWithRenderingMode(.AlwaysTemplate), forState: UIControlState.Normal)
         menuItemButton.sizeToFit()
         
         var item = UIBarButtonItem(customView: menuItemButton as UIView)

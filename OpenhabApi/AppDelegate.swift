@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         setupAppearance()
-        
+        loadData()
 //        dataManager.loadLocalSitemaps()
         
         prepareViewController()
@@ -37,6 +37,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.makeKeyAndVisible()
         
         return true
+    }
+    
+    func loadData()
+    {
+        OHDataManager.sharedInstance.loadData()
     }
     
     func prepareViewController()
@@ -93,8 +98,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UILabel.appearance().font = font
         
         UINavigationBar.appearance().barTintColor = OHDefaults.defaultNavigationBarColor()
+        UINavigationBar.appearance().translucent = false
         UINavigationBar.appearance().tintColor = UIColor(red: (51.0 / 255.0), green: (51.0 / 255.0), blue: (51.0 / 255.0), alpha: 1.0)
-        UINavigationBar.appearance().titleTextAttributes = [ NSFontAttributeName: UIFont(name: font!.fontName, size: 17.0)! ]
+        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
+        UINavigationBar.appearance().titleTextAttributes = [ NSFontAttributeName: UIFont(name: font!.fontName, size: 17.0)!, NSForegroundColorAttributeName: UIColor.whiteColor() ]
         
         UIButton.appearance().setTitleColor(OHDefaults.defaultTextColor(), forState: .Normal)
     }

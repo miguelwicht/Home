@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class OHWidget {
+public class OHWidget: NSObject {
     
     var widgetId: String?
     var label: String?
@@ -31,9 +31,59 @@ public class OHWidget {
     var linkedPage: OHLinkedPage?
     var text: String? = ""
     var mappings: [String]? = [""]
-    
-//    var widgets: [JSON]?
     var widgets: [OHWidget]?
+    
+    required public init(coder aDecoder: NSCoder)
+    {
+        self.widgetId = aDecoder.decodeObjectForKey("widgetId") as? String
+        self.label = aDecoder.decodeObjectForKey("label") as? String
+        self.icon = aDecoder.decodeObjectForKey("icon") as? String
+        self.type = aDecoder.decodeObjectForKey("type") as? String
+        self.url = aDecoder.decodeObjectForKey("url") as? String
+        self.period = aDecoder.decodeObjectForKey("period") as? String
+        self.minValue = aDecoder.decodeObjectForKey("minValue") as? String
+        self.maxValue = aDecoder.decodeObjectForKey("maxValue") as? String
+        self.step = aDecoder.decodeObjectForKey("step") as? String
+        self.refresh = aDecoder.decodeObjectForKey("refresh") as? String
+        self.height = aDecoder.decodeObjectForKey("height") as? String
+        self.isLeaf = aDecoder.decodeObjectForKey("isLeaf") as? String
+        self.iconColor = aDecoder.decodeObjectForKey("iconColor") as? String
+        self.labelColor = aDecoder.decodeObjectForKey("labelColor") as? String
+        self.valueColor = aDecoder.decodeObjectForKey("valueColor") as? String
+        self.service = aDecoder.decodeObjectForKey("service") as? String
+        
+        self.item = aDecoder.decodeObjectForKey("item") as? OHItem
+        self.linkedPage = aDecoder.decodeObjectForKey("linkedPage") as? OHLinkedPage
+        self.text = aDecoder.decodeObjectForKey("text") as? String
+        self.mappings = aDecoder.decodeObjectForKey("mappings") as? [String]
+        self.widgets = aDecoder.decodeObjectForKey("widgets") as? [OHWidget]
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder)
+    {
+        aCoder.encodeObject(widgetId, forKey: "widgetId")
+        aCoder.encodeObject(label, forKey: "label")
+        aCoder.encodeObject(icon, forKey: "icon")
+        aCoder.encodeObject(type, forKey: "type")
+        aCoder.encodeObject(url, forKey: "url")
+        aCoder.encodeObject(period, forKey: "period")
+        aCoder.encodeObject(minValue, forKey: "minValue")
+        aCoder.encodeObject(maxValue, forKey: "maxValue")
+        aCoder.encodeObject(step, forKey: "step")
+        aCoder.encodeObject(refresh, forKey: "refresh")
+        aCoder.encodeObject(height, forKey: "height")
+        aCoder.encodeObject(isLeaf, forKey: "isLeaf")
+        aCoder.encodeObject(iconColor, forKey: "iconColor")
+        aCoder.encodeObject(labelColor, forKey: "labelColor")
+        aCoder.encodeObject(valueColor, forKey: "valueColor")
+        aCoder.encodeObject(service, forKey: "service")
+        
+        aCoder.encodeObject(item, forKey: "item")
+        aCoder.encodeObject(linkedPage, forKey: "linkedPage")
+        aCoder.encodeObject(text, forKey: "text")
+        aCoder.encodeObject(mappings, forKey: "mappings")
+        aCoder.encodeObject(widgets, forKey: "widgets")
+    }
     
     public init(widget: [String: JSON])
     {
@@ -132,7 +182,7 @@ public class OHWidget {
 //MARK: OHBeacon: Printable
 extension OHWidget : Printable {
     
-    public var description: String {
+    override public var description: String {
         
         var desc: String = ""
         

@@ -11,7 +11,9 @@ import UIKit
 class OHStatusBarView: UIView {
     
     var normalColor = OHDefaults.defaultNavigationBarColor()
-    var highlightedColor = UIColor.blackColor()
+    var highlightedColor = OHDefaults.defaultNavigationBarColor()
+    var highlightedStatusBarStyle: UIStatusBarStyle = UIStatusBarStyle.LightContent
+    var normalStatusBarStyle: UIStatusBarStyle = UIStatusBarStyle.LightContent
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -36,12 +38,12 @@ class OHStatusBarView: UIView {
             if (highlighted) {
                 UIView.animateWithDuration(interval, animations: {
                     self.backgroundColor = self.highlightedColor
-                    UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
+                    UIApplication.sharedApplication().statusBarStyle = self.highlightedStatusBarStyle
                 })
             } else {
                 UIView.animateWithDuration(interval, animations: {
                     self.backgroundColor = self.normalColor
-                    UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.Default
+                    UIApplication.sharedApplication().statusBarStyle = self.normalStatusBarStyle
                 })
             }
         }

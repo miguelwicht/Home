@@ -8,13 +8,31 @@
 
 import UIKit
 
-public class OHItem {
+public class OHItem: NSObject {
     
     let type: String
     let name: String
     let state: String
     let link: String
     var tags: [String]?
+    
+    required public init(coder aDecoder: NSCoder)
+    {
+        self.type = aDecoder.decodeObjectForKey("type") as! String
+        self.name = aDecoder.decodeObjectForKey("name") as! String
+        self.state = aDecoder.decodeObjectForKey("state") as! String
+        self.link = aDecoder.decodeObjectForKey("link") as! String
+        self.tags = aDecoder.decodeObjectForKey("tags") as? [String]
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder)
+    {
+        aCoder.encodeObject(type, forKey: "type")
+        aCoder.encodeObject(name, forKey: "name")
+        aCoder.encodeObject(state, forKey: "state")
+        aCoder.encodeObject(link, forKey: "link")
+        aCoder.encodeObject(tags, forKey: "tags")
+    }
     
     public init(type: String, name: String, state: String, link: String)
     {
@@ -32,6 +50,8 @@ public class OHItem {
         self.name = i["name"]!.stringValue
         self.state = i["state"]!.stringValue
         self.link = i["link"]!.stringValue
+        
+        super.init()
         
         if var tags = i["tags"]?.arrayValue {
             
@@ -110,7 +130,7 @@ public class OHItem {
 //MARK: OHSitemap: Printable
 extension OHItem : Printable {
     
-    public var description:String
+    override public var description:String
         {
             let className = reflect(self).summary
             var desc:String = ""

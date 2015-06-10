@@ -37,7 +37,7 @@ extension OHDefaults {
 extension OHDefaults {
     
     static func defaultNavigationBarColor() -> UIColor {
-        return UIColor.colorFromRGB(red: 248, green: 248, blue: 248, alpha: 1.0)
+        return UIColor.colorFromRGB(red: 39, green: 174, blue: 96)
     }
     
     static func defaultTextColor() -> UIColor {
@@ -58,16 +58,20 @@ extension OHDefaults {
 //        return UIColor.colorFromRGB(red: 52, green: 73, blue: 94, alpha: 1.0)
 //    }
     
+    static func defaultMenuHeaderBackgroundColor() -> UIColor {
+        return UIColor.colorFromRGB(red: 248, green: 248, blue: 248, alpha: 1.0)
+    }
+    
     static func defaultCellBackgroundColor() -> UIColor {
-        return UIColor.colorFromRGB(red: 236, green: 240, blue: 241, alpha: 1.0)
+        return UIColor.colorFromRGB(red: 255, green: 255, blue: 255, alpha: 1.0)
     }
     
     static func defaultCellBackgroundColorSelected() -> UIColor {
-        return UIColor.colorFromRGB(red: 52, green: 73, blue: 94, alpha: 1.0)
+        return UIColor.colorFromRGB(red: 39, green: 174, blue: 96)
     }
     
     static func defaultCellBackgroundColorHighlighted() -> UIColor {
-        return UIColor.colorFromRGB(red: 52, green: 73, blue: 94, alpha: 1.0)
+        return UIColor.colorFromRGB(red: 39, green: 174, blue: 96)
     }
 }
 

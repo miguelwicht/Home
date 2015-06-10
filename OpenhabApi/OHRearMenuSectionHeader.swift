@@ -35,7 +35,7 @@ class OHRearMenuSectionHeader: UIButton {
         if var titleLabel = self.titleLabel {
             titleLabel.font = OHDefaults.defaultFontWithSize(20)  //UIFont(name:  "Muli-Regular", size: 32)
         }
-        self.backgroundColor = UIColor.colorFromRGB(red: 248, green: 248, blue: 248, alpha: 1.0)
+        self.backgroundColor = OHDefaults.defaultMenuHeaderBackgroundColor()//UIColor.colorFromRGB(red: 248, green: 248, blue: 248, alpha: 1.0)
 //        self.addTarget(self, action: "toggle", forControlEvents: .TouchUpInside)
         
         borderTop.backgroundColor = UIColor(red: (39.0 / 255.0), green: (39.0 / 255.0), blue: (39.0 / 255.0), alpha: 0.5)

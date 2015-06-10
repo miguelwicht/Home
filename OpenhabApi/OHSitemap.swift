@@ -18,6 +18,28 @@ import Foundation
     
     var homepage: OHHomepage?
     
+    required public init(coder aDecoder: NSCoder)
+    {
+        self.name = aDecoder.decodeObjectForKey("name") as! String
+        self.icon = aDecoder.decodeObjectForKey("icon") as? String
+        self.label = aDecoder.decodeObjectForKey("label") as! String
+        self.link = aDecoder.decodeObjectForKey("link") as! String
+        self.leaf = aDecoder.decodeObjectForKey("leaf") as? String
+        self.homepageLink = aDecoder.decodeObjectForKey("homepageLink") as? String
+        self.homepage = aDecoder.decodeObjectForKey("homepage") as? OHHomepage
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder)
+    {
+        aCoder.encodeObject(name, forKey: "name")
+        aCoder.encodeObject(icon, forKey: "icon")
+        aCoder.encodeObject(label, forKey: "label")
+        aCoder.encodeObject(link, forKey: "link")
+        aCoder.encodeObject(leaf, forKey: "leaf")
+        aCoder.encodeObject(homepageLink, forKey: "homepageLink")
+        aCoder.encodeObject(homepage, forKey: "homepage")
+    }
+    
     public init(name:String, icon:String, label:String, link:String, leaf:String, homepageLink:String){
         self.name = name
         self.icon = icon

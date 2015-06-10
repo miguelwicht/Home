@@ -30,7 +30,7 @@ class OHRearMenuHeaderView: UIView {
         lineView.backgroundColor = UIColor(red: (142.0 / 255.0), green: (136.0 / 255.0), blue: (136.0 / 255.0), alpha: 1.0)
         label.textColor = OHDefaults.defaultTextColor()
         label.font = OHDefaults.defaultFontWithSize(22)
-        self.backgroundColor = OHDefaults.defaultNavigationBarColor()
+        self.backgroundColor = OHDefaults.defaultMenuHeaderBackgroundColor()
     }
 
     required init(coder aDecoder: NSCoder) {

@@ -9,7 +9,7 @@
 import UIKit
 
 class OHLightController: UIViewController {
-    var widget: OHWidget?
+    var widgets: [OHWidget]?
     
     var dimmer: MDWSlider?
     var colorWheel: ColorWheel?
@@ -22,13 +22,25 @@ class OHLightController: UIViewController {
     
     var brightnessLabel: UILabel?
     
+    var scrollView = UIScrollView()
+    
     override func loadView() {
         super.loadView()
+        
+//        self.automaticallyAdjustsScrollViewInsets = true
+        
+        self.view.addSubview(self.scrollView)
+        
+        scrollView.frame = self.view.frame
+        
+        println("\(scrollView.frame)")
+        
+//        self.automaticallyAdjustsScrollViewInsets = true
         
         colorWheel = ColorWheel(frame: CGRect(x: 45, y: 138, width: 237, height: 237))
         
         if var colorWheel = self.colorWheel {
-            self.view.addSubview(colorWheel)
+            scrollView.addSubview(colorWheel)
             
             colorWheel.centerViewHorizontallyInSuperview()
             colorWheel.centerViewVerticallyInSuperview()
@@ -47,8 +59,8 @@ class OHLightController: UIViewController {
         colorWheel?.button?.addTarget(self, action: "switchLight:", forControlEvents: .TouchUpInside)
         colorWheel?.addTarget(self, action: "colorValueChanged:", forControlEvents: .ValueChanged)
         
-        dimmer = MDWSlider(frame: CGRect(x: 15, y: 0, width: self.view.frame.width - 30, height: 40))
-        view.addSubview(dimmer!)
+        dimmer = MDWSlider(frame: CGRect(x: 15, y: 0, width: self.scrollView.frame.width - 30, height: 40))
+        self.scrollView.addSubview(dimmer!)
         dimmer!.centerViewHorizontallyInSuperview()
         dimmer!.marginBottom = 50
         dimmer!.addLeftImage(UIImage(named: "sun_small")!)
@@ -59,7 +71,7 @@ class OHLightController: UIViewController {
         brightnessLabel?.text = "Brightness".uppercaseString
 //        brightnessLabel!.font = UIFont(name: brightnessLabel!.font.familyName, size: 20)
         brightnessLabel!.font = OHDefaults.defaultFontWithSize(20)
-        view.addSubview(brightnessLabel!)
+        scrollView.addSubview(brightnessLabel!)
     }
     
     func colorValueChanged(colorWheel: ColorWheel)
@@ -101,18 +113,21 @@ class OHLightController: UIViewController {
 //        }
     }
     
-    func setWidget(widget: OHWidget)
+    func initWidget(widgets: [OHWidget])
     {
-        self.widget = widget
+        self.widgets = widgets
         
         if var colorWheel = self.colorWheel {
             colorWheel.moveHandleToColor(UIColor.yellowColor())
         }
+        
+        
     }
     
     func initLights(lights:[OHLight]?)
     {
         self.lights = lights
+        
         createCollectionView([OHWidget](), rows: 1)
     }
     
@@ -122,7 +137,7 @@ class OHLightController: UIViewController {
         var collectionViewControllerBottom = CGFloat(60)
         
         if var collectionViewController = self.collectionViewController {
-            collectionViewController.view.marginTop = 80
+            collectionViewController.view.marginTop = 20
             collectionViewControllerBottom = collectionViewController.view.neededSpaceHeight + 30
         }
         
@@ -145,13 +160,21 @@ extension OHLightController {
         var layout = OHWidgetCollectionViewLayout()
         layout.itemSize = CGSize(width: 40, height: 50)
         layout.minimumInteritemSpacing = 40
+        
+        layout.minimumLineSpacing = 25
+        
         collectionViewController = OHWidgetCollectionViewController(collectionViewLayout: layout, widgets: widgets)
+        collectionViewController!.automaticallyAdjustsScrollViewInsets = true
         collectionViewController!.collectionView!.delegate = self
         collectionViewController!.collectionView!.dataSource = self
-        // TODO: add function to calculate row height
-        var height = CGFloat(CGFloat(rows) * (layout.itemSize.height + layout.minimumLineSpacing))
-        //        height = CGFloat(rows * 120)
+//        // TODO: add function to calculate row height
+//        var height = CGFloat(CGFloat(rows) * (layout.itemSize.height + layout.minimumLineSpacing))
+//                height = CGFloat(rows * 120)
         
+        // TODO: add function to calculate row height
+        var height = CGFloat(CGFloat(rows) * (layout.itemSize.height + layout.minimumLineSpacing)) - layout.minimumLineSpacing
+        height = rows == 1 ? layout.itemSize.height : height
+//        height + 10
         if var collectionViewController = self.collectionViewController {
             if var collectionView = collectionViewController.collectionView {
                 collectionView.registerClass(OHWidgetCell.self, forCellWithReuseIdentifier: self.reuseIdentifier)
@@ -160,8 +183,10 @@ extension OHLightController {
             
             collectionViewController.view.frame = CGRectMake(0, 0, self.view.frame.width - 30, height)
             
-            self.addChildViewController(collectionViewController)
-            self.view.addSubview(collectionViewController.view)
+            println("CollectionViewContollerFrame: \(collectionViewController.view.frame)")
+            println("CollectionViewFrame: \(collectionViewController.collectionView?.frame)")
+//            self.addChildViewController(collectionViewController)
+            scrollView.addSubview(collectionViewController.view)
             
             collectionViewController.view.centerViewHorizontallyInSuperview()
             collectionViewController.view.centerViewVerticallyInSuperview()

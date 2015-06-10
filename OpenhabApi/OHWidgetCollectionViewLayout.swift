@@ -53,9 +53,10 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
 //        } else {
 //            self.rows = Int(CGFloat(self.collectionView!.bounds.height - self.minimumLineSpacing) / self.itemSize.height)
 //        }
-        
+        println("ItemSize: \(self.itemSize)")
         self.rows = Int(CGFloat(self.collectionView!.bounds.height - self.minimumLineSpacing) / self.itemSize.height)
-        println(CGFloat(self.collectionView!.bounds.height - self.minimumLineSpacing) / self.itemSize.height)
+        println("Rows \(CGFloat(self.collectionView!.bounds.height - self.minimumLineSpacing) / self.itemSize.height)")
+        println("Bounds:: \(self.collectionView!.bounds)")
         
         // fix so that we get at least 1 row for the calculations as Int() will round up
         rows = rows == 0 ? 1 : rows
@@ -107,6 +108,8 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
         
         var width = CGFloat(self.collectionView!.bounds.width * pageCount)
         let height: CGFloat = self.collectionView!.bounds.height
+        println("Bounds: \(self.collectionView!.bounds)")
+        println("Frame: \(self.collectionView!.frame)")
         
         return CGSizeMake(width, height)
     }

@@ -31,7 +31,7 @@ class OHRoomsViewController: OHBaseViewController {
         self.init(nibName: nil, bundle: nil)
         
         self.widgets = widgets
-        
+        println(widgets)
         initNotificationCenterNotifications()
         addDropdownToNavigationBar()
     }
@@ -40,7 +40,7 @@ class OHRoomsViewController: OHBaseViewController {
     {
         super.loadView()
         
-        self.automaticallyAdjustsScrollViewInsets = false
+        self.automaticallyAdjustsScrollViewInsets = true
 
         switchToRoom(self.widgets!.first!)
         initRoomSwitcherController()
@@ -63,8 +63,8 @@ extension OHRoomsViewController {
             addChildViewController(roomSwitcherController)
             view.addSubview(roomSwitcherController.view)
             
-            roomSwitcherController.view.marginTop = self.navigationController!.navigationBar.neededSpaceHeight
-            roomSwitcherController.view.setHeight(CGFloat(self.view.frame.height - self.navigationController!.navigationBar.neededSpaceHeight))
+            roomSwitcherController.view.marginTop = 0//self.navigationController!.navigationBar.neededSpaceHeight
+            roomSwitcherController.view.setHeight(CGFloat(self.view.frame.height)) //- self.navigationController!.navigationBar.neededSpaceHeight))
             roomSwitcherController.tableView.delegate = self
         }
         
@@ -89,6 +89,7 @@ extension OHRoomsViewController {
             button.setTitle(room.label?.uppercaseString, forState: .Normal)
         }
         var offsetY = self.navigationController!.navigationBar.neededSpaceHeight
+        offsetY = 0
         var height = self.view.frame.height - offsetY
         
         if var currentRoom = self.currentRoom {
@@ -237,6 +238,7 @@ extension OHRoomsViewController {
         var button = UIButton.buttonWithType(.Custom) as! UIButton
         button.setWidth(appDelegate.window!.frame.width - 100)
         button.setTitle("Button", forState: .Normal)
+        button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         self.navigationItem.titleView = button
         self.navigationItem.titleView?.sizeToFit()
         button.addTarget(self, action: "toggleDropdownMenu:", forControlEvents: UIControlEvents.TouchUpInside)

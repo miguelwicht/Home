@@ -7,7 +7,7 @@
 
 import Foundation
 
-@objc public class OHBeacon {
+@objc public class OHBeacon: NSObject {
     
     public let uuid: String
     public let major: Int
@@ -15,6 +15,26 @@ import Foundation
     public let link: String
     public var proximity: Int?
     public var rssi: Int?
+    
+    required public init(coder aDecoder: NSCoder)
+    {
+        self.uuid = aDecoder.decodeObjectForKey("uuid") as! String
+        self.major = aDecoder.decodeObjectForKey("major") as! Int
+        self.minor = aDecoder.decodeObjectForKey("minor") as! Int
+        self.link = aDecoder.decodeObjectForKey("link") as! String
+        self.proximity = aDecoder.decodeObjectForKey("roximity") as? Int
+        self.rssi = aDecoder.decodeObjectForKey("rssi") as? Int
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder)
+    {
+        aCoder.encodeObject(uuid, forKey: "uuid")
+        aCoder.encodeObject(major, forKey: "major")
+        aCoder.encodeObject(minor, forKey: "minor")
+        aCoder.encodeObject(link, forKey: "link")
+        aCoder.encodeObject(proximity, forKey: "proximity")
+        aCoder.encodeObject(rssi, forKey: "rssi")
+    }
     
     public init(uuid: String, major: Int, minor: Int, link: String) {
         self.uuid = uuid
@@ -27,7 +47,7 @@ import Foundation
 //MARK: OHBeacon: Printable
 extension OHBeacon : Printable {
 
-    public var description: String
+    override public var description: String
     {
         var desc = ""
         desc += "OpenhabBeacon: {\n"
@@ -45,7 +65,7 @@ extension OHBeacon : Printable {
 
 //MARK: OHBeacon: Hashable
 extension OHBeacon: Hashable {
-    public var hashValue: Int {
+    override public var hashValue: Int {
         get {
             return "\(self.uuid) - \(self.major) - \(self.minor)".hashValue
         }

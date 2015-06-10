@@ -193,10 +193,15 @@ extension OHWidgetCollectionViewController: UICollectionViewDataSource {
         
         if var widgets = self.widgets {
             
+            
+            
             let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
 //            var dataManager = appDelegate.dataManager
             
             if var bulbs = widgets[indexPath.item].linkedPage?.widgets {
+                
+                vc.initWidget(bulbs)
+                
                 var lights = [OHLight]()
                 
                 for (index, bulb) in enumerate(bulbs)

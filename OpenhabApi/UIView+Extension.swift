@@ -31,7 +31,9 @@ extension UIView {
             return self.superview!.frame.width - self.frame.origin.x - self.frame.width
         }
         set(margin) {
-            self.frame.origin.x = self.superview!.frame.width - self.frame.width - margin
+            if let superview = self.superview {
+                self.frame.origin.x = superview.frame.width - self.frame.width - margin
+            }
         }
     }
     
@@ -40,7 +42,9 @@ extension UIView {
             return self.frame.origin.y + self.frame.height
         }
         set(margin) {
-            self.frame.origin.y = self.superview!.frame.height - self.frame.height - margin
+            if let superview = self.superview {
+                self.frame.origin.y = superview.frame.height - self.frame.height - margin
+            }
         }
     }
     
@@ -67,11 +71,15 @@ extension UIView {
     }
     
     func centerViewHorizontallyInSuperview() {
-        self.marginLeft = CGFloat((self.superview!.frame.width - self.frame.width) / CGFloat(2))
+        if var superview = self.superview {
+            self.marginLeft = CGFloat((superview.frame.width - self.frame.width) / CGFloat(2))
+        }
     }
     
     func centerViewVerticallyInSuperview() {
-        self.marginTop = CGFloat((self.superview!.frame.height - self.frame.height) / CGFloat(2))
+        if var superview = self.superview {
+            self.marginTop = CGFloat((superview.frame.height - self.frame.height) / CGFloat(2))
+        }
     }
     
     func setHeight(height: CGFloat)

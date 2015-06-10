@@ -12,7 +12,8 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var dataManager = OHDataManager()
+//    var dataManager = OHDataManager()
+//    var restManager = OHRestManager()
     var beaconManager: OHBeaconManager?
     var statusBarBackgroundView: OHStatusBarView?
 
@@ -24,6 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         setupAppearance()
+        
+//        dataManager.loadLocalSitemaps()
         
         prepareViewController()
         
@@ -42,13 +45,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var frontViewController: UIViewController?
         
-        var sitemapsArray = defaults.objectForKey("SettingsOpenHABSitemaps") as? [String]
-        println(sitemapsArray)
-        if var sitemaps = sitemapsArray {
+//        var sitemapsArray = defaults.objectForKey("SettingsOpenHABSitemaps") as? [String]
+//        println(sitemapsArray)
+//        if var sitemaps = sitemapsArray {
+//            if sitemaps.count > 0 {
+//                frontViewController = OHRootViewController.new()
+//            }
+//        }
+        
+        if var sitemaps = OHDataManager.sharedInstance.sitemaps {
             if sitemaps.count > 0 {
                 frontViewController = OHRootViewController.new()
             }
         }
+        
+//        if var sitemaps = dataManager.sitemaps {
+//            if sitemaps.count > 0 {
+//                frontViewController = OHRootViewController.new()
+//            }
+//        }
         
         if frontViewController == nil {
             frontViewController = OHSettingsViewController.new()

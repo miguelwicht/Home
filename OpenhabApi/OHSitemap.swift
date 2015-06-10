@@ -7,7 +7,7 @@
 
 import Foundation
 
-@objc public class OHSitemap {
+@objc public class OHSitemap: NSObject {
     
     let name: String
     var icon: String?
@@ -60,7 +60,7 @@ import Foundation
 //MARK: OHSitemap: Printable
 extension OHSitemap : Printable {
     
-    public var description:String
+    override public var description:String
     {
         let className = reflect(self).summary
         var desc:String = ""

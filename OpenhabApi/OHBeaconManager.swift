@@ -221,14 +221,14 @@ extension OHBeaconManager: CLLocationManagerDelegate {
 //        println(locationManager.rangedRegions)
         
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        var dataManager = appDelegate.dataManager
+//        var dataManager = appDelegate.dataManager
         
         if var beacon = beacons.first as? CLBeacon {
             
             addBeaconsToList(beacons as! [CLBeacon])
             
             var beaconOH = OHBeacon(uuid: beacon.proximityUUID.UUIDString, major: beacon.major.integerValue, minor: beacon.minor.integerValue, link: "")
-            var room = dataManager.beaconWidget![beaconOH]
+            var room = OHDataManager.sharedInstance.beaconWidget![beaconOH]
 //            println(beaconOH)
 //            locationManager.stopRangingBeaconsInRegion(region)
             // TODO: use wrapper object to send beacons and region

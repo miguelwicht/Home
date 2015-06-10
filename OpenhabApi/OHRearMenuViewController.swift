@@ -72,11 +72,22 @@ class OHRearMenuViewController: UIViewController {
     func updateMenu()
     {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        var dataManager = appDelegate.dataManager
+//        var dataManager = appDelegate.dataManager
         
-        if var sitemap = dataManager.sitemaps?.first {
+//        if var sitemap = 
+        
+//        if var sitemap = dataManager.sitemaps?.first {
+//            widgets = OHRestParser.getMenuFromSitemap(sitemap)
+//        }
+        
+        if var sitemaps = OHDataManager.sharedInstance.sitemaps {
+            var startIndex = sitemaps.startIndex
+            var sitemap = sitemaps[startIndex].1
+            
             widgets = OHRestParser.getMenuFromSitemap(sitemap)
         }
+        
+        
         
         tableView?.reloadData()
         
@@ -131,7 +142,8 @@ extension OHRearMenuViewController: UITableViewDelegate {
             }
         }
         
-        return sectionHeaders[section]!
+        return sectionHeaders[section] != nil ? sectionHeaders[section]! : nil
+        
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

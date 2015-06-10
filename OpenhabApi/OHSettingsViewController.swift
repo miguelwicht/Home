@@ -14,7 +14,7 @@ class OHSettingsViewController: UIViewController {
     var saveButton: UIButton?
     let defaults = NSUserDefaults.standardUserDefaults()
     var dismissButton: UIButton?
-    var sitemaps: [OHSitemap]?
+    var sitemaps: [OHSitemap] = [OHSitemap]()
     var sitemapChooserController: OHDropdownMenuTableViewController?
     var sitemapChooserButton: OHDropdownMenuButton?
     var loadSitemapsButton: UIButton?
@@ -33,12 +33,12 @@ class OHSettingsViewController: UIViewController {
     override func loadView() {
         super.loadView()
         
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        initObservers()
+        
+        
         view.backgroundColor = UIColor.whiteColor()
-        
-//        sitemaps = [String](arrayLiteral:"ios_lab")
-        sitemaps = [OHSitemap]()
-        
-        
         
         urlTextField = UITextField(frame: CGRect(x: 0, y: 0, width: view.frame.width - 30, height: 40))
         urlTextField!.borderStyle = UITextBorderStyle.Line
@@ -80,6 +80,7 @@ class OHSettingsViewController: UIViewController {
         view.addSubview(dismissButton!)
         
         initSitemapChooser()
+        OHDataManager.sharedInstance.loadLocalSitemaps()
     }
     
     func initSitemapChooser() {
@@ -95,7 +96,7 @@ class OHSettingsViewController: UIViewController {
             sitemapChooserController = OHDropdownMenuTableViewController()
             
             if var sitemapChooserController = self.sitemapChooserController {
-                sitemapChooserController.data = sitemaps!
+                sitemapChooserController.data = sitemaps
                 addChildViewController(sitemapChooserController)
                 view.addSubview(sitemapChooserController.view)
                 
@@ -109,125 +110,22 @@ class OHSettingsViewController: UIViewController {
         }
     }
     
-    func loadSitemapsButtonPressed(button: UIButton)
+    func updateSitemapChooser()
     {
-        getSitemapList()
-//        var sitemap = defaults.objectForKey("SettingsOpenHABSitemap") as? String
-//        var sitemaps = defaults.objectForKey("SettingsOpenHABSitemaps") as? [String]
-//        
-//        if var urlTextField = self.urlTextField {
-//            var url = urlTextField.text
-//            
-//            if var urlText = url {
-//                defaults.setObject(urlText, forKey: "SettingsOpenHABUrl")
-//            }
-//        }
-//        
-//        defaults.synchronize()
-    }
-    
-    func getSitemapList()
-    {
-        let urlPath = "\(self.urlTextField!.text)/rest/sitemaps"
-        let request = NSMutableURLRequest(URL: NSURL(string: urlPath)!)
-        request.HTTPMethod = "GET"
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
-        
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request)
-            {
-                data, response, error in
-                
-                if error != nil {
-                    println("error=\(error)")
-                    return
-                }
-                
-                let responseString = NSString(data: data, encoding: NSUTF8StringEncoding)
-                
-                //println(responseString)
-                //let json = JSON(data: data).dictionaryValue
-                let json = JSON(data: data).arrayValue
-                var sitemaps: [OHSitemap] = [OHSitemap]()
-                
-                //for(index, element) in enumerate(json["sitemap"]!.arrayValue) {
-                for(index, element) in enumerate(json) {
-                    //                    println("\(index), \(element.dictionaryValue)")
-                    
-                    var elementDict = element.dictionaryValue
-                    var homepageDict = elementDict["homepage"]!.dictionaryValue
-                    
-                    var name: String = elementDict["name"] != nil ? elementDict["name"]!.stringValue : ""
-                    var link: String = elementDict["link"] != nil ? elementDict["link"]!.stringValue : ""
-                    var label: String = elementDict["label"] != nil ? elementDict["label"]!.stringValue : ""
-                    var leaf: String = homepageDict["leaf"] != nil ? homepageDict["leaf"]!.stringValue : ""
-                    var homepageLink: String = homepageDict["link"] != nil ? homepageDict["link"]!.stringValue : ""
-                    
-                    var sitemap: OHSitemap = OHSitemap(name: name, icon: "", label: label, link: link, leaf: leaf, homepageLink: homepageLink)
-                    
-                    //                    var sitemap = OHSitemap(sitemap: element)
-                    
-                    sitemaps.append(sitemap)
-                }
-                
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.updateSitemapsData(sitemaps)
-                })
-        }
-        task.resume()
-    }
-    
-    func updateSitemapsData(sitemaps: [OHSitemap])
-    {
-        self.sitemaps = sitemaps
-        self.sitemapChooserController!.data = sitemaps
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            println(self.sitemapChooserController!.data)
+        if var sitemaps = OHDataManager.sharedInstance.sitemaps {
+            
+            var sitemapValues = [OHSitemap]()
+            
+            for (key, sitemap) in sitemaps {
+                sitemapValues.append(sitemap)
+            }
+            
+            self.sitemapChooserController!.data = sitemapValues
             self.sitemapChooserController!.tableView.reloadData()
-            
-            var sitemapsArray =  [String]()
-            
-            for (index, sitemap) in enumerate(sitemaps)
-            {
-                sitemapsArray.append(sitemap.name)
-            }
-            
-            if sitemapsArray.count > 0 {
-                self.defaults.setObject(sitemapsArray, forKey: "SettingsOpenHABSitemaps")
-                println(self.defaults.dictionaryRepresentation())
-                self.defaults.synchronize()
-            }
-        })
-        
-        
-        
-        println(sitemaps)
+        }
     }
     
-    func saveButtonPressed(button: UIButton)
-    {
-        var sitemap = defaults.objectForKey("SettingsOpenHABSitemap") as? String
-        var sitemaps = defaults.objectForKey("SettingsOpenHABSitemaps") as? [String]
-        
-        if var urlTextField = self.urlTextField {
-            var url = urlTextField.text
-            
-            if var urlText = url {
-                defaults.setObject(urlText, forKey: "SettingsOpenHABUrl")
-            }
-        }
-        
-        defaults.synchronize()
-    }
     
-    func dismissButtonPressed(button: UIButton) {
-        
-        if var presentingViewController = self.presentingViewController {
-            self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
-        }
-        else {
-            self.revealViewController().setFrontViewController(OHRootViewController.new(), animated: true)
-        }
-    }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -296,19 +194,73 @@ class OHSettingsViewController: UIViewController {
     }
 }
 
+extension OHSettingsViewController {
+    
+    func loadSitemapsButtonPressed(button: UIButton)
+    {
+        OHDataManager.sharedInstance.updateSitemapsFromServer()
+    }
+    
+    func saveButtonPressed(button: UIButton)
+    {
+        if var urlTextField = self.urlTextField {
+            var url = urlTextField.text
+            
+            if var urlText = url {
+                defaults.setObject(urlText, forKey: "SettingsOpenHABUrl")
+            }
+        }
+        
+        defaults.synchronize()
+    }
+    
+    func dismissButtonPressed(button: UIButton) {
+        
+        if var presentingViewController = self.presentingViewController {
+            self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        }
+        else {
+            self.revealViewController().setFrontViewController(OHRootViewController.new(), animated: true)
+        }
+    }
+}
+
+extension OHSettingsViewController {
+    
+    func initObservers()
+    {
+        let options : NSKeyValueObservingOptions = .New | .Old | .Initial | .Prior
+        
+        OHDataManager.sharedInstance.addObserver(self, forKeyPath: "sitemaps", options: options, context: nil)
+    }
+    
+    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+        
+        if keyPath == "sitemaps" {
+            updateSitemapChooser()
+        }
+        
+    }
+}
+
 extension OHSettingsViewController: UITableViewDelegate {
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        switchToRoom(roomSwitcherController!.data[indexPath.row] as! OHWidget)
-//        var sitemap =
-        //defaults.objectForKey("SettingsOpenHABSitemap") as? String
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+    {
         
-        if var sitemaps = self.sitemaps {
-            var sitemap = sitemaps[indexPath.item]
+//        if var sitemaps = OHDataManager.sharedInstance.sitemaps {
+        if self.sitemapChooserController!.data.count > 0 {
+            var sitemap = self.sitemapChooserController!.data[indexPath.item] as! OHSitemap
+            
+            if sitemap.homepage == nil {
+                OHDataManager.sharedInstance.getContentForSitemap(sitemap)
+            }
             
             defaults.setObject(sitemap.name, forKey: "SettingsOpenHABSitemap")
             defaults.synchronize()
         }
+        
+        toggleDropdownMenu(self.sitemapChooserButton!)
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {

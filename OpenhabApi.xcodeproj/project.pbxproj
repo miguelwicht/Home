@@ -34,7 +34,7 @@
 		229C2CAD1B1607D80003FE64 /* S3FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 229C2CAC1B1607D80003FE64 /* S3FileManager.m */; };
 		22A899CE1AFA0934004FFC16 /* OHRootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A899CD1AFA0934004FFC16 /* OHRootViewController.swift */; };
 		22A899D01AFA0DA7004FFC16 /* OHDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A899CF1AFA0DA7004FFC16 /* OHDataManager.swift */; };
-		22A899D21AFA30B1004FFC16 /* ViewSetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A899D11AFA30B1004FFC16 /* ViewSetter.swift */; };
+		22A899D21AFA30B1004FFC16 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A899D11AFA30B1004FFC16 /* UIView+Extension.swift */; };
 		22B3BAE11AE64B4E006150AC /* OHSitemapParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B3BAE01AE64B4E006150AC /* OHSitemapParser.swift */; };
 		22B3BAE31AE64D82006150AC /* OHWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B3BAE21AE64D82006150AC /* OHWidget.swift */; };
 		22B3BAE51AE68AA5006150AC /* OHRoomsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B3BAE41AE68AA5006150AC /* OHRoomsViewController.swift */; };
@@ -105,7 +105,7 @@
 		229C2CAC1B1607D80003FE64 /* S3FileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = S3FileManager.m; sourceTree = "<group>"; };
 		22A899CD1AFA0934004FFC16 /* OHRootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHRootViewController.swift; sourceTree = "<group>"; };
 		22A899CF1AFA0DA7004FFC16 /* OHDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHDataManager.swift; sourceTree = "<group>"; };
-		22A899D11AFA30B1004FFC16 /* ViewSetter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewSetter.swift; sourceTree = "<group>"; };
+		22A899D11AFA30B1004FFC16 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		22B3BAE01AE64B4E006150AC /* OHSitemapParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHSitemapParser.swift; sourceTree = "<group>"; };
 		22B3BAE21AE64D82006150AC /* OHWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHWidget.swift; sourceTree = "<group>"; };
 		22B3BAE41AE68AA5006150AC /* OHRoomsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHRoomsViewController.swift; sourceTree = "<group>"; };
@@ -264,7 +264,6 @@
 			children = (
 				229C2CAB1B1607D80003FE64 /* S3FileManager.h */,
 				229C2CAC1B1607D80003FE64 /* S3FileManager.m */,
-				22A899D11AFA30B1004FFC16 /* ViewSetter.swift */,
 				22B3BAE01AE64B4E006150AC /* OHSitemapParser.swift */,
 				223C7FB51AE79FF90079A41C /* OHRestParser.swift */,
 				227DDC491ADBE2A1001EAE08 /* OHRestManager.swift */,
@@ -272,6 +271,7 @@
 				22599E611B0A13EC00EE7558 /* OHBeaconManager.swift */,
 				22CC649D1B1C7FD700635978 /* OHLight.swift */,
 				228156081B2070B8005A137A /* OHDefaults.swift */,
+				22A899D11AFA30B1004FFC16 /* UIView+Extension.swift */,
 				22C7EFF21B2589FD00A430C4 /* UIImage+Extension.swift */,
 				22C7EFF41B258A5E00A430C4 /* UIColor+Extension.swift */,
 			);
@@ -480,7 +480,7 @@
 				22C7EFF31B2589FD00A430C4 /* UIImage+Extension.swift in Sources */,
 				227DDC4C1ADBE8D1001EAE08 /* SwiftyJSON.swift in Sources */,
 				22CC64AC1B1F234B00635978 /* OHRearMenuFooterView.swift in Sources */,
-				22A899D21AFA30B1004FFC16 /* ViewSetter.swift in Sources */,
+				22A899D21AFA30B1004FFC16 /* UIView+Extension.swift in Sources */,
 				22EC1D071B01174300A39857 /* OHLightController.swift in Sources */,
 				22B3BAE11AE64B4E006150AC /* OHSitemapParser.swift in Sources */,
 				22C632F01B04B8BD00BB0A17 /* OHBaseViewController.swift in Sources */,

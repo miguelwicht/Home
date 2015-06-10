@@ -22,7 +22,7 @@ class OHRestManager : NSObject {
     let baseUrl: String
     var acceptHeader: String = "application/json"
     
-    init (baseUrl: String)
+    init (baseUrl: String = "")
     {
         self.baseUrl = baseUrl
     }
@@ -57,7 +57,57 @@ extension OHRestManager {
 
 //MARK: Sitemaps
 extension OHRestManager {
-
+    
+//    func getSitemapList()
+//    {
+//        let urlPath = "\(baseUrl)/rest/sitemaps"
+//        let request = NSMutableURLRequest(URL: NSURL(string: urlPath)!)
+//        request.HTTPMethod = "GET"
+//        request.setValue("application/json", forHTTPHeaderField: "Accept")
+//        
+//        let task = NSURLSession.sharedSession().dataTaskWithRequest(request)
+//            {
+//                data, response, error in
+//                
+//                if error != nil {
+//                    println("error=\(error)")
+//                    return
+//                }
+//                
+//                let responseString = NSString(data: data, encoding: NSUTF8StringEncoding)
+//                
+//                //println(responseString)
+//                //let json = JSON(data: data).dictionaryValue
+//                let json = JSON(data: data).arrayValue
+//                var sitemaps: [OHSitemap] = [OHSitemap]()
+//                
+//                //for(index, element) in enumerate(json["sitemap"]!.arrayValue) {
+//                for(index, element) in enumerate(json) {
+//                    //                    println("\(index), \(element.dictionaryValue)")
+//                    
+//                    var elementDict = element.dictionaryValue
+//                    var homepageDict = elementDict["homepage"]!.dictionaryValue
+//                    
+//                    var name: String = elementDict["name"] != nil ? elementDict["name"]!.stringValue : ""
+//                    var link: String = elementDict["link"] != nil ? elementDict["link"]!.stringValue : ""
+//                    var label: String = elementDict["label"] != nil ? elementDict["label"]!.stringValue : ""
+//                    var leaf: String = homepageDict["leaf"] != nil ? homepageDict["leaf"]!.stringValue : ""
+//                    var homepageLink: String = homepageDict["link"] != nil ? homepageDict["link"]!.stringValue : ""
+//                    
+//                    var sitemap: OHSitemap = OHSitemap(name: name, icon: "", label: label, link: link, leaf: leaf, homepageLink: homepageLink)
+//                    
+//                    //                    var sitemap = OHSitemap(sitemap: element)
+//                    
+//                    sitemaps.append(sitemap)
+//                }
+//                
+//                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//                    self.delegate!.didGetSitemaps!(sitemaps)
+//                })
+//        }
+//        task.resume()
+//    }
+    
     func getSitemaps()
     {
         let urlPath = "\(baseUrl)/rest/sitemaps"
@@ -83,6 +133,12 @@ extension OHRestManager {
                 
                 //for(index, element) in enumerate(json["sitemap"]!.arrayValue) {
                 for(index, element) in enumerate(json) {
+                    
+                    
+//                    let sitemapJson = JSON(data: element.stringValue.dataUsingEncoding(NSASCIIStringEncoding, allowLossyConversion: false)!)
+//                    let sitemap = OHSitemap(sitemap: sitemapJson)
+//                    sitemaps.append(sitemap)
+                    
 //                    println("\(index), \(element.dictionaryValue)")
                     
                     var elementDict = element.dictionaryValue
@@ -95,12 +151,25 @@ extension OHRestManager {
                     var homepageLink: String = homepageDict["link"] != nil ? homepageDict["link"]!.stringValue : ""
                     
                     var sitemap: OHSitemap = OHSitemap(name: name, icon: "", label: label, link: link, leaf: leaf, homepageLink: homepageLink)
-                    
+                
 //                    var sitemap = OHSitemap(sitemap: element)
                     
                     sitemaps.append(sitemap)
                 }
                 
+                
+                
+//                var fileManager = S3FileManager();
+//                var localError: NSError?
+//                var jsonData = responseString!.dataUsingEncoding(NSASCIIStringEncoding, allowLossyConversion: false)
+//                var jsonDictionary: NSArray = NSJSONSerialization.JSONObjectWithData(jsonData!, options: NSJSONReadingOptions.MutableContainers, error: &localError) as! NSArray
+//                
+//                for (i, el) in enumerate(jsonDictionary)
+//                {
+//                    var path: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("sitemaps/\(sitemaps[i].name).json") as NSString
+//                    S3FileManager.saveDictionary(el as! [NSObject : AnyObject], toPath: path as NSString as String)
+//                }
+//                
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.delegate!.didGetSitemaps!(sitemaps)
                 })

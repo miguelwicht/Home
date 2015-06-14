@@ -52,6 +52,7 @@ class OHRoomsViewController: OHBaseViewController {
     }
 }
 
+//MARK: RoomSwitcher
 extension OHRoomsViewController {
     
     func initRoomSwitcherController()
@@ -127,7 +128,7 @@ extension OHRoomsViewController: UITableViewDelegate {
         }
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 145
     }
 }
@@ -239,6 +240,7 @@ extension OHRoomsViewController {
         button.setWidth(appDelegate.window!.frame.width - 100)
         button.setTitle("Button", forState: .Normal)
         button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        button.titleLabel?.lineBreakMode = NSLineBreakMode.ByTruncatingTail
         self.navigationItem.titleView = button
         self.navigationItem.titleView?.sizeToFit()
         button.addTarget(self, action: "toggleDropdownMenu:", forControlEvents: UIControlEvents.TouchUpInside)

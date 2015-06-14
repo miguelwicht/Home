@@ -36,7 +36,7 @@ class OHDataManager: NSObject {
     
     override init()
     {
-        restManager = OHRestManager(baseUrl:"http://10.10.32.251:8888")
+        restManager = OHRestManager(baseUrl:"http://192.168.0.251:8888")
         super.init()
         
         restManager.delegate = self

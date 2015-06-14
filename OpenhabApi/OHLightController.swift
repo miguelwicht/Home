@@ -9,34 +9,38 @@
 import UIKit
 
 class OHLightController: UIViewController {
-    var widgets: [OHWidget]?
     
+    let scrollView = UIScrollView()
+    var widgets: [OHWidget]?
     var dimmer: MDWSlider?
     var colorWheel: ColorWheel?
+    var saturationSlider: MDWSlider?
     
     var lights: [OHLight]?
     var selectedLights = [OHLight]()
     
     var collectionViewController: OHWidgetCollectionViewController?
-    var reuseIdentifier = "lightControllerReuseIdentifier"
+    let reuseIdentifier = "lightControllerReuseIdentifier"
     
-    var brightnessLabel: UILabel?
+    let brightnessLabel = UILabel()
     
-    var scrollView = UIScrollView()
+    
     
     override func loadView() {
         super.loadView()
         
-//        self.automaticallyAdjustsScrollViewInsets = true
+        view.backgroundColor = UIColor.whiteColor()
+        view.addSubview(self.scrollView)
+        scrollView.frame = view.frame
         
-        self.view.addSubview(self.scrollView)
-        
-        scrollView.frame = self.view.frame
-        
-        println("\(scrollView.frame)")
-        
-//        self.automaticallyAdjustsScrollViewInsets = true
-        
+        initColorWheel()
+        initDimmer()
+        initBrightnessLabel()
+        initSaturationSlider()
+    }
+    
+    func initColorWheel()
+    {
         colorWheel = ColorWheel(frame: CGRect(x: 45, y: 138, width: 237, height: 237))
         
         if var colorWheel = self.colorWheel {
@@ -46,55 +50,103 @@ class OHLightController: UIViewController {
             colorWheel.centerViewVerticallyInSuperview()
             
             colorWheel.moveHandleToColor(UIColor.blueColor())
+            
+            colorWheel.button?.addTarget(self, action: "switchLight:", forControlEvents: .TouchUpInside)
+            colorWheel.addTarget(self, action: "colorValueChanged:", forControlEvents: .ValueChanged)
+        }
+    }
+    
+    func initSaturationSlider(){
+        saturationSlider = MDWSlider(frame: CGRect(x: 15, y: 0, width: self.scrollView.frame.width - 30, height: 40))
+        
+        if var saturationSlider = self.saturationSlider {
+            scrollView.addSubview(saturationSlider)
+            saturationSlider.centerViewHorizontallyInSuperview()
+//            saturationSlider.marginBottom = 50
+            saturationSlider.addLeftImage(UIImage(named: "sun_small")!)
+            saturationSlider.addRightImage(UIImage(named: "sun_big")!)
+            saturationSlider.slider.addTarget(self, action: "saturationSliderValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        }
+    }
+    
+    func saturationSliderValueChanged(slider: UISlider)
+    {
+        if var colorWheel = self.colorWheel {
+            colorWheel.saturation = CGFloat(slider.value)
+            println(colorWheel.saturation)
         }
         
-//        self.dimmer = UISlider(frame: CGRectMake(0, 0, self.view.frame.width - CGFloat(20), 30))
-//        self.view.addSubview(self.dimmer!)
-//        dimmer!.marginTop = colorWheel!.neededSpaceHeight + 20
-//        dimmer!.centerViewHorizontallyInSuperview()
-//        dimmer!.addTarget(self, action: "dimmerValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
-        
-        self.view.backgroundColor = UIColor.whiteColor()
-        
-        colorWheel?.button?.addTarget(self, action: "switchLight:", forControlEvents: .TouchUpInside)
-        colorWheel?.addTarget(self, action: "colorValueChanged:", forControlEvents: .ValueChanged)
-        
+//        for (index, light) in enumerate(selectedLights)
+//        {
+//            light.setDimmerValue(Int(slider.value * 100))
+//        }
+//        
+//        var value = Int(slider.value * 100)
+
+    }
+    
+    func initDimmer()
+    {
         dimmer = MDWSlider(frame: CGRect(x: 15, y: 0, width: self.scrollView.frame.width - 30, height: 40))
-        self.scrollView.addSubview(dimmer!)
-        dimmer!.centerViewHorizontallyInSuperview()
-        dimmer!.marginBottom = 50
-        dimmer!.addLeftImage(UIImage(named: "sun_small")!)
-        dimmer!.addRightImage(UIImage(named: "sun_big")!)
-        dimmer!.slider.addTarget(self, action: "dimmerValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
         
-        brightnessLabel = UILabel()
-        brightnessLabel?.text = "Brightness".uppercaseString
-//        brightnessLabel!.font = UIFont(name: brightnessLabel!.font.familyName, size: 20)
-        brightnessLabel!.font = OHDefaults.defaultFontWithSize(20)
-        scrollView.addSubview(brightnessLabel!)
+        if var dimmer = self.dimmer {
+            scrollView.addSubview(dimmer)
+            dimmer.centerViewHorizontallyInSuperview()
+            dimmer.marginBottom = 50
+            dimmer.addLeftImage(UIImage(named: "sun_small")!)
+            dimmer.addRightImage(UIImage(named: "sun_big")!)
+            dimmer.slider.addTarget(self, action: "dimmerValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        }
+    }
+    
+    func initBrightnessLabel()
+    {
+        brightnessLabel.text = "Brightness".uppercaseString
+        brightnessLabel.font = OHDefaults.defaultFontWithSize(20)
+        scrollView.addSubview(brightnessLabel)
     }
     
     func colorValueChanged(colorWheel: ColorWheel)
     {
         var color = colorWheel.currentColor
-        var value = "10,13,10"
         
-//        if var lights = self.selectedLights {
-            for (index, light) in enumerate(selectedLights)
-            {
-                light.setColorValue(value)
-            }
-//        }
+        var hue: CGFloat = 0.0
+        var saturation: CGFloat = 0.0
+        var brightness: CGFloat = 0.0
+        var alpha: CGFloat = 0.0
+        
+        var success = color?.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+        
+//        println("success: \(success), hue: \(hue), saturation: \(saturation), brightness: \(brightness), alpha: \(alpha)")
+        
+        //BOOL success = [testColor getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
+//        NSLog(@"success: %i hue: %0.2f, saturation: %0.2f, brightness: %0.2f, alpha: %0.2f", success, hue, saturation, brightness, alpha);
+        
+        hue *= 360
+        saturation *= 100
+        brightness *= 100
+        
+        
+        var value = "\(Int(hue)),\(Int(saturation)),\(Int(brightness))"
+//        println("\(value)")
+        for (index, light) in enumerate(selectedLights)
+        {
+            light.setColorValue(value)
+        }
     }
     
     func dimmerValueChanged(dimmer: UISlider)
     {
-//        if var lights = self.selectedLights {
-            for (index, light) in enumerate(selectedLights)
-            {
-                light.setDimmerValue(Int(dimmer.value * 100))
-            }
-//        }
+        if var colorWheel = self.colorWheel {
+            colorWheel.brightness = CGFloat(dimmer.value)
+            println(colorWheel.brightness)
+        }
+        
+        for (index, light) in enumerate(selectedLights)
+        {
+//            light.setDimmerValue(Int(dimmer.value * 100))
+        }
+        
         var value = Int(dimmer.value * 100)
         if value != 0 {
             var button = colorWheel!.button as! PowerButton
@@ -104,13 +156,11 @@ class OHLightController: UIViewController {
     
     func switchLight(button: PowerButton)
     {
-//        if var lights = self.lights {
-            for (index, light) in enumerate(selectedLights)
-            {
-                var state = button.toggleState ? "ON" : "OFF"
-                light.setState(state)
-            }
-//        }
+        for (index, light) in enumerate(selectedLights)
+        {
+            var state = button.toggleState ? "ON" : "OFF"
+            light.setState(state)
+        }
     }
     
     func initWidget(widgets: [OHWidget])
@@ -120,8 +170,6 @@ class OHLightController: UIViewController {
         if var colorWheel = self.colorWheel {
             colorWheel.moveHandleToColor(UIColor.yellowColor())
         }
-        
-        
     }
     
     func initLights(lights:[OHLight]?)
@@ -143,11 +191,15 @@ class OHLightController: UIViewController {
         
         colorWheel?.marginTop = collectionViewControllerBottom
         
-        brightnessLabel?.sizeToFit()
-        brightnessLabel?.centerViewHorizontallyInSuperview()
-        brightnessLabel?.marginTop = colorWheel!.neededSpaceHeight + 30
+        brightnessLabel.sizeToFit()
+        brightnessLabel.centerViewHorizontallyInSuperview()
+        brightnessLabel.marginTop = colorWheel!.neededSpaceHeight + 30
         
-        dimmer!.marginTop = brightnessLabel!.neededSpaceHeight + 20
+        dimmer!.marginTop = brightnessLabel.neededSpaceHeight + 20
+        
+        if var dimmer = self.dimmer {
+            saturationSlider!.marginTop = dimmer.neededSpaceHeight + 20
+        }
     }
 }
 
@@ -155,26 +207,18 @@ extension OHLightController {
     
     func createCollectionView(widgets: [OHWidget], rows: Int)
     {
-        
-        
         var layout = OHWidgetCollectionViewLayout()
         layout.itemSize = CGSize(width: 40, height: 50)
         layout.minimumInteritemSpacing = 40
-        
         layout.minimumLineSpacing = 25
         
         collectionViewController = OHWidgetCollectionViewController(collectionViewLayout: layout, widgets: widgets)
-        collectionViewController!.automaticallyAdjustsScrollViewInsets = true
         collectionViewController!.collectionView!.delegate = self
         collectionViewController!.collectionView!.dataSource = self
-//        // TODO: add function to calculate row height
-//        var height = CGFloat(CGFloat(rows) * (layout.itemSize.height + layout.minimumLineSpacing))
-//                height = CGFloat(rows * 120)
-        
-        // TODO: add function to calculate row height
+
         var height = CGFloat(CGFloat(rows) * (layout.itemSize.height + layout.minimumLineSpacing)) - layout.minimumLineSpacing
         height = rows == 1 ? layout.itemSize.height : height
-//        height + 10
+        
         if var collectionViewController = self.collectionViewController {
             if var collectionView = collectionViewController.collectionView {
                 collectionView.registerClass(OHWidgetCell.self, forCellWithReuseIdentifier: self.reuseIdentifier)
@@ -182,26 +226,13 @@ extension OHLightController {
             }
             
             collectionViewController.view.frame = CGRectMake(0, 0, self.view.frame.width - 30, height)
-            
-            println("CollectionViewContollerFrame: \(collectionViewController.view.frame)")
-            println("CollectionViewFrame: \(collectionViewController.collectionView?.frame)")
-//            self.addChildViewController(collectionViewController)
+            self.addChildViewController(collectionViewController)
             scrollView.addSubview(collectionViewController.view)
             
             collectionViewController.view.centerViewHorizontallyInSuperview()
             collectionViewController.view.centerViewVerticallyInSuperview()
         }
-        
-        
-        
-        
-        
-        //        println("collectionViewFrame: \(collectionViewController.view.frame)")
-        //        println("scrollView: \(self.scrollView!.frame), bounds: \(self.scrollView!.bounds)")
-        
-//        self.collectionViewControllers.append(collectionViewController)
     }
-    
 }
 
 extension OHLightController: UICollectionViewDelegate {
@@ -226,23 +257,6 @@ extension OHLightController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(self.reuseIdentifier, forIndexPath: indexPath) as! OHWidgetCell
         cell.multiselectEnabled = true
         cell.layoutSubviews()
-//        var imageName: String = self.widgets![indexPath.item].icon!
-//        
-//        if self.widgets![indexPath.item].icon! == "none" {
-//            if var item = self.widgets![indexPath.item].item {
-//                if var tags = item.tags {
-//                    
-//                    for (index, tag) in enumerate(tags)
-//                    {
-//                        
-//                        if tag.rangeOfString("OH_Light") != nil {
-//                            imageName = "bulb"
-//                            break
-//                        }
-//                    }
-//                }
-//            }
-//        }
         
         cell.imageView.image = UIImage(named: "bulb")
 //        cell.label.text = self.lights![indexPath.item].label
@@ -252,7 +266,6 @@ extension OHLightController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
     {
-        //        var cell = collectionView(collectionView, cellForItemAtIndexPath: indexPath)
         var cell = self.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! OHWidgetCell
         cell.imageView.backgroundColor = UIColor.purpleColor()
         cell.imageView.image = UIImage(named: "TV")
@@ -262,17 +275,14 @@ extension OHLightController: UICollectionViewDataSource {
             
             selectedLights.append(light)
         }
-        
     }
     
-    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
-        
+    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath)
+    {
         if var lights = self.lights {
             var light = lights[indexPath.item]
             
             var selectedLightsArray = selectedLights as NSArray
-            
-            
             var index = selectedLightsArray.indexOfObject(light)
             
             selectedLights.removeAtIndex(index)

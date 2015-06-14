@@ -24,6 +24,35 @@ import UIKit
     
     var currentColor: UIColor?
     
+    var brightness: CGFloat = 0.8 {
+        didSet {
+            currentColor = getColorForAngle(angle)
+            self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+            changeHandleColor()
+        }
+    }
+    
+    
+    var saturation: CGFloat = 1.0 {
+        didSet {
+            
+//            var hue: CGFloat = 0.0
+//            var saturation: CGFloat = 0.0
+//            var brightness: CGFloat = 0.0
+//            var alpha: CGFloat = 0.0
+//            
+//            var success = currentColor?.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+//            println("success: \(success), hue: \(hue), saturation: \(saturation), brightness: \(brightness), alpha: \(alpha)")
+//            var color = UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: 1.0)
+//            currentColor = color
+            
+            currentColor = getColorForAngle(angle)
+            self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+            changeHandleColor()
+//            moveHandleToColor(currentColor!)
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -190,7 +219,7 @@ extension ColorWheel {
     
     func getColorForAngle(angle: Int) -> UIColor {
         var hue: CGFloat = CGFloat(angle) / CGFloat(sectors)
-        var color = UIColor(hue: hue, saturation: 1.0, brightness: 0.9, alpha: 1.0)
+        var color = UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: 1.0)
         
         return color
     }
@@ -198,13 +227,6 @@ extension ColorWheel {
     func getAngleForColor(color: UIColor) -> Int
     {
         var col = CIColor(color: color)
-//        var testcol = CIColor(color: UIColor.greenColor())
-//        var colGreen = testcol!.green() * 255
-//        var colRed = testcol!.red() * 255
-//        var colBlue = testcol!.blue() *  255
-        
-        
-        
         
         var red = CGFloat(col!.red() * 255)
         var green = CGFloat(col!.green() * 255)

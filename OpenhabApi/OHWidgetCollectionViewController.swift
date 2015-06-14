@@ -187,34 +187,92 @@ extension OHWidgetCollectionViewController: UICollectionViewDataSource {
 //        cell.selectedBackgroundView.backgroundColor = UIColor.purpleColor()
 //        cell.selected
         
-        var vc = OHLightController()
-        vc.title = cell.label.text
-        self.parentViewController!.navigationController?.pushViewController(vc, animated: true)
+//        var vc = OHLightController()
+//        vc.title = cell.label.text
+//        self.parentViewController!.navigationController?.pushViewController(vc, animated: true)
         
-        if var widgets = self.widgets {
-            
-            
-            
-            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//            var dataManager = appDelegate.dataManager
-            
-            if var bulbs = widgets[indexPath.item].linkedPage?.widgets {
-                
-                vc.initWidget(bulbs)
-                
-                var lights = [OHLight]()
-                
-                for (index, bulb) in enumerate(bulbs)
-                {
-                    var light = OHLight(widget: bulb)
-                    lights.append(light)
+        
+        
+//        if self.widgets![indexPath.item].icon! == "none" {
+            if var item = self.widgets![indexPath.item].item {
+                if var tags = item.tags {
+                    
+                    for (index, tag) in enumerate(tags)
+                    {
+                        
+                        if tag.rangeOfString("OH_Light") != nil {
+                            pushLightsController(widgets![indexPath.item])
+                            break
+                        }
+                        
+                        if tag.rangeOfString("OH_Scene") != nil {
+                            println("Trigger Scene")
+                            item.sendCommand("ON")
+                            break
+                        }
+                    }
                 }
-                
-                vc.initLights(lights)
-            }
+//            }
         }
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+//        
+//        if var widgets = self.widgets {
+//            
+//            
+//            
+//            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+////            var dataManager = appDelegate.dataManager
+//            
+//            if var bulbs = widgets[indexPath.item].linkedPage?.widgets {
+//                
+//                vc.initWidget(bulbs)
+//                
+//                var lights = [OHLight]()
+//                
+//                for (index, bulb) in enumerate(bulbs)
+//                {
+//                    var light = OHLight(widget: bulb)
+//                    lights.append(light)
+//                }
+//                
+//                vc.initLights(lights)
+//            }
+//        }
 
     }
+    
+    func pushLightsController(widget: OHWidget)
+    {
+        var vc = OHLightController()
+        vc.title = widget.label
+        self.parentViewController!.navigationController?.pushViewController(vc, animated: true)
+        
+        if var bulbs = widget.linkedPage?.widgets {
+            
+            vc.initWidget(bulbs)
+            
+            var lights = [OHLight]()
+            
+            for (index, bulb) in enumerate(bulbs)
+            {
+                var light = OHLight(widget: bulb)
+                lights.append(light)
+            }
+            
+            vc.initLights(lights)
+        }
+    }
+    
     
 //    override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
 //        return false

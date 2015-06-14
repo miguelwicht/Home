@@ -15,6 +15,8 @@
 		223C7FB61AE79FF90079A41C /* OHRestParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223C7FB51AE79FF90079A41C /* OHRestParser.swift */; };
 		223C7FB81AE7C4040079A41C /* OHHomepage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223C7FB71AE7C4040079A41C /* OHHomepage.swift */; };
 		22599E621B0A13EC00EE7558 /* OHBeaconManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22599E611B0A13EC00EE7558 /* OHBeaconManager.swift */; };
+		226DC8D01B2881820070D23E /* OHButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226DC8CF1B2881820070D23E /* OHButton.swift */; };
+		226DC8D21B28A1210070D23E /* OHLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226DC8D11B28A1210070D23E /* OHLoadingView.swift */; };
 		226F9E7B1B0CC97D00231D5C /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 226F9E7A1B0CC97D00231D5C /* SWRevealViewController.m */; };
 		226F9E7E1B0CCF8700231D5C /* OHRearMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226F9E7D1B0CCF8700231D5C /* OHRearMenuViewController.swift */; };
 		226F9E801B0CEABF00231D5C /* OHRearMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226F9E7F1B0CEABF00231D5C /* OHRearMenuTableViewCell.swift */; };
@@ -80,6 +82,8 @@
 		223C7FB51AE79FF90079A41C /* OHRestParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHRestParser.swift; sourceTree = "<group>"; };
 		223C7FB71AE7C4040079A41C /* OHHomepage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHHomepage.swift; sourceTree = "<group>"; };
 		22599E611B0A13EC00EE7558 /* OHBeaconManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHBeaconManager.swift; sourceTree = "<group>"; };
+		226DC8CF1B2881820070D23E /* OHButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHButton.swift; sourceTree = "<group>"; };
+		226DC8D11B28A1210070D23E /* OHLoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHLoadingView.swift; sourceTree = "<group>"; };
 		226F9E791B0CC97D00231D5C /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		226F9E7A1B0CC97D00231D5C /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 		226F9E7D1B0CCF8700231D5C /* OHRearMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHRearMenuViewController.swift; sourceTree = "<group>"; };
@@ -274,6 +278,8 @@
 				22A899D11AFA30B1004FFC16 /* UIView+Extension.swift */,
 				22C7EFF21B2589FD00A430C4 /* UIImage+Extension.swift */,
 				22C7EFF41B258A5E00A430C4 /* UIColor+Extension.swift */,
+				226DC8CF1B2881820070D23E /* OHButton.swift */,
+				226DC8D11B28A1210070D23E /* OHLoadingView.swift */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -472,6 +478,7 @@
 				229C2CAD1B1607D80003FE64 /* S3FileManager.m in Sources */,
 				22FF37A01B21A8AE00D69741 /* OHStatusBarView.swift in Sources */,
 				227DDC2A1ADBE25A001EAE08 /* AppDelegate.swift in Sources */,
+				226DC8D21B28A1210070D23E /* OHLoadingView.swift in Sources */,
 				226F9E7E1B0CCF8700231D5C /* OHRearMenuViewController.swift in Sources */,
 				22D782F11AEFBE5E006BFDF8 /* OHWidgetCollectionViewLayout.swift in Sources */,
 				22D782EF1AEFA9F9006BFDF8 /* OHWidgetCell.swift in Sources */,
@@ -502,6 +509,7 @@
 				22E83C0A1ADE65710055B77A /* OHItem.swift in Sources */,
 				227DDC501ADC09BC001EAE08 /* OHBeacon.swift in Sources */,
 				22C632FA1B04E42500BB0A17 /* ButtonWithCustomBackgroundSize.swift in Sources */,
+				226DC8D01B2881820070D23E /* OHButton.swift in Sources */,
 				22A899CE1AFA0934004FFC16 /* OHRootViewController.swift in Sources */,
 				227DDC5C1ADD4EB6001EAE08 /* OHSitemapsTableViewController.swift in Sources */,
 			);

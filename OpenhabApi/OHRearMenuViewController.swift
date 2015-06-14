@@ -172,7 +172,7 @@ extension OHRearMenuViewController: UITableViewDelegate {
         }
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 52
     }
     
@@ -181,53 +181,40 @@ extension OHRearMenuViewController: UITableViewDelegate {
 extension OHRearMenuViewController: UITableViewDataSource {
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
-        // Return the number of sections.
-        return 3
+        return self.widgets != nil ? self.widgets!.count : 0
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        var numberOfRows = 0
-        
-        if (sectionHeaders[section] != nil)
-        {
-            var button = sectionHeaders[section]!
-            var numberOfItems = widgets![section].linkedPage!.widgets!.count
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
+        if let sectionHeader = sectionHeaders[section] {
+            var button = sectionHeader
+            var numberOfItems = widgets?[section].linkedPage?.widgets?.count != nil ? widgets![section].linkedPage!.widgets!.count : 0
             
-            numberOfRows = button!.showSection ? numberOfItems : 0
+            return button!.showSection ? numberOfItems : 0
+        }
+        else {
+            return 0
         }
         
-        return numberOfRows
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+    {
         let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as! OHRearMenuTableViewCell
         
         var numberOfItemsInSection = self.tableView(tableView, numberOfRowsInSection: indexPath.section)
         
         cell.lineView.hidden = numberOfItemsInSection == indexPath.row + 1 ? true : false
         
-        // Configure the cell...
-        
         var item = widgets![indexPath.section].linkedPage!.widgets![indexPath.row]
         cell.textLabel?.text = item.label
         
-        
-        if var menuItem = item.item {
-            if var tags = menuItem.tags {
-                for (index, tag) in enumerate(tags)
-                {
-                    if tag.rangeOfString("OH_Icon_") != nil {
-                        var tagString = tag.stringByReplacingOccurrencesOfString("OH_Icon_", withString: "")
-                        cell.imageView?.image = UIImage(named: tagString)?.imageWithRenderingMode(.AlwaysTemplate)
-                    }
-                }
-            }
+        if var iconName = item.item?.iconNameFromTags() {
+            cell.imageView?.image = UIImage(named: iconName)?.imageWithRenderingMode(.AlwaysTemplate)
         }
+        //TODO: reset image if there was no icon defined
         
         return cell
     }
-    
     
 }

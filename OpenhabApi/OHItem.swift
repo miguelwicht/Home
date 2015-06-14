@@ -144,3 +144,41 @@ extension OHItem : Printable {
             return desc
     }
 }
+
+extension OHItem {
+    
+    func iconNameFromTags() -> String?
+    {
+        var name: String?
+        
+        if var tags = self.tags {
+            for (index, tag) in enumerate(tags)
+            {
+                if tag.rangeOfString("OH_Icon_") != nil {
+                    name = tag.stringByReplacingOccurrencesOfString("OH_Icon_", withString: "")
+                    break
+                }
+            }
+        }
+        
+        return name
+    }
+    
+    func numberOfRowsFromTags() -> Int?
+    {
+        var numberOfRows: Int?
+    
+        if var tags = self.tags {
+            for (index, tag) in enumerate(tags)
+            {
+                if tag.rangeOfString("OH_Outlet_Rows_") != nil {
+                    var tagString = tag.stringByReplacingOccurrencesOfString("OH_Outlet_Rows_", withString: "")
+                    numberOfRows = tagString.toInt()!
+                    break
+                }
+            }
+        }
+        
+        return numberOfRows
+    }
+}

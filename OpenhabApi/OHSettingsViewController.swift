@@ -10,14 +10,18 @@ import UIKit
 
 class OHSettingsViewController: UIViewController {
     
-    var urlTextField: UITextField?
-    var saveButton: UIButton?
     let defaults = NSUserDefaults.standardUserDefaults()
-    var dismissButton: UIButton?
+    var urlTextField: UITextField?
+    let saveButton = OHButton.new()
+    let loadSitemapsButton = OHButton.new()
+    let dismissButton = OHButton.new()
+    
     var sitemaps: [OHSitemap] = [OHSitemap]()
     var sitemapChooserController: OHDropdownMenuTableViewController?
     var sitemapChooserButton: OHDropdownMenuButton?
-    var loadSitemapsButton: UIButton?
+    
+    var loadingView = OHLoadingView()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,34 +59,23 @@ class OHSettingsViewController: UIViewController {
             urlTextField!.text = url
         }
         
-        loadSitemapsButton = UIButton.buttonWithType(UIButtonType.Custom) as? UIButton
-        loadSitemapsButton!.setTitle("Load Sitemaps", forState: .Normal)
-        loadSitemapsButton!.setTitleColor(OHDefaults.defaultTextColor(), forState: .Normal)
-        loadSitemapsButton!.backgroundColor = OHDefaults.defaultCellBackgroundColor()
-        loadSitemapsButton!.titleLabel?.font = OHDefaults.defaultFontWithSize(17)
-        loadSitemapsButton?.addTarget(self, action: "loadSitemapsButtonPressed:", forControlEvents: .TouchUpInside)
+        loadSitemapsButton.setTitle("Load Sitemaps", forState: .Normal)
+        loadSitemapsButton.addTarget(self, action: "loadSitemapsButtonPressed:", forControlEvents: .TouchUpInside)
+        view.addSubview(loadSitemapsButton)
         
-        view.addSubview(loadSitemapsButton!)
+        saveButton.setTitle("Save", forState: .Normal)
+        saveButton.addTarget(self, action: "saveButtonPressed:", forControlEvents: .TouchUpInside)
+        view.addSubview(saveButton)
         
-        saveButton = UIButton.buttonWithType(UIButtonType.Custom) as? UIButton
-        saveButton!.setTitle("Save", forState: .Normal)
-        saveButton!.setTitleColor(OHDefaults.defaultTextColor(), forState: .Normal)
-        saveButton!.backgroundColor = OHDefaults.defaultCellBackgroundColor()
-        saveButton!.titleLabel?.font = OHDefaults.defaultFontWithSize(17)
-        saveButton!.addTarget(self, action: "saveButtonPressed:", forControlEvents: .TouchUpInside)
-        view.addSubview(saveButton!)
-        
-        
-        dismissButton = UIButton.buttonWithType(UIButtonType.Custom) as? UIButton
-        dismissButton!.setTitle("Dismiss", forState: .Normal)
-        dismissButton!.setTitleColor(OHDefaults.defaultTextColor(), forState: .Normal)
-        dismissButton!.backgroundColor = OHDefaults.defaultCellBackgroundColor()
-        dismissButton!.titleLabel?.font = OHDefaults.defaultFontWithSize(17)
-        dismissButton!.addTarget(self, action: "dismissButtonPressed:", forControlEvents: .TouchUpInside)
-        view.addSubview(dismissButton!)
-        
+        dismissButton.setTitle("Dismiss", forState: .Normal)
+        dismissButton.addTarget(self, action: "dismissButtonPressed:", forControlEvents: .TouchUpInside)
+        view.addSubview(dismissButton)
         
         OHDataManager.sharedInstance.loadLocalSitemaps()
+        
+        self.view.addSubview(loadingView)
+        self.loadingView.hidden = true
+        loadingView.frame = self.view.frame
     }
     
     func initSitemapChooser() {
@@ -137,49 +130,36 @@ class OHSettingsViewController: UIViewController {
             urlTextField.marginLeft = 15
         }
         
-        loadSitemapsButton?.sizeToFit()
-        loadSitemapsButton!.setWidth(self.view.frame.width - 30)
-        loadSitemapsButton!.setHeight(40)
-        loadSitemapsButton!.marginTop = urlTextField!.neededSpaceHeight + 10
-        loadSitemapsButton!.marginLeft = 15
+        loadSitemapsButton.sizeToFit()
+        loadSitemapsButton.setWidth(self.view.frame.width - 30)
+        loadSitemapsButton.setHeight(40)
+        loadSitemapsButton.marginTop = urlTextField!.neededSpaceHeight + 10
+        loadSitemapsButton.marginLeft = 15
         
-        sitemapChooserButton!.marginTop = loadSitemapsButton!.neededSpaceHeight + 10
+        sitemapChooserButton!.marginTop = loadSitemapsButton.neededSpaceHeight + 10
         sitemapChooserController!.view.marginTop = sitemapChooserButton!.neededSpaceHeight
         sitemapChooserController!.view.setHeight(self.view.frame.height - sitemapChooserButton!.neededSpaceHeight)
         
-        if var saveButton = self.saveButton {
             
-            saveButton.sizeToFit()
-            
-            if var sitemapChooserButton = self.sitemapChooserButton {
-                saveButton.marginTop = sitemapChooserButton.neededSpaceHeight + 30
-            }
-            else {
-                saveButton.marginTop = 100
-            }
-            
-            saveButton.marginLeft = 15
-            saveButton.setWidth(self.view.frame.width - 30)
-            saveButton.setHeight(40)
-        }
+        saveButton.sizeToFit()
         
-        if var dismissButton = self.dismissButton {
-            
-            dismissButton.sizeToFit()
-            
-            if var saveButton = self.saveButton {
-                dismissButton.marginTop = saveButton.neededSpaceHeight + 15
-            }
-            else {
-                dismissButton.marginTop = 100
-            }
-            
-            dismissButton.marginLeft = 15
-            dismissButton.setWidth(self.view.frame.width - 30)
-            dismissButton.setHeight(40)
+        if var sitemapChooserButton = self.sitemapChooserButton {
+            saveButton.marginTop = sitemapChooserButton.neededSpaceHeight + 30
         }
-        
-//        sitemapChooserButton?.marginTop = 200
+        else {
+            saveButton.marginTop = 100
+        }
+            
+        saveButton.marginLeft = 15
+        saveButton.setWidth(self.view.frame.width - 30)
+        saveButton.setHeight(40)
+            
+        dismissButton.sizeToFit()
+        dismissButton.marginTop = saveButton.neededSpaceHeight + 15
+            
+        dismissButton.marginLeft = 15
+        dismissButton.setWidth(self.view.frame.width - 30)
+        dismissButton.setHeight(40)
     }
     
     func toggleDropdownMenu(control: OHDropdownMenuButton)
@@ -205,6 +185,7 @@ extension OHSettingsViewController {
     func loadSitemapsButtonPressed(button: UIButton)
     {
         OHDataManager.sharedInstance.updateSitemapsFromServer()
+        loadingView.hidden = false
     }
     
     func saveButtonPressed(button: UIButton)
@@ -249,6 +230,7 @@ extension OHSettingsViewController {
         
         if keyPath == "sitemaps" {
             updateSitemapChooser()
+            loadingView.hidden = true
         }
         
     }
@@ -265,6 +247,7 @@ extension OHSettingsViewController: UITableViewDelegate {
             
             if sitemap.homepage == nil {
                 OHDataManager.sharedInstance.getContentForSitemap(sitemap)
+                loadingView.hidden = false
             }
             
             defaults.setObject(sitemap.name, forKey: "SettingsOpenHABSitemap")

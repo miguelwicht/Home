@@ -11,7 +11,8 @@ import CoreLocation
 
 class OHRoomsViewController: OHBaseViewController {
     //MARK: Properties
-    var widgets: [OHWidget]?
+    var sitemap: OHSitemap?
+    var rooms: [OHWidget]?
     var roomSwitcherController: OHDropdownMenuTableViewController?
     var currentRoom: OHRoomViewController?
     var isWaitingForBeacons: Bool = true
@@ -26,12 +27,24 @@ class OHRoomsViewController: OHBaseViewController {
         super.init(coder: aDecoder)
     }
     
-    convenience init(widgets: [OHWidget])
+//    convenience init(rooms: [OHWidget])
+//    {
+//        self.init(nibName: nil, bundle: nil)
+//        
+//        self.rooms = rooms
+//        println(rooms)
+//        initNotificationCenterNotifications()
+//        addDropdownToNavigationBar()
+//    }
+    
+    convenience init(sitemap: OHSitemap)
     {
         self.init(nibName: nil, bundle: nil)
         
-        self.widgets = widgets
-        println(widgets)
+        self.sitemap = sitemap
+        
+        rooms = sitemap.roomsInSitemap()
+        println(rooms)
         initNotificationCenterNotifications()
         addDropdownToNavigationBar()
     }
@@ -39,11 +52,17 @@ class OHRoomsViewController: OHBaseViewController {
     override func loadView()
     {
         super.loadView()
+        initObservers()
         
         self.automaticallyAdjustsScrollViewInsets = true
-
-        switchToRoom(self.widgets!.first!)
-        initRoomSwitcherController()
+        
+        var dataManager = OHDataManager.sharedInstance
+        
+        if var sitemap = OHDataManager.sharedInstance.currentSitemap {
+            rooms = sitemap.roomsInSitemap()
+            switchToRoom(rooms!.first!)
+            initRoomSwitcherController()
+        }
     }
     
     override func viewDidLoad()
@@ -60,7 +79,7 @@ extension OHRoomsViewController {
         roomSwitcherController = OHDropdownMenuTableViewController()
         
         if var roomSwitcherController = self.roomSwitcherController {
-            roomSwitcherController.data = widgets!
+            roomSwitcherController.data = rooms!
             addChildViewController(roomSwitcherController)
             view.addSubview(roomSwitcherController.view)
             
@@ -128,7 +147,7 @@ extension OHRoomsViewController: UITableViewDelegate {
         }
     }
     
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 145
     }
 }
@@ -244,5 +263,37 @@ extension OHRoomsViewController {
         self.navigationItem.titleView = button
         self.navigationItem.titleView?.sizeToFit()
         button.addTarget(self, action: "toggleDropdownMenu:", forControlEvents: UIControlEvents.TouchUpInside)
+    }
+}
+
+extension OHRoomsViewController {
+    
+    func initObservers()
+    {
+        let options : NSKeyValueObservingOptions = .New | .Old | .Initial | .Prior
+        
+        OHDataManager.sharedInstance.addObserver(self, forKeyPath: "currentSitemap", options: options, context: nil)
+    }
+    
+    func removeObservers()
+    {
+        OHDataManager.sharedInstance.removeObserver(self, forKeyPath: "currentSitemap")
+    }
+    
+    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+        
+        if keyPath == "currentSitemap" {
+            
+            var sitemap =  OHDataManager.sharedInstance.currentSitemap
+            self.sitemap = sitemap
+            self.rooms = sitemap!.roomsInSitemap()
+            
+            if var roomSwitcherController = self.roomSwitcherController {
+                roomSwitcherController.data = rooms!
+                roomSwitcherController.tableView.reloadData()
+            }
+            
+        }
+        
     }
 }

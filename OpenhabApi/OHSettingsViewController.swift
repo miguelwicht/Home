@@ -19,6 +19,7 @@ class OHSettingsViewController: UIViewController {
     var sitemaps: [OHSitemap] = [OHSitemap]()
     var sitemapChooserController: OHDropdownMenuTableViewController?
     var sitemapChooserButton: OHDropdownMenuButton?
+    var selectedSitemap: OHSitemap?
     
     var loadingView = OHLoadingView()
     
@@ -219,6 +220,7 @@ extension OHSettingsViewController {
         let options : NSKeyValueObservingOptions = .New | .Old | .Initial | .Prior
         
         OHDataManager.sharedInstance.addObserver(self, forKeyPath: "sitemaps", options: options, context: nil)
+        OHDataManager.sharedInstance.addObserver(self, forKeyPath: "currentSitemap", options: options, context: nil)
     }
     
     func removeObservers()
@@ -228,11 +230,37 @@ extension OHSettingsViewController {
     
     override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
         
-        if keyPath == "sitemaps" {
+        if (keyPath == "sitemaps") {
             updateSitemapChooser()
+            
             loadingView.hidden = true
+            
+//            if changeSitemap == true {
+//                
+//                if OHDataManager.sharedInstance.sitemaps[""]
+//            }
         }
         
+        if (keyPath == "currentSitemap")
+        {
+            if var homepage = OHDataManager.sharedInstance.currentSitemap?.homepage {
+                loadingView.hidden = true
+            }
+            else {
+                
+            }
+        }
+        
+    }
+    
+    func getContentForSitemaps()
+    {
+        if var sitemaps = OHDataManager.sharedInstance.sitemaps {
+            for (index, sitemap) in enumerate(sitemaps)
+            {
+                OHDataManager.sharedInstance.getContentForSitemap(sitemap.1)
+            }
+        }
     }
 }
 
@@ -248,13 +276,20 @@ extension OHSettingsViewController: UITableViewDelegate {
             if sitemap.homepage == nil {
                 OHDataManager.sharedInstance.getContentForSitemap(sitemap)
                 loadingView.hidden = false
+            } else {
+                OHDataManager.sharedInstance.currentSitemap = sitemap
             }
+            
+            selectedSitemap = sitemap
             
             defaults.setObject(sitemap.name, forKey: "SettingsOpenHABSitemap")
             defaults.synchronize()
         }
         
+        
+        
         toggleDropdownMenu(self.sitemapChooserButton!)
+        
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {

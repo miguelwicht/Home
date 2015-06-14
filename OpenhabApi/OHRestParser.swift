@@ -75,19 +75,6 @@ class OHRestParser {
     
     static func getMenuFromSitemap(sitemap: OHSitemap) -> [OHWidget]?
     {
-        var homepage = sitemap.homepage!
-        
-        var menuWidget: OHWidget?
-        
-        for (i, e) in enumerate(homepage.widgets!)
-        {
-            if e.label == "Menu" {
-                menuWidget = e
-            }
-        }
-        
-        //        var widgets = menuWidget?.widgets
-        
-        return menuWidget?.widgets
+        return sitemap.menuFromSitemap()?.widgets
     }
 }

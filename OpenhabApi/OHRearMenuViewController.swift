@@ -84,6 +84,10 @@ class OHRearMenuViewController: UIViewController {
             var startIndex = sitemaps.startIndex
             var sitemap = sitemaps[startIndex].1
             
+            if var currentSitemap = OHDataManager.sharedInstance.currentSitemap {
+                sitemap = currentSitemap
+            }
+            
             widgets = OHRestParser.getMenuFromSitemap(sitemap)
         }
         

@@ -49,23 +49,28 @@ extension OHSitemapsTableViewController: UITableViewDelegate
         //self.restManager.getSitemap(self.sitemaps[indexPath.row].name)
         
         println(self.sitemaps[indexPath.row])
+//
+//        var homepage = self.sitemaps[indexPath.row].homepage!
+//        
+//        var widget: OHWidget?
+//        
+//        for (i, e) in enumerate(homepage.widgets!)
+//        {
+//            widget = e
+//        }
+//        
+//        var widgets = widget!.widgets
         
-        var homepage = self.sitemaps[indexPath.row].homepage!
         
-        var widget: OHWidget?
+        var rooms = self.sitemaps[indexPath.row].roomsInSitemap()
         
-        for (i, e) in enumerate(homepage.widgets!)
-        {
-            widget = e
-        }
-        
-//        var widget: OHWidget = self.sitemaps[indexPath.row].homepage!.wi
-        
-        var widgets = widget!.widgets
         
 //        println("widgets to pass: \(widgets)")
         
-        var vc: OHRoomsViewController = OHRoomsViewController(widgets: widgets!)
+//        var vc: OHRoomsViewController = OHRoomsViewController(rooms: rooms!)
+        
+        var vc: OHRoomsViewController = OHRoomsViewController(sitemap: self.sitemaps[indexPath.row])
+        
         self.presentViewController(vc, animated: true, completion: nil)
     }
 }

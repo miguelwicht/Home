@@ -77,6 +77,41 @@ import Foundation
 //        
 //        return items
 //    }
+    
+    func roomsInSitemap() -> [OHWidget]?
+    {
+        var rooms: OHWidget?
+        
+        if var homepage = self.homepage {
+            for (i, e) in enumerate(homepage.widgets!)
+            {
+                if e.label == "Rooms" {
+                    rooms = e
+                    break
+                }
+            }
+        }
+        
+        return rooms?.widgets
+    }
+    
+    func menuFromSitemap() -> OHWidget?
+    {
+        var menuWidget: OHWidget?
+        
+        if var homepage = self.homepage {
+        
+            for (i, e) in enumerate(homepage.widgets!)
+            {
+                if e.label == "Menu" {
+                    menuWidget = e
+                    break
+                }
+            }
+        }
+        
+        return menuWidget
+    }
 }
 
 //MARK: OHSitemap: Printable

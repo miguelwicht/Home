@@ -149,6 +149,17 @@ class OHDataManager: NSObject {
     {
         var path: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("sitemapsData") as NSString
         NSKeyedArchiver.archiveRootObject(sitemaps!, toFile: path as String)
+        
+        if var currentSitemap = self.currentSitemap {
+            
+            if var sitemaps = self.sitemaps {
+                var startIndex = sitemaps.startIndex
+                currentSitemap = sitemaps[startIndex].1
+            }
+            
+            var currentSitemapPath: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("currentSitemapData") as NSString
+            NSKeyedArchiver.archiveRootObject(currentSitemap, toFile: path as String)
+        }
     }
     
     func loadData()
@@ -156,9 +167,19 @@ class OHDataManager: NSObject {
         var path: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("sitemapsData") as NSString
         if var sitemaps = NSKeyedUnarchiver.unarchiveObjectWithFile(path as String) as? [String: OHSitemap] {
             self.sitemaps = sitemaps
-            
         } else {
             print("could not load data")
+        }
+        
+        if var currentSitemap = NSKeyedUnarchiver.unarchiveObjectWithFile(path as String) as? OHSitemap {
+            self.currentSitemap = currentSitemap
+            
+        } else {
+            print("could not load current Sitemap data")
+            if var sitemaps = self.sitemaps {
+                var startIndex = sitemaps.startIndex
+                currentSitemap = sitemaps[startIndex].1
+            }
         }
     }
     

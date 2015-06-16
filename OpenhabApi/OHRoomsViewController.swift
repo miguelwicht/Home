@@ -27,16 +27,6 @@ class OHRoomsViewController: OHBaseViewController {
         super.init(coder: aDecoder)
     }
     
-//    convenience init(rooms: [OHWidget])
-//    {
-//        self.init(nibName: nil, bundle: nil)
-//        
-//        self.rooms = rooms
-//        println(rooms)
-//        initNotificationCenterNotifications()
-//        addDropdownToNavigationBar()
-//    }
-    
     convenience init(sitemap: OHSitemap)
     {
         self.init(nibName: nil, bundle: nil)
@@ -52,7 +42,6 @@ class OHRoomsViewController: OHBaseViewController {
     override func loadView()
     {
         super.loadView()
-        initObservers()
         
         self.automaticallyAdjustsScrollViewInsets = true
         
@@ -108,7 +97,7 @@ extension OHRoomsViewController {
         if var button = self.navigationItem.titleView as? UIButton {
             button.setTitle(room.label?.uppercaseString, forState: .Normal)
         }
-//        var offsetY = self.navigationController!.navigationBar.neededSpaceHeight
+        
         var offsetY = CGFloat(0)
         var height = self.view.frame.height - offsetY
         
@@ -263,37 +252,5 @@ extension OHRoomsViewController {
         self.navigationItem.titleView = button
         self.navigationItem.titleView?.sizeToFit()
         button.addTarget(self, action: "toggleDropdownMenu:", forControlEvents: UIControlEvents.TouchUpInside)
-    }
-}
-
-extension OHRoomsViewController {
-    
-    func initObservers()
-    {
-        let options : NSKeyValueObservingOptions = .New | .Old | .Initial | .Prior
-        
-        OHDataManager.sharedInstance.addObserver(self, forKeyPath: "currentSitemap", options: options, context: nil)
-    }
-    
-    func removeObservers()
-    {
-        OHDataManager.sharedInstance.removeObserver(self, forKeyPath: "currentSitemap")
-    }
-    
-    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
-        
-        if keyPath == "currentSitemap" {
-            
-            var sitemap =  OHDataManager.sharedInstance.currentSitemap
-            self.sitemap = sitemap
-            self.rooms = sitemap!.roomsInSitemap()
-            
-            if var roomSwitcherController = self.roomSwitcherController {
-                roomSwitcherController.data = rooms!
-                roomSwitcherController.tableView.reloadData()
-            }
-            
-        }
-        
     }
 }

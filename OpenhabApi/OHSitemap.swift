@@ -64,20 +64,6 @@ import Foundation
         }
     }
     
-//    func getItems() -> [String: OHItem]?
-//    {
-//        var items = [String: OHItem]()
-//        
-//        var homepageWidgets = homepage?.widgets
-//        
-//        for (index, homepageWidget) in enumerate(homepageWidgets)
-//        {
-//            
-//        }
-//        
-//        return items
-//    }
-    
     func roomsInSitemap() -> [OHWidget]?
     {
         var rooms: OHWidget?

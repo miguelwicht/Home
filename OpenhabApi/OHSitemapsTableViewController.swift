@@ -37,7 +37,7 @@ class OHSitemapsTableViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
 //        println("SitemapsController: viewDidLoad")
-        restManager?.getSitemaps()
+//        restManager?.getSitemaps()
     }
 }
 
@@ -102,12 +102,12 @@ extension OHSitemapsTableViewController: OHRestManagerDelegate
         println(beacons)
     }
     
-    func didGetSitemaps(sitemaps: [OHSitemap]) {
-        for (i, e) in enumerate(sitemaps)
-        {
-            self.restManager!.getSitemap(e.name)
-        }
-    }
+//    func didGetSitemaps(sitemaps: [OHSitemap]) {
+//        for (i, e) in enumerate(sitemaps)
+//        {
+//            self.restManager!.getSitemap(e.name)
+//        }
+//    }
     
     func didGetSitemap(sitemap: OHSitemap)
     {

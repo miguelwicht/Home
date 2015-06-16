@@ -50,6 +50,10 @@ class OHRootViewController: UINavigationController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
     }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
 }
 
 extension OHRootViewController {
@@ -59,11 +63,16 @@ extension OHRootViewController {
         
         var dataManager = OHDataManager.sharedInstance
         
-        self.popToRootViewControllerAnimated(false)
-        self.pushViewControllerWithSitemap(OHDataManager.sharedInstance.currentSitemap!)
-        
-        if var menuViewController = revealViewController().rearViewController as? OHRearMenuViewController {
-            menuViewController.updateMenu()
+        if var currentSitemap = OHDataManager.sharedInstance.currentSitemap
+        {
+            self.popToRootViewControllerAnimated(false)
+            self.pushViewControllerWithSitemap(currentSitemap)
+            
+            if var menuViewController = revealViewController().rearViewController as? OHRearMenuViewController {
+                menuViewController.updateMenu()
+            }
+            
+            revealViewController().revealToggle(self)
         }
     }
     
@@ -79,15 +88,6 @@ extension OHRootViewController {
         vc.title = sitemap.label
         
         self.pushViewController(vc, animated: true)
-        
-//        var roomsInSitemap = sitemap.roomsInSitemap()
-//        
-//        if var rooms = roomsInSitemap {
-//            var vc: OHRoomsViewController = OHRoomsViewController(sitemap: sitemap)
-//            vc.title = sitemap.label
-//            
-//            self.pushViewController(vc, animated: true)
-//        }
     }
 }
 

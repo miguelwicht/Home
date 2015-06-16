@@ -95,11 +95,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UINavigationBar.appearance().barTintColor = OHDefaults.defaultNavigationBarColor()
         UINavigationBar.appearance().translucent = false
-        UINavigationBar.appearance().tintColor = UIColor(red: (51.0 / 255.0), green: (51.0 / 255.0), blue: (51.0 / 255.0), alpha: 1.0)
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         UINavigationBar.appearance().titleTextAttributes = [ NSFontAttributeName: UIFont(name: font!.fontName, size: 17.0)!, NSForegroundColorAttributeName: UIColor.whiteColor() ]
         
         UIButton.appearance().setTitleColor(OHDefaults.defaultTextColor(), forState: .Normal)
+        
+        UIPageControl.appearance().pageIndicatorTintColor = UIColor.colorFromRGB(red: 236, green: 240, blue: 241)
+        UIPageControl.appearance().currentPageIndicatorTintColor = OHDefaults.defaultNavigationBarColor()
     }
     
     func registerDefaults()

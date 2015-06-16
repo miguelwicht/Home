@@ -20,6 +20,35 @@ class OHWidgetCollectionViewController: UICollectionViewController {
     
     var selectedWidgets = [OHWidget]()
     
+    var pageControl: UIPageControl? {
+        didSet {
+            pageControl!.addTarget(self, action: "pageControlValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+            
+            pageControl!.numberOfPages = self.numberOfPages
+            pageControl!.hidesForSinglePage = true
+        }
+    }
+    
+    var numberOfPages: Int {
+        get {
+            var pageWidth = collectionView!.frame.size.width
+            var numberOfPages = Int(collectionView!.contentSize.width / pageWidth)
+            
+            return numberOfPages
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+//        self.view.setHeight(pageControl.neededSpaceHeight)
+        
+        
+//        var viewIsCollectionView = collectionView! == view ? true : false
+        
+        
+    }
+    
     required init(coder aDecoder: NSCoder)
     {
         fatalError("init(coder:) has not been implemented")
@@ -34,6 +63,8 @@ class OHWidgetCollectionViewController: UICollectionViewController {
         collectionView!.registerClass(OHWidgetCell.self, forCellWithReuseIdentifier: self.reuseIdentifier)
         configurateCollectionView()
 //        collectionView?.allowsMultipleSelection = true
+        
+        
     }
     
     convenience init(collectionViewLayout layout: UICollectionViewLayout, widgets: [OHWidget]) {
@@ -45,36 +76,45 @@ class OHWidgetCollectionViewController: UICollectionViewController {
     override func loadView()
     {
         super.loadView()
-//        println("CollectionViewController.LoadView: collectionViewFrame: \(self.collectionView!.frame)")
-//        println("CollectionViewController.LoadView: viewFrame: \(self.view.frame)")
         
         self.collectionView!.reloadData()
 
-        leftArrowButton.setImage(UIImage(named: "arrow_left"), forState: .Normal)
-        leftArrowButton.imageView?.contentMode = UIViewContentMode.Center
-        self.view.addSubview(leftArrowButton)
+//        leftArrowButton.setImage(UIImage(named: "arrow_left"), forState: .Normal)
+//        leftArrowButton.imageView?.contentMode = UIViewContentMode.Center
+//        self.view.addSubview(leftArrowButton)
+//        
+//        rightArrowButton.setImage(UIImage(named: "arrow_right"), forState: .Normal)
+//        rightArrowButton.imageView?.contentMode = UIViewContentMode.Center
+//        self.view.addSubview(rightArrowButton)
         
-        rightArrowButton.setImage(UIImage(named: "arrow_right"), forState: .Normal)
-        rightArrowButton.imageView?.contentMode = UIViewContentMode.Center
-        self.view.addSubview(rightArrowButton)
-        
-//        collectionView?.backgroundColor = UIColor.redColor()
-        
-//        println("CollectionViewController.LoadView: collectionViewFrame: \(self.collectionView!.frame)")
-//        println("CollectionViewController.LoadView: viewFrame: \(self.view.frame)")
-        
+        self.view.backgroundColor = UIColor.purpleColor()
     }
     
     override func viewWillLayoutSubviews()
     {
         super.viewWillLayoutSubviews()
         
-        self.leftArrowButton.marginTop = (self.view.frame.height / 2) - (self.leftArrowButton.frame.height / 2)
-        self.rightArrowButton.marginTop = (self.view.frame.height / 2) - (self.leftArrowButton.frame.height / 2)
-        self.rightArrowButton.marginLeft = self.view.frame.width - self.rightArrowButton.frame.width
+//        self.leftArrowButton.marginTop = (self.view.frame.height / 2) - (self.leftArrowButton.frame.height / 2)
+//        self.rightArrowButton.marginTop = (self.view.frame.height / 2) - (self.leftArrowButton.frame.height / 2)
+//        self.rightArrowButton.marginLeft = self.view.frame.width - self.rightArrowButton.frame.width
         
 //        println("CollectionViewController.ViewWillLayoutSubViews: collectionViewFrame: \(self.collectionView!.frame)")
 //        println("CollectionViewController.ViewWillLayoutSubViews: viewFrame: \(self.view.frame)")
+        
+//        pageControl.sizeToFit()
+////        pageControl.marginBottom = 0
+//        pageControl.centerViewHorizontallyInSuperview()
+////        pageControl.centerViewVerticallyInSuperview()
+        
+//        var frame = pageControl.frame
+//        
+//        pageControl.marginTop = collectionView!.neededSpaceHeight
+//        self.view.sizeToFit()
+     
+        pageControl?.numberOfPages = numberOfPages
+        
+//        pageControl?.hidden = numberOfPages <= 1 ? true : true
+//        pageControl?.dis
     }
     
     func configurateCollectionView()
@@ -327,5 +367,35 @@ extension OHWidgetCollectionViewController {
 //        println("numberOfSections: \(numberOfSections)")
         
         return numberOfSections
+    }
+}
+
+extension OHWidgetCollectionViewController: UIScrollViewDelegate {
+    
+    override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+//        super.scrollViewDidEndDecelerating(scrollView)
+        
+        var pageWidth = collectionView!.frame.size.width
+        var currentPage = Float(collectionView!.contentOffset.x / pageWidth)
+        
+        var pointer: Float = Float(1.0)
+        
+        if (Float(0.0) != modff(currentPage, &pointer))
+        {
+            pageControl?.currentPage = Int(currentPage + 1)
+        }
+        else
+        {
+            pageControl?.currentPage = Int(currentPage)
+        }
+    }
+}
+
+extension OHWidgetCollectionViewController {
+    func pageControlValueChanged(control: UIPageControl)
+    {
+        var contentOffset = collectionView!.contentOffset
+        contentOffset.x = CGFloat(control.currentPage) * collectionView!.frame.size.width
+        self.collectionView!.setContentOffset(contentOffset, animated: true)
     }
 }

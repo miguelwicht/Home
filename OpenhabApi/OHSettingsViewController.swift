@@ -16,13 +16,13 @@ class OHSettingsViewController: UIViewController {
     let loadSitemapsButton = OHButton.new()
     let dismissButton = OHButton.new()
     
-    var sitemaps: [OHSitemap] = [OHSitemap]()
     var sitemapChooserController: OHDropdownMenuTableViewController?
     var sitemapChooserButton: OHDropdownMenuButton?
-    var selectedSitemap: OHSitemap?
     
     var loadingView = OHLoadingView()
     
+    var didUpdateCurrentSitemapObserver: NSObjectProtocol!
+    var didUpdateSitemapsObserver: NSObjectProtocol!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,11 +39,6 @@ class OHSettingsViewController: UIViewController {
         super.loadView()
         
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        
-        initSitemapChooser()
-        
-        initObservers()
-        
         
         view.backgroundColor = UIColor.whiteColor()
         
@@ -72,53 +67,13 @@ class OHSettingsViewController: UIViewController {
         dismissButton.addTarget(self, action: "dismissButtonPressed:", forControlEvents: .TouchUpInside)
         view.addSubview(dismissButton)
         
-        OHDataManager.sharedInstance.loadLocalSitemaps()
-        
         self.view.addSubview(loadingView)
         self.loadingView.hidden = true
         loadingView.frame = self.view.frame
-    }
-    
-    func initSitemapChooser() {
         
-        sitemapChooserButton = OHDropdownMenuButton(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 90))
+        initSitemapChooser()
         
-        if var sitemapChooserButton = self.sitemapChooserButton {
-            self.view.addSubview(sitemapChooserButton)
-            
-            sitemapChooserButton.marginTop = 200
-            sitemapChooserButton.setTitle("Living Room", forState: .Normal)
-            
-            sitemapChooserController = OHDropdownMenuTableViewController()
-            
-            if var sitemapChooserController = self.sitemapChooserController {
-                sitemapChooserController.data = sitemaps
-                addChildViewController(sitemapChooserController)
-                view.addSubview(sitemapChooserController.view)
-                
-                sitemapChooserController.view.marginTop = sitemapChooserButton.neededSpaceHeight
-                sitemapChooserController.view.setHeight(self.view.frame.height - sitemapChooserButton.neededSpaceHeight)
-                sitemapChooserController.tableView.delegate = self
-            }
-            
-            sitemapChooserButton.addTarget(self, action: "toggleDropdownMenu:", forControlEvents: UIControlEvents.TouchUpInside)
-            toggleDropdownMenu(sitemapChooserButton)
-        }
-    }
-    
-    func updateSitemapChooser()
-    {
-        if var sitemaps = OHDataManager.sharedInstance.sitemaps {
-            
-            var sitemapValues = [OHSitemap]()
-            
-            for (key, sitemap) in sitemaps {
-                sitemapValues.append(sitemap)
-            }
-            
-            self.sitemapChooserController!.data = sitemapValues
-            self.sitemapChooserController!.tableView.reloadData()
-        }
+        initObservers()
     }
     
     
@@ -168,7 +123,6 @@ class OHSettingsViewController: UIViewController {
         if var sitemapChooserController = self.sitemapChooserController {
             sitemapChooserController.view.hidden = sitemapChooserController.view.hidden ? false : true
             sitemapChooserController.tableView.reloadData()
-//            sitemapChooserController.tableView.sizeToFit()
             
             var height = CGFloat(sitemapChooserController.tableView.numberOfRowsInSection(0)) * self.tableView(sitemapChooserController.tableView, heightForRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0))
             
@@ -181,11 +135,61 @@ class OHSettingsViewController: UIViewController {
     }
 }
 
+//MARK: SitemapChooser
+extension OHSettingsViewController {
+    
+    func initSitemapChooser() {
+        
+        sitemapChooserButton = OHDropdownMenuButton(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 90))
+        
+        if var sitemapChooserButton = self.sitemapChooserButton {
+            self.view.addSubview(sitemapChooserButton)
+            
+            sitemapChooserButton.marginTop = 200
+            sitemapChooserButton.setTitle("Choose Sitemap", forState: .Normal)
+            
+            sitemapChooserController = OHDropdownMenuTableViewController()
+            
+            if var sitemapChooserController = self.sitemapChooserController {
+                
+                if var sitemapData = OHDataManager.sharedInstance.sitemaps {
+                    sitemapChooserController.data = sitemapData.values.array
+                }
+                
+                addChildViewController(sitemapChooserController)
+                view.addSubview(sitemapChooserController.view)
+                
+                sitemapChooserController.view.marginTop = sitemapChooserButton.neededSpaceHeight
+                sitemapChooserController.view.setHeight(self.view.frame.height - sitemapChooserButton.neededSpaceHeight)
+                sitemapChooserController.tableView.delegate = self
+            }
+            
+            sitemapChooserButton.addTarget(self, action: "toggleDropdownMenu:", forControlEvents: UIControlEvents.TouchUpInside)
+            toggleDropdownMenu(sitemapChooserButton)
+        }
+    }
+    
+    func updateSitemapChooser()
+    {
+        if var sitemaps = OHDataManager.sharedInstance.sitemaps {
+            
+            let sitemapValues = sitemaps.values.array
+            
+            if var sitemapChooserController = self.sitemapChooserController {
+                self.sitemapChooserController!.data = sitemapValues
+                self.sitemapChooserController!.tableView.reloadData()
+            }
+        }
+    }
+}
+
+//MARK: Actions
 extension OHSettingsViewController {
     
     func loadSitemapsButtonPressed(button: UIButton)
     {
-        OHDataManager.sharedInstance.updateSitemapsFromServer()
+        OHDataManager.sharedInstance.downloadSitemaps()
+        
         loadingView.hidden = false
     }
     
@@ -213,83 +217,52 @@ extension OHSettingsViewController {
     }
 }
 
+//MARK: Observers
 extension OHSettingsViewController {
     
     func initObservers()
     {
-        let options : NSKeyValueObservingOptions = .New | .Old | .Initial | .Prior
+        didUpdateCurrentSitemapObserver = NSNotificationCenter.defaultCenter().addObserverForName("OHDataManagerCurrentSitemapDidChangeNotification", object: nil, queue: NSOperationQueue.mainQueue(), usingBlock: { notification in
+            self.updateSitemapChooser()
+            self.loadingView.hidden = true
+        })
         
-        OHDataManager.sharedInstance.addObserver(self, forKeyPath: "sitemaps", options: options, context: nil)
-        OHDataManager.sharedInstance.addObserver(self, forKeyPath: "currentSitemap", options: options, context: nil)
+        didUpdateSitemapsObserver = NSNotificationCenter.defaultCenter().addObserverForName("OHDataManagerDidUpdateSitemapsNotification", object: nil, queue: NSOperationQueue.mainQueue(), usingBlock: { notification in
+            self.updateSitemapChooser()
+            self.loadingView.hidden = true
+        })
     }
     
     func removeObservers()
     {
-        OHDataManager.sharedInstance.removeObserver(self, forKeyPath: "sitemaps")
+        let nc = NSNotificationCenter.defaultCenter()
+        if didUpdateCurrentSitemapObserver != nil {
+            nc.removeObserver(didUpdateCurrentSitemapObserver)
+        }
+        
+        if didUpdateSitemapsObserver != nil {
+            nc.removeObserver(didUpdateSitemapsObserver)
+        }
     }
     
-    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
-        
-        if (keyPath == "sitemaps") {
-            updateSitemapChooser()
-            
-            loadingView.hidden = true
-            
-//            if changeSitemap == true {
-//                
-//                if OHDataManager.sharedInstance.sitemaps[""]
-//            }
-        }
-        
-        if (keyPath == "currentSitemap")
-        {
-            if var homepage = OHDataManager.sharedInstance.currentSitemap?.homepage {
-                loadingView.hidden = true
-            }
-            else {
-                
-            }
-        }
-        
-    }
-    
-    func getContentForSitemaps()
-    {
-        if var sitemaps = OHDataManager.sharedInstance.sitemaps {
-            for (index, sitemap) in enumerate(sitemaps)
-            {
-                OHDataManager.sharedInstance.getContentForSitemap(sitemap.1)
-            }
-        }
-    }
 }
 
+//MARK: TableViewDelegate
 extension OHSettingsViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
+        var sitemap = self.sitemapChooserController!.data[indexPath.item] as! OHSitemap
         
-//        if var sitemaps = OHDataManager.sharedInstance.sitemaps {
-        if self.sitemapChooserController!.data.count > 0 {
-            var sitemap = self.sitemapChooserController!.data[indexPath.item] as! OHSitemap
-            
-            if sitemap.homepage == nil {
-                OHDataManager.sharedInstance.getContentForSitemap(sitemap)
-                loadingView.hidden = false
-            } else {
-                OHDataManager.sharedInstance.currentSitemap = sitemap
-            }
-            
-            selectedSitemap = sitemap
-            
-            defaults.setObject(sitemap.name, forKey: "SettingsOpenHABSitemap")
-            defaults.synchronize()
+        loadingView.hidden = false
+        
+        OHDataManager.sharedInstance.currentSitemap = sitemap
+        
+        if var sitemapChooserButton = self.sitemapChooserButton {
+            sitemapChooserButton.setTitle(sitemap.label, forState: .Normal)
         }
         
-        
-        
         toggleDropdownMenu(self.sitemapChooserButton!)
-        
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -311,6 +284,7 @@ extension OHSettingsViewController: UITableViewDelegate {
     }
 }
 
+//MARK: UITextFieldDelegate
 extension OHSettingsViewController: UITextFieldDelegate {
     
     func textFieldShouldEndEditing(textField: UITextField) -> Bool {

@@ -37,6 +37,9 @@ class OHRootViewController: UINavigationController {
         var sitemap = sitemaps[startIndex].1
         sitemap = OHDataManager.sharedInstance.currentSitemap!
         pushViewControllerWithSitemap(sitemap)
+        
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "sitemapDidChangeHandler", name: "OHDataManagerCurrentSitemapDidChangeNotification", object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -47,9 +50,31 @@ class OHRootViewController: UINavigationController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
     }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
 }
 
 extension OHRootViewController {
+    
+    func sitemapDidChangeHandler()
+    {
+        
+        var dataManager = OHDataManager.sharedInstance
+        
+        if var currentSitemap = OHDataManager.sharedInstance.currentSitemap
+        {
+            self.popToRootViewControllerAnimated(false)
+            self.pushViewControllerWithSitemap(currentSitemap)
+            
+            if var menuViewController = revealViewController().rearViewController as? OHRearMenuViewController {
+                menuViewController.updateMenu()
+            }
+            
+            revealViewController().revealToggle(self)
+        }
+    }
     
     func initSettings()
     {
@@ -63,15 +88,6 @@ extension OHRootViewController {
         vc.title = sitemap.label
         
         self.pushViewController(vc, animated: true)
-        
-//        var roomsInSitemap = sitemap.roomsInSitemap()
-//        
-//        if var rooms = roomsInSitemap {
-//            var vc: OHRoomsViewController = OHRoomsViewController(sitemap: sitemap)
-//            vc.title = sitemap.label
-//            
-//            self.pushViewController(vc, animated: true)
-//        }
     }
 }
 

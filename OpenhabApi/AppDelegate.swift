@@ -42,6 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func loadData()
     {
         OHDataManager.sharedInstance.loadData()
+        var dataManager = OHDataManager.sharedInstance
     }
     
     func prepareViewController()
@@ -50,25 +51,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var frontViewController: UIViewController?
         
-//        var sitemapsArray = defaults.objectForKey("SettingsOpenHABSitemaps") as? [String]
-//        println(sitemapsArray)
-//        if var sitemaps = sitemapsArray {
+//        if var sitemaps = OHDataManager.sharedInstance.sitemaps {
 //            if sitemaps.count > 0 {
 //                frontViewController = OHRootViewController.new()
 //            }
 //        }
         
         if var sitemaps = OHDataManager.sharedInstance.sitemaps {
-            if sitemaps.count > 0 {
-                frontViewController = OHRootViewController.new()
+        
+            if var sitemap = OHDataManager.sharedInstance.currentSitemap {
+                if sitemap.roomsInSitemap() == nil {
+                    frontViewController = OHSettingsViewController.new()
+                } else {
+                    frontViewController = OHRootViewController.new()
+                }
             }
         }
-        
-//        if var sitemaps = dataManager.sitemaps {
-//            if sitemaps.count > 0 {
-//                frontViewController = OHRootViewController.new()
-//            }
-//        }
         
         if frontViewController == nil {
             frontViewController = OHSettingsViewController.new()
@@ -90,9 +88,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func setupAppearance()
     {
-//        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
         statusBarBackgroundView = OHStatusBarView(frame: CGRect(x: 0, y: 0, width: self.window!.frame.width, height: 20))
-//        statusBarBackgroundView!.backgroundColor = OHDefaults.defaultNavigationBarColor()
         
         var font = UIFont(name: "Muli", size: UIFont.systemFontSize())
         UILabel.appearance().font = font
@@ -138,7 +134,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        beaconManager?.startRanging()
+//        beaconManager?.startRanging()
     }
 
     func applicationWillTerminate(application: UIApplication) {

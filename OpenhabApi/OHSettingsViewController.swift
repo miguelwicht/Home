@@ -23,6 +23,7 @@ class OHSettingsViewController: UIViewController {
     
     var loadingView = OHLoadingView()
     
+    var didUpdateCurrentSitemapObserver: NSObjectProtocol!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,9 +41,9 @@ class OHSettingsViewController: UIViewController {
         
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        initSitemapChooser()
         
-        initObservers()
+        
+        
         
         
         view.backgroundColor = UIColor.whiteColor()
@@ -77,6 +78,10 @@ class OHSettingsViewController: UIViewController {
         self.view.addSubview(loadingView)
         self.loadingView.hidden = true
         loadingView.frame = self.view.frame
+        
+        initSitemapChooser()
+        
+        initObservers()
     }
     
     func initSitemapChooser() {
@@ -109,15 +114,20 @@ class OHSettingsViewController: UIViewController {
     func updateSitemapChooser()
     {
         if var sitemaps = OHDataManager.sharedInstance.sitemaps {
-            
+//        if var sitemaps = OHDataManager.sharedInstance.sitemapUrls {
+        
+//        var sitemaps = OHDataManager.sharedInstance.sitemapUrls
+        
             var sitemapValues = [OHSitemap]()
             
             for (key, sitemap) in sitemaps {
                 sitemapValues.append(sitemap)
             }
             
-            self.sitemapChooserController!.data = sitemapValues
-            self.sitemapChooserController!.tableView.reloadData()
+            if var sitemapChooserController = self.sitemapChooserController {
+                self.sitemapChooserController!.data = sitemapValues
+                self.sitemapChooserController!.tableView.reloadData()
+            }
         }
     }
     
@@ -185,7 +195,10 @@ extension OHSettingsViewController {
     
     func loadSitemapsButtonPressed(button: UIButton)
     {
-        OHDataManager.sharedInstance.updateSitemapsFromServer()
+//        OHDataManager.sharedInstance.updateSitemapsFromServer()
+        
+        OHDataManager.sharedInstance.getSitemapUrlsFromServer()
+        
         loadingView.hidden = false
     }
     
@@ -220,12 +233,31 @@ extension OHSettingsViewController {
         let options : NSKeyValueObservingOptions = .New | .Old | .Initial | .Prior
         
         OHDataManager.sharedInstance.addObserver(self, forKeyPath: "sitemaps", options: options, context: nil)
-        OHDataManager.sharedInstance.addObserver(self, forKeyPath: "currentSitemap", options: options, context: nil)
+//        OHDataManager.sharedInstance.addObserver(self, forKeyPath: "currentSitemap", options: options, context: nil)
+        
+        
+//        didUpdateSitemapUrlsNotification NSNotificationCenter.defaultCenter().addObserverForName("OHDataManagerDidUpdateSitemapUrlsNotification", object: nil, queue: NSOperationQueue.mainQueue(), usingBlock: { notification in
+//            self.updateSitemapChooser()
+//            self.loadingView.hidden = true
+//        })
+        
+        didUpdateCurrentSitemapObserver = NSNotificationCenter.defaultCenter().addObserverForName("OHDataManagerCurrentSitemapDidChangeNotification", object: nil, queue: NSOperationQueue.mainQueue(), usingBlock: { notification in
+            self.updateSitemapChooser()
+            self.loadingView.hidden = true
+        })
+        
+        
     }
     
     func removeObservers()
     {
         OHDataManager.sharedInstance.removeObserver(self, forKeyPath: "sitemaps")
+//        OHDataManager.sharedInstance.removeObserver(self, forKeyPath: "currentSitemap")
+        
+        let nc = NSNotificationCenter.defaultCenter()
+        if didUpdateCurrentSitemapObserver != nil {
+            nc.removeObserver(didUpdateCurrentSitemapObserver)
+        }
     }
     
     override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
@@ -241,15 +273,15 @@ extension OHSettingsViewController {
 //            }
         }
         
-        if (keyPath == "currentSitemap")
-        {
-            if var homepage = OHDataManager.sharedInstance.currentSitemap?.homepage {
-                loadingView.hidden = true
-            }
-            else {
-                
-            }
-        }
+//        if (keyPath == "currentSitemap")
+//        {
+//            if var homepage = OHDataManager.sharedInstance.currentSitemap?.homepage {
+//                loadingView.hidden = true
+//            }
+//            else {
+//                
+//            }
+//        }
         
     }
     
@@ -270,23 +302,30 @@ extension OHSettingsViewController: UITableViewDelegate {
     {
         
 //        if var sitemaps = OHDataManager.sharedInstance.sitemaps {
-        if self.sitemapChooserController!.data.count > 0 {
-            var sitemap = self.sitemapChooserController!.data[indexPath.item] as! OHSitemap
-            
-            if sitemap.homepage == nil {
-                OHDataManager.sharedInstance.getContentForSitemap(sitemap)
-                loadingView.hidden = false
-            } else {
-                OHDataManager.sharedInstance.currentSitemap = sitemap
-            }
-            
-            selectedSitemap = sitemap
-            
-            defaults.setObject(sitemap.name, forKey: "SettingsOpenHABSitemap")
-            defaults.synchronize()
-        }
+//        if self.sitemapChooserController!.data.count > 0 {
+//            var sitemap = self.sitemapChooserController!.data[indexPath.item] as! OHSitemap
+//            
+//            if sitemap.homepage == nil {
+//                OHDataManager.sharedInstance.getContentForSitemap(sitemap)
+//                loadingView.hidden = false
+//            } else {
+//                OHDataManager.sharedInstance.currentSitemap = sitemap
+//            }
+//            
+//            selectedSitemap = sitemap
+//            
+//            defaults.setObject(sitemap.name, forKey: "SettingsOpenHABSitemap")
+//            defaults.synchronize()
+//        }
         
+//        updateSitemapChooser()
         
+        var sitemap = self.sitemapChooserController!.data[indexPath.item] as! OHSitemap
+        
+//        OHDataManager.sharedInstance.getContentForSitemap(sitemap)
+        loadingView.hidden = false
+        
+        OHDataManager.sharedInstance.currentSitemap = sitemap
         
         toggleDropdownMenu(self.sitemapChooserButton!)
         

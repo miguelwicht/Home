@@ -10,6 +10,8 @@ import Foundation
 
 class OHDataManager: NSObject {
     
+    var sitemapUrls: [String: OHSitemap] = [String: OHSitemap]()
+    
     dynamic var sitemaps: [String: OHSitemap]?
 //    {
 //        didSet {
@@ -20,7 +22,11 @@ class OHDataManager: NSObject {
     var beaconWidget: [OHBeacon: OHWidget]?
     var items = [String: OHItem]()
     
-    dynamic var currentSitemap: OHSitemap?
+    var currentSitemap: OHSitemap? {
+        didSet {
+            NSNotificationCenter.defaultCenter().postNotificationName("OHDataManagerCurrentSitemapDidChangeNotification", object: self, userInfo: nil)
+        }
+    }
     
     private let restManager: OHRestManager
     
@@ -36,7 +42,7 @@ class OHDataManager: NSObject {
     
     override init()
     {
-        restManager = OHRestManager(baseUrl:"http://192.168.0.251:8888")
+        restManager = OHRestManager(baseUrl:"http://10.10.32.251:8888")
         super.init()
         
         restManager.delegate = self
@@ -72,6 +78,11 @@ class OHDataManager: NSObject {
     func updateSitemapsFromServer()
     {
         restManager.getSitemaps()
+    }
+    
+    func getSitemapUrlsFromServer()
+    {
+        restManager.getSitemapUrls()
     }
     
     func getContentForSitemap(sitemap: OHSitemap) {
@@ -152,10 +163,10 @@ class OHDataManager: NSObject {
         
         if var currentSitemap = self.currentSitemap {
             
-            if var sitemaps = self.sitemaps {
-                var startIndex = sitemaps.startIndex
-                currentSitemap = sitemaps[startIndex].1
-            }
+//            if var sitemaps = self.sitemaps {
+//                var startIndex = sitemaps.startIndex
+//                currentSitemap = sitemaps[startIndex].1
+//            }
             
             var currentSitemapPath: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("currentSitemapData") as NSString
             NSKeyedArchiver.archiveRootObject(currentSitemap, toFile: path as String)
@@ -227,5 +238,18 @@ extension OHDataManager: OHRestManagerDelegate {
         updateItemsFromSitemaps()
         parseBeaconsFromSitemap(sitemap)
         
+    }
+    
+    func didGetSitemapUrls(sitemaps: [OHSitemap]) {
+        
+        var sitemapsWithUrls = [String: OHSitemap]()
+        
+        for (sitemap) in sitemaps {
+            sitemapsWithUrls[sitemap.name] = sitemap
+        }
+        
+        sitemapUrls = sitemapsWithUrls
+        
+        NSNotificationCenter.defaultCenter().postNotificationName("OHDataManagerDidUpdateSitemapUrlsNotification", object: self, userInfo: nil)
     }
 }

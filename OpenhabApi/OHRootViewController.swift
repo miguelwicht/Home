@@ -37,6 +37,9 @@ class OHRootViewController: UINavigationController {
         var sitemap = sitemaps[startIndex].1
         sitemap = OHDataManager.sharedInstance.currentSitemap!
         pushViewControllerWithSitemap(sitemap)
+        
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "sitemapDidChangeHandler", name: "OHDataManagerCurrentSitemapDidChangeNotification", object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -50,6 +53,19 @@ class OHRootViewController: UINavigationController {
 }
 
 extension OHRootViewController {
+    
+    func sitemapDidChangeHandler()
+    {
+        
+        var dataManager = OHDataManager.sharedInstance
+        
+        self.popToRootViewControllerAnimated(false)
+        self.pushViewControllerWithSitemap(OHDataManager.sharedInstance.currentSitemap!)
+        
+        if var menuViewController = revealViewController().rearViewController as? OHRearMenuViewController {
+            menuViewController.updateMenu()
+        }
+    }
     
     func initSettings()
     {

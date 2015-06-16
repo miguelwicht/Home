@@ -108,8 +108,8 @@ extension OHRoomsViewController {
         if var button = self.navigationItem.titleView as? UIButton {
             button.setTitle(room.label?.uppercaseString, forState: .Normal)
         }
-        var offsetY = self.navigationController!.navigationBar.neededSpaceHeight
-        offsetY = 0
+//        var offsetY = self.navigationController!.navigationBar.neededSpaceHeight
+        var offsetY = CGFloat(0)
         var height = self.view.frame.height - offsetY
         
         if var currentRoom = self.currentRoom {

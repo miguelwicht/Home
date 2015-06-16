@@ -50,25 +50,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var frontViewController: UIViewController?
         
-//        var sitemapsArray = defaults.objectForKey("SettingsOpenHABSitemaps") as? [String]
-//        println(sitemapsArray)
-//        if var sitemaps = sitemapsArray {
+//        if var sitemaps = OHDataManager.sharedInstance.sitemaps {
 //            if sitemaps.count > 0 {
 //                frontViewController = OHRootViewController.new()
 //            }
 //        }
         
-        if var sitemaps = OHDataManager.sharedInstance.sitemaps {
-            if sitemaps.count > 0 {
+        if var sitemap = OHDataManager.sharedInstance.currentSitemap {
+            if sitemap.roomsInSitemap() == nil {
+                frontViewController = OHSettingsViewController.new()
+            } else {
                 frontViewController = OHRootViewController.new()
             }
         }
-        
-//        if var sitemaps = dataManager.sitemaps {
-//            if sitemaps.count > 0 {
-//                frontViewController = OHRootViewController.new()
-//            }
-//        }
         
         if frontViewController == nil {
             frontViewController = OHSettingsViewController.new()

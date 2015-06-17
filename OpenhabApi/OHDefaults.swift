@@ -75,3 +75,22 @@ extension OHDefaults {
     }
 }
 
+extension OHDefaults {
+    static func roomCollectionViewItemSize() -> CGSize {
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        var width = appDelegate.window?.frame.size.width
+        
+        var itemSize = CGSize(width: 0, height: 0)
+        
+        if width <= 320 {
+            itemSize.width = 60
+            itemSize.height = 80
+        } else {
+            itemSize.width = 70
+            itemSize.height = 90
+        }
+        
+        return itemSize
+    }
+}
+

@@ -188,7 +188,7 @@ extension OHRoomViewController {
     func createCollectionView(widgets: [OHWidget], rows: Int) -> OHWidgetCollectionViewController
     {
         var layout = OHWidgetCollectionViewLayout()
-        layout.itemSize = CGSize(width: 60, height: 80)
+        layout.itemSize = OHDefaults.roomCollectionViewItemSize()
         layout.minimumInteritemSpacing = 25
         layout.minimumLineSpacing = 25
         var collectionViewController: OHWidgetCollectionViewController = OHWidgetCollectionViewController(collectionViewLayout: layout, widgets: widgets)
@@ -258,6 +258,12 @@ extension OHRoomViewController {
         
         for (key, label) in labels {
             contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(15)-[\(key)]-(15)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: labels))
+            
+            if var l = label as? UILabel {
+                if l.hidden {
+                    contentView.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: topObject, attribute: NSLayoutAttribute.Height, multiplier: 0.0, constant: 0.0))
+                }
+            }
         }
         
         
@@ -269,23 +275,23 @@ extension OHRoomViewController {
         
         for (key, pageControl) in pageControls {
             contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(15)-[\(key)]-(15)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: pageControls))
-//            contentView.addConstraint(NSLayoutConstraint(item: pageControl, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Height, multiplier: 0.0, constant: 30))
         }
         
         
         
         for (index, collectionViewController) in enumerate(collectionViewControllers) {
             
-            
-            
-            
-            
+
             if var label = labelsForControllers["\(index)"] {
                 
                 if index == 0 {
-                    contentView.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: topObject, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 15))
+                    var constant = label.hidden ? CGFloat(0) : CGFloat(25)
+                    contentView.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: topObject, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: constant))
                 } else {
-                    contentView.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: topObject, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 30))
+                    
+                    var constant = label.hidden ? CGFloat(0) : CGFloat(25)
+                    
+                    contentView.addConstraint(NSLayoutConstraint(item: label, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: topObject, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: constant))
                 }
 
                 
@@ -333,16 +339,17 @@ extension OHRoomViewController {
     
     func addLabelForCollectionViewController(collectionViewController: OHWidgetCollectionViewController, outlet: OHWidget){
         // create a label if one is defined for the collectionView
-        if outlet.label != outlet.item?.name {
-            var label = UILabel()
-            label.setTranslatesAutoresizingMaskIntoConstraints(false)
-            label.font = OHDefaults.defaultFontWithSize(22)
-            label.text = outlet.label!.uppercaseString
-            label.textAlignment = NSTextAlignment.Center
-            contentView.addSubview(label)
-            var index = find(collectionViewControllers, collectionViewController)
-            labelsForControllers["\(index!)"] = label
-        }
+        
+        var label = UILabel()
+        label.setTranslatesAutoresizingMaskIntoConstraints(false)
+        label.font = OHDefaults.defaultFontWithSize(22)
+        label.text = outlet.label!.uppercaseString
+        label.textAlignment = NSTextAlignment.Center
+        contentView.addSubview(label)
+        var index = find(collectionViewControllers, collectionViewController)
+        labelsForControllers["\(index!)"] = label
+        
+        label.hidden = outlet.label == outlet.item?.name ? true : false
     }
     
     func removeCollectionViewControllers()

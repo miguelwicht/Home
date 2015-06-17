@@ -103,8 +103,8 @@ import UIKit
             var buttonColor = UIColor(red: (235.0 / 255.0), green: (235.0 / 255.0), blue: (235.0 / 255.0), alpha: 1.0)
             var buttonTitleColor = UIColor(red: (126.0 / 255.0), green: (126.0 / 255.0), blue: (126.0 / 255.0), alpha: 1.0)
             
-            var buttonImage = drawCircleWithColor(buttonColor, rect: imageRect)
-            var buttonImageSelected = drawCircleWithColor(buttonTitleColor, rect: imageRect)
+            var buttonImage = UIImage.drawCircleWithColor(buttonColor, rect: imageRect)
+            var buttonImageSelected = UIImage.drawCircleWithColor(buttonTitleColor, rect: imageRect)
             
             let buttonBuffer: CGFloat = 40.0
             
@@ -148,12 +148,17 @@ import UIKit
         self.backgroundColor = UIColor.clearColor()
     }
     
-    func drawCircleWithColor(color: UIColor, rect: CGRect) -> UIImage
+    
+}
+
+extension UIImage {
+    
+    static func drawCircleWithColor(color: UIColor, rect: CGRect) -> UIImage
     {
         UIGraphicsBeginImageContextWithOptions(CGSizeMake(rect.width, rect.height), false, 0.0);
         
         var ctx = UIGraphicsGetCurrentContext()
-
+        
         CGContextSetLineWidth(ctx, 0.0);
         CGContextSetBlendMode(ctx, kCGBlendModeNormal)
         CGContextSetFillColorWithColor(ctx, color.CGColor)
@@ -166,7 +171,7 @@ import UIKit
         
         return buttonImage
     }
-    
+
 }
 
 extension ColorWheel {
@@ -363,10 +368,13 @@ extension ColorWheel {
         let angle: CGFloat = CGFloat(2 * M_PI / Double(sectors))
         var colorCirclePath: UIBezierPath = UIBezierPath()
         
+        var startAngle = CGFloat(0)
+        var endAngle = CGFloat(360)
+        
         for (var i: Int = 0; i < sectors; i++)
         {
-            let startAngle = CGFloat(i) * CGFloat(angle)
-            let endAngle = (CGFloat(i) + 1) * CGFloat(angle)
+            startAngle = CGFloat(i) * CGFloat(angle)
+            endAngle = (CGFloat(i) + 1) * CGFloat(angle)
             
             colorCirclePath = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
             

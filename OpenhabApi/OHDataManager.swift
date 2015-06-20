@@ -10,8 +10,7 @@ import Foundation
 
 class OHDataManager: NSObject {
     
-    var sitemaps: [String: OHSitemap]?
-    {
+    var sitemaps: [String: OHSitemap]? {
         didSet {
             NSNotificationCenter.defaultCenter().postNotificationName("OHDataManagerDidUpdateSitemapsNotification", object: self, userInfo: nil)
         }
@@ -20,7 +19,7 @@ class OHDataManager: NSObject {
     var currentSitemap: OHSitemap? {
         didSet {
             NSNotificationCenter.defaultCenter().postNotificationName("OHDataManagerCurrentSitemapDidChangeNotification", object: self, userInfo: nil)
-//            saveCurrentSitemap()
+            parseBeaconsFromSitemap(currentSitemap!)
         }
     }
     
@@ -30,33 +29,28 @@ class OHDataManager: NSObject {
     
     private let restManager: OHRestManager
     
-    class var sharedInstance: OHDataManager
-    {
-        struct Singleton
-        {
+    class var sharedInstance: OHDataManager {
+        struct Singleton {
             static let instance = OHDataManager()
         }
         
         return Singleton.instance
     }
     
-    override init()
-    {
+    override init() {
         restManager = OHRestManager(baseUrl:"http://10.10.32.251:8888")
+//        restManager = OHRestManager(baseUrl:"http://192.168.0.251:8888")
         super.init()
         
         restManager.delegate = self
     }
     
-    func downloadSitemaps()
-    {
+    func downloadSitemaps() {
         restManager.getListOfSitemaps()
     }
     
-    func updateItemsFromSitemaps()
-    {
+    func updateItemsFromSitemaps() {
         if var sitemaps = self.sitemaps {
-            
             for (key, sitemap) in sitemaps {
                 if var homepage = sitemap.homepage {
                     var homepageItems = homepage.getItems()
@@ -67,13 +61,10 @@ class OHDataManager: NSObject {
                 }
             }
         }
-        
     }
     
-    func parseBeaconsFromSitemap(sitemap: OHSitemap)
-    {
+    func parseBeaconsFromSitemap(sitemap: OHSitemap) {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        
         beaconWidget = OHRestParser.getBeaconsForRoomsFromSitemap(sitemap)
         
         if appDelegate.beaconManager == nil {
@@ -96,8 +87,7 @@ class OHDataManager: NSObject {
 //Mark: Persistence
 extension OHDataManager {
     
-    func saveData()
-    {
+    func saveData() {
         var path: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("sitemapsData") as NSString
         
         if var sitemaps = self.sitemaps {
@@ -106,35 +96,30 @@ extension OHDataManager {
             println("No Sitemaps to save")
         }
         
-        if var currentSitemap = self.currentSitemap
-        {
+        if var currentSitemap = self.currentSitemap {
             var currentSitemapPath: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("currentSitemapData") as NSString
             NSKeyedArchiver.archiveRootObject(currentSitemap, toFile: currentSitemapPath as String)
         }
     }
     
-    func saveCurrentSitemap(){
-        if var currentSitemap = self.currentSitemap
-        {
+    func saveCurrentSitemap() {
+        if var currentSitemap = self.currentSitemap {
             var currentSitemapPath: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("currentSitemapData") as NSString
             NSKeyedArchiver.archiveRootObject(currentSitemap, toFile: currentSitemapPath as String)
         }
     }
     
-    func loadData()
-    {
+    func loadData() {
         if var sitemaps = loadSitemapsData() {
             self.sitemaps = sitemaps
         }
         
-        if var currentSitemap = loadCurrentSitemapData()
-        {
+        if var currentSitemap = loadCurrentSitemapData() {
             self.currentSitemap = currentSitemap
         }
     }
     
-    func loadSitemapsData() -> [String: OHSitemap]?
-    {
+    func loadSitemapsData() -> [String: OHSitemap]? {
         var sitemaps: [String: OHSitemap]?
         
         var path: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("sitemapsData") as NSString
@@ -147,15 +132,12 @@ extension OHDataManager {
         return sitemaps
     }
     
-    func loadCurrentSitemapData() -> OHSitemap?
-    {
+    func loadCurrentSitemapData() -> OHSitemap? {
         var sitemap: OHSitemap?
-        
         var path: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("currentSitemapData") as NSString
         
         if var currentSitemapFromDisc = NSKeyedUnarchiver.unarchiveObjectWithFile(path as String) as? OHSitemap {
             sitemap = currentSitemapFromDisc
-            
         } else {
             print("could not load current Sitemap data")
         }
@@ -164,24 +146,27 @@ extension OHDataManager {
     }
 }
 
+extension OHDataManager {
+    
+    func updateBaseUrl(url: String) {
+        restManager.baseUrl = url
+    }
+}
+
 extension OHDataManager: OHRestManagerDelegate {
     
-    func didGetSitemaps(sitemaps: [OHSitemap])
-    {
+    func didGetSitemaps(sitemaps: [OHSitemap]) {
         var sitemapsDict = [String: OHSitemap]()
         
-        for (index, sitemap) in enumerate(sitemaps)
-        {
+        for (index, sitemap) in enumerate(sitemaps) {
             sitemapsDict[sitemap.name] = sitemap
         }
         
         self.sitemaps = sitemapsDict
-        
         saveData()
     }
     
     func didGetListOfSitemaps(sitemaps: [OHSitemap]) {
         restManager.getMultipleSitemaps(sitemaps)
     }
-
 }

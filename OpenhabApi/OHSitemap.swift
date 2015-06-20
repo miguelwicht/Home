@@ -18,8 +18,7 @@ import Foundation
     
     var homepage: OHHomepage?
     
-    required public init(coder aDecoder: NSCoder)
-    {
+    required public init(coder aDecoder: NSCoder) {
         self.name = aDecoder.decodeObjectForKey("name") as! String
         self.icon = aDecoder.decodeObjectForKey("icon") as? String
         self.label = aDecoder.decodeObjectForKey("label") as! String
@@ -29,8 +28,7 @@ import Foundation
         self.homepage = aDecoder.decodeObjectForKey("homepage") as? OHHomepage
     }
     
-    func encodeWithCoder(aCoder: NSCoder)
-    {
+    func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(name, forKey: "name")
         aCoder.encodeObject(icon, forKey: "icon")
         aCoder.encodeObject(label, forKey: "label")
@@ -40,7 +38,7 @@ import Foundation
         aCoder.encodeObject(homepage, forKey: "homepage")
     }
     
-    public init(name:String, icon:String, label:String, link:String, leaf:String, homepageLink:String){
+    public init(name:String, icon:String, label:String, link:String, leaf:String, homepageLink:String) {
         self.name = name
         self.icon = icon
         self.label = label
@@ -49,8 +47,7 @@ import Foundation
         self.homepageLink = homepageLink
     }
     
-    public init(sitemap: JSON)
-    {
+    public init(sitemap: JSON) {
         let map = sitemap.dictionaryValue
         self.name = map["name"]!.stringValue
         self.icon = map["icon"]?.stringValue
@@ -64,13 +61,11 @@ import Foundation
         }
     }
     
-    func roomsInSitemap() -> [OHWidget]?
-    {
+    func roomsInSitemap() -> [OHWidget]? {
         var rooms: OHWidget?
         
         if var homepage = self.homepage {
-            for (i, e) in enumerate(homepage.widgets!)
-            {
+            for (i, e) in enumerate(homepage.widgets!) {
                 if e.label == "Rooms" {
                     rooms = e
                     break
@@ -81,14 +76,11 @@ import Foundation
         return rooms?.widgets
     }
     
-    func menuFromSitemap() -> OHWidget?
-    {
+    func menuFromSitemap() -> OHWidget? {
         var menuWidget: OHWidget?
         
         if var homepage = self.homepage {
-        
-            for (i, e) in enumerate(homepage.widgets!)
-            {
+            for (i, e) in enumerate(homepage.widgets!) {
                 if e.label == "Menu" {
                     menuWidget = e
                     break
@@ -100,11 +92,10 @@ import Foundation
     }
 }
 
-//MARK: OHSitemap: Printable
+//MARK: - Printable
 extension OHSitemap : Printable {
     
-    override public var description:String
-    {
+    override public var description:String {
         let className = reflect(self).summary
         var desc:String = ""
         desc += "\n\(className):\n{\n"

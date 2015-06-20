@@ -16,8 +16,7 @@ public class OHHomepage: NSObject {
     
     var widgets: [OHWidget]?
     
-    required public init(coder aDecoder: NSCoder)
-    {
+    required public init(coder aDecoder: NSCoder) {
         self.id = aDecoder.decodeObjectForKey("id") as! String
         self.title = aDecoder.decodeObjectForKey("title") as! String
         self.link = aDecoder.decodeObjectForKey("link") as! String
@@ -26,8 +25,7 @@ public class OHHomepage: NSObject {
         self.widgets = aDecoder.decodeObjectForKey("widgets") as? [OHWidget]
     }
     
-    func encodeWithCoder(aCoder: NSCoder)
-    {
+    func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(id, forKey: "id")
         aCoder.encodeObject(title, forKey: "title")
         aCoder.encodeObject(link, forKey: "link")
@@ -36,8 +34,7 @@ public class OHHomepage: NSObject {
         aCoder.encodeObject(widgets, forKey: "widgets")
     }
     
-    init(homepage: JSON)
-    {
+    init(homepage: JSON) {
         let hp = homepage.dictionaryValue
         self.id = hp["id"]!.stringValue
         self.title = hp["title"]!.stringValue
@@ -49,14 +46,11 @@ public class OHHomepage: NSObject {
         }
     }
     
-    func getItems() -> [String: OHItem]
-    {
+    func getItems() -> [String: OHItem] {
         var items = [String: OHItem]()
         
         if var widgets = self.widgets {
-            
-            for (index, widget) in enumerate(widgets)
-            {
+            for (index, widget) in enumerate(widgets) {
                 var widgetItems = widget.getItems()
                 
                 for (index, item) in widgetItems {
@@ -70,10 +64,10 @@ public class OHHomepage: NSObject {
     }
 }
 
+//MARK: - Printable
 extension OHHomepage: Printable {
     
-    override public var description: String
-    {
+    override public var description: String {
         let className = reflect(self).summary
         var desc:String = ""
         desc += "\n\(className):\n{\n"

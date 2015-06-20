@@ -10,41 +10,38 @@ import UIKit
 import CoreLocation
 
 class OHRoomsViewController: OHBaseViewController {
-    //MARK: Properties
+    //MARK: - Properties
     var sitemap: OHSitemap?
     var rooms: [OHWidget]?
     var roomSwitcherController: OHDropdownMenuTableViewController?
     var currentRoom: OHRoomViewController?
     var isWaitingForBeacons: Bool = true
+    var panGestureRecognizer: UIGestureRecognizer?
     
-    //MARK: Initializers
+    var determineLocationButton: UIButton?
+    
+    //MARK: - Initializers
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init(coder aDecoder: NSCoder)
-    {
+    required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    convenience init(sitemap: OHSitemap)
-    {
+    convenience init(sitemap: OHSitemap) {
         self.init(nibName: nil, bundle: nil)
         
         self.sitemap = sitemap
-        
         rooms = sitemap.roomsInSitemap()
-        println(rooms)
         initNotificationCenterNotifications()
         addDropdownToNavigationBar()
     }
     
-    override func loadView()
-    {
+    override func loadView() {
         super.loadView()
         
         self.automaticallyAdjustsScrollViewInsets = true
-        
         var dataManager = OHDataManager.sharedInstance
         
         if var sitemap = OHDataManager.sharedInstance.currentSitemap {
@@ -52,19 +49,52 @@ class OHRoomsViewController: OHBaseViewController {
             switchToRoom(rooms!.first!)
             initRoomSwitcherController()
         }
+        
+        addObservers()
     }
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if var revealViewController = revealViewController() {
+            panGestureRecognizer = revealViewController.panGestureRecognizer()
+            if let panGestureRecognizer = self.panGestureRecognizer {
+                self.view.addGestureRecognizer(panGestureRecognizer)
+            }
+        }
+    }
+    
+    func addObservers() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "authorizationDidChangeHandler", name: OHBeaconManagerDidChangeAuthorizationNotification, object: nil)
+    }
+    
+    func removeObservers() {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    func authorizationDidChangeHandler() {
+        let authStatus = OHBeaconManager.getAuthorizationStatus()
+        
+        if  authStatus == CLAuthorizationStatus.AuthorizedAlways || authStatus == CLAuthorizationStatus.AuthorizedWhenInUse {
+            determineLocationButton?.hidden = false
+        } else {
+            determineLocationButton?.hidden = true
+        }
+    }
+    
+    deinit {
+        if let panGestureRecognizer = self.panGestureRecognizer {
+            self.view.removeGestureRecognizer(panGestureRecognizer)
+        }
+        
+        removeObservers()
     }
 }
 
-//MARK: RoomSwitcher
+//MARK: - RoomSwitcher
 extension OHRoomsViewController {
     
-    func initRoomSwitcherController()
-    {
+    func initRoomSwitcherController() {
         roomSwitcherController = OHDropdownMenuTableViewController()
         
         if var roomSwitcherController = self.roomSwitcherController {
@@ -72,24 +102,25 @@ extension OHRoomsViewController {
             addChildViewController(roomSwitcherController)
             view.addSubview(roomSwitcherController.view)
             
-            roomSwitcherController.view.marginTop = 0//self.navigationController!.navigationBar.neededSpaceHeight
-            roomSwitcherController.view.setHeight(CGFloat(self.view.frame.height)) //- self.navigationController!.navigationBar.neededSpaceHeight))
             roomSwitcherController.tableView.delegate = self
+            
+            var views = [String: AnyObject]()
+            views["roomSwticher"] = roomSwitcherController.view
+            
+            self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(0)-[roomSwticher]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+            self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[roomSwticher]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
         }
         
         toggleDropdownMenu(self.navigationItem.titleView as! UIButton)
     }
     
-    func toggleDropdownMenu(control: UIButton)
-    {
+    func toggleDropdownMenu(control: UIButton) {
         if var roomSwitcherController = self.roomSwitcherController {
             roomSwitcherController.view.hidden = !roomSwitcherController.view.hidden
         }
     }
     
-    func switchToRoom(room: OHWidget)
-    {
-        
+    func switchToRoom(room: OHWidget) {
         if var roomSwitcherController = self.roomSwitcherController {
             roomSwitcherController.view.hidden = true
         }
@@ -115,7 +146,7 @@ extension OHRoomsViewController {
     }
 }
 
-//MARK: UITableViewDelegate
+//MARK: - UITableViewDelegate
 extension OHRoomsViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -141,18 +172,14 @@ extension OHRoomsViewController: UITableViewDelegate {
     }
 }
 
-//MARK: Beacon Notification Handler
+//MARK: - Beacon Notification Handler
 extension OHRoomsViewController {
     
     func initNotificationCenterNotifications() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "didRangeBeaconsNotificationHandler:", name: OHBeaconManagerDidRangeBeaconsNotification, object: nil)
     }
     
-    func didRangeBeaconsNotificationHandler(notification: NSNotification?)
-    {
-        
-        println(notification?.object)
-        
+    func didRangeBeaconsNotificationHandler(notification: NSNotification?) {
         var beaconButton = self.navigationItem.rightBarButtonItem?.customView as! UIButton
         beaconButton.imageView!.stopAnimating()
         
@@ -160,26 +187,18 @@ extension OHRoomsViewController {
         
             if var beaconOH = notification!.object as? OHBeacon {
                 let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//                var dataManager = appDelegate.dataManager
-                
                 var navController = self.navigationController as! OHRootViewController
                 var roomWidget = OHDataManager.sharedInstance.beaconWidget![beaconOH]
                 
                 if var room = roomWidget {
-                    println("room found: \(room)")
                     switchToRoom(room)
-                }
-                else {
+                } else {
                     println("room not found")
                 }
             }
             
-            
             if var beaconCL = notification!.object as? CLBeacon {
-        
                 let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//                var dataManager = appDelegate.dataManager
-            
                 var navController = self.navigationController as! OHRootViewController
                 var beacon = OHBeacon(uuid: beaconCL.proximityUUID.UUIDString, major: beaconCL.major.integerValue, minor: beaconCL.minor.integerValue, link: "000")
                 var roomWidget = OHDataManager.sharedInstance.beaconWidget![beacon]
@@ -187,20 +206,16 @@ extension OHRoomsViewController {
                 if var room = roomWidget {
                     println("room found")
                     switchToRoom(room)
-                }
-                else {
+                } else {
                     println("room not found")
                 }
             }
-        }
-        else
-        {
+        } else {
             println("not wating for beacons")
         }
     }
     
-    func startDetectingRoom(button: UIButton)
-    {
+    func startDetectingRoom(button: UIButton) {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         var beaconManager = appDelegate.beaconManager
         
@@ -209,11 +224,10 @@ extension OHRoomsViewController {
     }
 }
 
-//MARK: Configurate NavigationBar
+//MARK: - Configurate NavigationBar
 extension OHRoomsViewController {
     
-    override func addRightNavigationBarItems()
-    {
+    override func addRightNavigationBarItems() {
         var menuItemButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
         
         menuItemButton.setImage(UIImage(named: "beacon_state_3"), forState: UIControlState.Normal)
@@ -239,10 +253,13 @@ extension OHRoomsViewController {
         menuItemButton.imageView!.setHeight(40)
         menuItemButton.imageView!.contentMode = UIViewContentMode.ScaleAspectFit
         menuItemButton.addTarget(self, action: "startDetectingRoom:", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        determineLocationButton = menuItemButton
+        
+        authorizationDidChangeHandler()
     }
     
-    func addDropdownToNavigationBar()
-    {
+    func addDropdownToNavigationBar() {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         var button = UIButton.buttonWithType(.Custom) as! UIButton
         button.setWidth(appDelegate.window!.frame.width - 100)

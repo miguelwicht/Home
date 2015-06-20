@@ -8,7 +8,7 @@
 
 import UIKit
 
-class OHSettingsViewController: UIViewController {
+class OHSettingsViewController: OHBaseViewController {
     
     let defaults = NSUserDefaults.standardUserDefaults()
     var urlTextField: UITextField?
@@ -19,17 +19,18 @@ class OHSettingsViewController: UIViewController {
     var sitemapChooserController: OHDropdownMenuTableViewController?
     var sitemapChooserButton: OHDropdownMenuButton?
     
-    var loadingView = OHLoadingView()
-    
     var didUpdateCurrentSitemapObserver: NSObjectProtocol!
     var didUpdateSitemapsObserver: NSObjectProtocol!
     
+    var dismissKeyboardRecognizer: UITapGestureRecognizer?
+    
+    var sitemapChooserHeight = 180 as CGFloat
+    var sitemapChooserHeightConstraint: NSLayoutConstraint?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -37,6 +38,10 @@ class OHSettingsViewController: UIViewController {
     
     override func loadView() {
         super.loadView()
+        
+        initScrollView()
+        
+        title = "Settings"
         
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         
@@ -49,7 +54,7 @@ class OHSettingsViewController: UIViewController {
         urlTextField!.font = OHDefaults.defaultLightFontWithSize(17)
         urlTextField!.textColor = OHDefaults.defaultTextColor()
         urlTextField!.delegate = self
-        view.addSubview(urlTextField!)
+        contentView.addSubview(urlTextField!)
         
         if var url = defaults.objectForKey("SettingsOpenHABUrl") as? String {
             urlTextField!.text = url
@@ -57,65 +62,50 @@ class OHSettingsViewController: UIViewController {
         
         loadSitemapsButton.setTitle("Load Sitemaps", forState: .Normal)
         loadSitemapsButton.addTarget(self, action: "loadSitemapsButtonPressed:", forControlEvents: .TouchUpInside)
-        view.addSubview(loadSitemapsButton)
+        contentView.addSubview(loadSitemapsButton)
         
         saveButton.setTitle("Save", forState: .Normal)
         saveButton.addTarget(self, action: "saveButtonPressed:", forControlEvents: .TouchUpInside)
-        view.addSubview(saveButton)
+        contentView.addSubview(saveButton)
         
         dismissButton.setTitle("Dismiss", forState: .Normal)
         dismissButton.addTarget(self, action: "dismissButtonPressed:", forControlEvents: .TouchUpInside)
-        view.addSubview(dismissButton)
-        
-        self.view.addSubview(loadingView)
-        self.loadingView.hidden = true
-        loadingView.frame = self.view.frame
+        contentView.addSubview(dismissButton)
         
         initSitemapChooser()
         
         initObservers()
+        
+        addConstraints()
     }
     
-    
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+    func addConstraints() {
         
-        if var urlTextField = self.urlTextField {
-            urlTextField.marginTop = 100
-            urlTextField.marginLeft = 15
-        }
+        var views = [String: AnyObject]()
+        views["urlTextField"] = urlTextField
+        views["loadSitemapsButton"] = loadSitemapsButton
+        views["sitemapChooser"] = sitemapChooserController!.view
+        views["sitemapChooserButton"] = sitemapChooserButton!
+        views["saveButton"] = saveButton
+        views["dismissButton"] = dismissButton
         
-        loadSitemapsButton.sizeToFit()
-        loadSitemapsButton.setWidth(self.view.frame.width - 30)
-        loadSitemapsButton.setHeight(40)
-        loadSitemapsButton.marginTop = urlTextField!.neededSpaceHeight + 10
-        loadSitemapsButton.marginLeft = 15
+        urlTextField?.setTranslatesAutoresizingMaskIntoConstraints(false)
+        loadSitemapsButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        sitemapChooserButton?.setTranslatesAutoresizingMaskIntoConstraints(false)
+        sitemapChooserController?.view.setTranslatesAutoresizingMaskIntoConstraints(false)
+        saveButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        dismissButton.setTranslatesAutoresizingMaskIntoConstraints(false)
         
-        sitemapChooserButton!.marginTop = loadSitemapsButton.neededSpaceHeight + 10
-        sitemapChooserController!.view.marginTop = sitemapChooserButton!.neededSpaceHeight
-        sitemapChooserController!.view.setHeight(self.view.frame.height - sitemapChooserButton!.neededSpaceHeight)
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(15)-[urlTextField(40)]-(15)-[sitemapChooserButton]-[sitemapChooser]-(15)-[loadSitemapsButton]-(15)-[saveButton]-(15)-[dismissButton]", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(15)-[urlTextField]-(15)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(15)-[loadSitemapsButton]-(15)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(15)-[sitemapChooserButton]-(15)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(15)-[saveButton]-(15)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(15)-[dismissButton]-(15)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
         
-            
-        saveButton.sizeToFit()
+        var scrollViewHeightConstraint = NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: dismissButton, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 15)
         
-        if var sitemapChooserButton = self.sitemapChooserButton {
-            saveButton.marginTop = sitemapChooserButton.neededSpaceHeight + 30
-        }
-        else {
-            saveButton.marginTop = 100
-        }
-            
-        saveButton.marginLeft = 15
-        saveButton.setWidth(self.view.frame.width - 30)
-        saveButton.setHeight(40)
-            
-        dismissButton.sizeToFit()
-        dismissButton.marginTop = saveButton.neededSpaceHeight + 15
-            
-        dismissButton.marginLeft = 15
-        dismissButton.setWidth(self.view.frame.width - 30)
-        dismissButton.setHeight(40)
+        view.addConstraint(scrollViewHeightConstraint)
     }
     
     func toggleDropdownMenu(control: OHDropdownMenuButton)
@@ -124,44 +114,58 @@ class OHSettingsViewController: UIViewController {
             sitemapChooserController.view.hidden = sitemapChooserController.view.hidden ? false : true
             sitemapChooserController.tableView.reloadData()
             
-            var height = CGFloat(sitemapChooserController.tableView.numberOfRowsInSection(0)) * self.tableView(sitemapChooserController.tableView, heightForRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0))
-            
-            sitemapChooserController.tableView.setHeight(height)
+            var numberOfItems = sitemapChooserController.tableView(sitemapChooserController.tableView, numberOfRowsInSection: 0)
+            sitemapChooserHeightConstraint?.constant = sitemapChooserController.view.hidden ? 0 : CGFloat(numberOfItems) * tableView(self.sitemapChooserController!.tableView, heightForRowAtIndexPath: NSIndexPath(forItem: 0, inSection: 0))
         }
     }
     
     deinit {
         removeObservers()
+        
+        if let dismissKeyboardRecognizer = self.dismissKeyboardRecognizer {
+            view.removeGestureRecognizer(dismissKeyboardRecognizer)
+        }
     }
+    
+    func dismissKeyboard()
+    {
+        view.endEditing(true)
+    }
+    
+    override func addLeftNavigationBarItems(){}
+    override func addRightNavigationBarItems(){}
 }
 
 //MARK: SitemapChooser
 extension OHSettingsViewController {
     
     func initSitemapChooser() {
-        
-        sitemapChooserButton = OHDropdownMenuButton(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 90))
+        sitemapChooserButton = OHDropdownMenuButton()
         
         if var sitemapChooserButton = self.sitemapChooserButton {
-            self.view.addSubview(sitemapChooserButton)
-            
-            sitemapChooserButton.marginTop = 200
+            contentView.addSubview(sitemapChooserButton)
             sitemapChooserButton.setTitle("Choose Sitemap", forState: .Normal)
-            
             sitemapChooserController = OHDropdownMenuTableViewController()
             
             if var sitemapChooserController = self.sitemapChooserController {
-                
                 if var sitemapData = OHDataManager.sharedInstance.sitemaps {
                     sitemapChooserController.data = sitemapData.values.array
                 }
                 
                 addChildViewController(sitemapChooserController)
-                view.addSubview(sitemapChooserController.view)
+                contentView.addSubview(sitemapChooserController.view)
                 
-                sitemapChooserController.view.marginTop = sitemapChooserButton.neededSpaceHeight
-                sitemapChooserController.view.setHeight(self.view.frame.height - sitemapChooserButton.neededSpaceHeight)
                 sitemapChooserController.tableView.delegate = self
+                sitemapChooserController.tableView.alwaysBounceVertical = false
+                sitemapChooserController.view.setTranslatesAutoresizingMaskIntoConstraints(false)
+                
+                var views = [String: AnyObject]()
+                views["sitemapChooser"] = sitemapChooserController.view
+                views["sitemapChooserButton"] = sitemapChooserButton
+                
+                sitemapChooserHeightConstraint = NSLayoutConstraint(item: sitemapChooserController.view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Height, multiplier: 0.0, constant: 0)
+                contentView.addConstraint(sitemapChooserHeightConstraint!)
+                contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[sitemapChooser]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
             }
             
             sitemapChooserButton.addTarget(self, action: "toggleDropdownMenu:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -169,10 +173,8 @@ extension OHSettingsViewController {
         }
     }
     
-    func updateSitemapChooser()
-    {
+    func updateSitemapChooser() {
         if var sitemaps = OHDataManager.sharedInstance.sitemaps {
-            
             let sitemapValues = sitemaps.values.array
             
             if var sitemapChooserController = self.sitemapChooserController {
@@ -186,15 +188,26 @@ extension OHSettingsViewController {
 //MARK: Actions
 extension OHSettingsViewController {
     
-    func loadSitemapsButtonPressed(button: UIButton)
-    {
-        OHDataManager.sharedInstance.downloadSitemaps()
+    func loadSitemapsButtonPressed(button: UIButton) {
+        dismissKeyboard()
         
-        loadingView.hidden = false
+        if var urlTextField = self.urlTextField {
+            var url = urlTextField.text
+            
+            if var urlText = url {
+                if !isEmpty(url) {
+                    defaults.setObject(urlText, forKey: "SettingsOpenHABUrl")
+                    defaults.synchronize()
+                    OHDataManager.sharedInstance.updateBaseUrl(url)
+                    OHDataManager.sharedInstance.downloadSitemaps()
+                    addLoadingView()
+                }
+            }
+        }
     }
     
-    func saveButtonPressed(button: UIButton)
-    {
+    func saveButtonPressed(button: UIButton) {
+        dismissKeyboard()
         if var urlTextField = self.urlTextField {
             var url = urlTextField.text
             
@@ -207,7 +220,6 @@ extension OHSettingsViewController {
     }
     
     func dismissButtonPressed(button: UIButton) {
-        
         if var presentingViewController = self.presentingViewController {
             self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
         }
@@ -220,21 +232,19 @@ extension OHSettingsViewController {
 //MARK: Observers
 extension OHSettingsViewController {
     
-    func initObservers()
-    {
+    func initObservers() {
         didUpdateCurrentSitemapObserver = NSNotificationCenter.defaultCenter().addObserverForName("OHDataManagerCurrentSitemapDidChangeNotification", object: nil, queue: NSOperationQueue.mainQueue(), usingBlock: { notification in
             self.updateSitemapChooser()
-            self.loadingView.hidden = true
+            self.removeLoadingView()
         })
         
         didUpdateSitemapsObserver = NSNotificationCenter.defaultCenter().addObserverForName("OHDataManagerDidUpdateSitemapsNotification", object: nil, queue: NSOperationQueue.mainQueue(), usingBlock: { notification in
             self.updateSitemapChooser()
-            self.loadingView.hidden = true
+            self.removeLoadingView()
         })
     }
     
-    func removeObservers()
-    {
+    func removeObservers() {
         let nc = NSNotificationCenter.defaultCenter()
         if didUpdateCurrentSitemapObserver != nil {
             nc.removeObserver(didUpdateCurrentSitemapObserver)
@@ -244,18 +254,14 @@ extension OHSettingsViewController {
             nc.removeObserver(didUpdateSitemapsObserver)
         }
     }
-    
 }
 
 //MARK: TableViewDelegate
 extension OHSettingsViewController: UITableViewDelegate {
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
-    {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var sitemap = self.sitemapChooserController!.data[indexPath.item] as! OHSitemap
-        
-        loadingView.hidden = false
-        
+        addLoadingView()
         OHDataManager.sharedInstance.currentSitemap = sitemap
         
         if var sitemapChooserButton = self.sitemapChooserButton {
@@ -291,10 +297,16 @@ extension OHSettingsViewController: UITextFieldDelegate {
         return true
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool // called when 'return' key pressed. return NO to ignore.
-    {
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         
         return true
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        if var urlText = self.urlTextField?.text {
+            defaults.setObject(urlText, forKey: "SettingsOpenHABUrl")
+            OHDataManager.sharedInstance.updateBaseUrl(urlText)
+        }
     }
 }

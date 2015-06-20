@@ -16,9 +16,7 @@ import Foundation
     var widgets: [OHWidget]?
     var linkedPage: OHLinkedPage?
     
-    
-    required public init(coder aDecoder: NSCoder)
-    {
+    required public init(coder aDecoder: NSCoder) {
         self.pageId = aDecoder.decodeObjectForKey("pageId") as! String
         self.icon = aDecoder.decodeObjectForKey("icon") as! String
         self.title = aDecoder.decodeObjectForKey("title") as! String
@@ -27,8 +25,7 @@ import Foundation
         self.linkedPage = aDecoder.decodeObjectForKey("widgets") as? OHLinkedPage
     }
     
-    func encodeWithCoder(aCoder: NSCoder)
-    {
+    func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(pageId, forKey: "pageId")
         aCoder.encodeObject(icon, forKey: "icon")
         aCoder.encodeObject(title, forKey: "title")
@@ -43,15 +40,12 @@ import Foundation
         self.title = title
         self.link = link
         
-        
         if var wids = widgets {
             self.widgets = OHRestParser.parseWidgets(wids)
         }
-        
     }
     
-    init(linkedPage: JSON)
-    {
+    init(linkedPage: JSON) {
         var linkedPageDict = linkedPage.dictionaryValue
         
         self.pageId = linkedPageDict["id"]!.stringValue
@@ -69,21 +63,20 @@ import Foundation
     }
 }
 
-//MARK: OHSitemap: Printable
+//MARK: - Printable
 extension OHLinkedPage : Printable {
     
-    override public var description:String
-    {
-            let className = reflect(self).summary
-            var desc:String = ""
-            desc += "\(className):\n{\n"
-            desc += "\tpageId: \(self.pageId),\n"
-            desc += "\ttitle: \(self.title),\n"
-            desc += "\tlink: \(self.link),\n"
-            desc += "\ticon: \(self.icon)\n}"
-            desc += "\twidgets: \(self.widgets)\n"
-            desc += "\tlinkedPage: \(self.linkedPage)\n"
+    override public var description:String {
+        let className = reflect(self).summary
+        var desc:String = ""
+        desc += "\(className):\n{\n"
+        desc += "\tpageId: \(self.pageId),\n"
+        desc += "\ttitle: \(self.title),\n"
+        desc += "\tlink: \(self.link),\n"
+        desc += "\ticon: \(self.icon)\n}"
+        desc += "\twidgets: \(self.widgets)\n"
+        desc += "\tlinkedPage: \(self.linkedPage)\n"
         
-            return desc
+        return desc
     }
 }

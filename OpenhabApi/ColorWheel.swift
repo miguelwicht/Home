@@ -32,24 +32,11 @@ import UIKit
         }
     }
     
-    
     var saturation: CGFloat = 1.0 {
         didSet {
-            
-//            var hue: CGFloat = 0.0
-//            var saturation: CGFloat = 0.0
-//            var brightness: CGFloat = 0.0
-//            var alpha: CGFloat = 0.0
-//            
-//            var success = currentColor?.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
-//            println("success: \(success), hue: \(hue), saturation: \(saturation), brightness: \(brightness), alpha: \(alpha)")
-//            var color = UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: 1.0)
-//            currentColor = color
-            
             currentColor = getColorForAngle(angle)
             self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
             changeHandleColor()
-//            moveHandleToColor(currentColor!)
         }
     }
     
@@ -60,16 +47,13 @@ import UIKit
         let size = CGSizeMake(self.frame.size.width, self.frame.size.height);
         radius = CGFloat(min((size.width - self.padding), (size.width - self.padding) / 2)) // -1 to prevent clipping
         
-        
         initCircleView()
         initButton()
         initHandle()
-        
         moveHandleToColor(UIColor.purpleColor())
     }
     
-    func initHandle()
-    {
+    func initHandle() {
         handleView = UIImageView(frame: CGRectMake(0, 0, handleSize.width, handleSize.height))
         handleView?.backgroundColor = UIColor.clearColor()
         handleView?.userInteractionEnabled = false
@@ -88,10 +72,8 @@ import UIKit
         self.addSubview(handleView!)
     }
     
-    func initButton()
-    {
+    func initButton() {
         button = PowerButton.buttonWithType(.Custom) as! PowerButton
-        
         button!.addTarget(button, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         
         if var button = self.button {
@@ -103,8 +85,8 @@ import UIKit
             var buttonColor = UIColor(red: (235.0 / 255.0), green: (235.0 / 255.0), blue: (235.0 / 255.0), alpha: 1.0)
             var buttonTitleColor = UIColor(red: (126.0 / 255.0), green: (126.0 / 255.0), blue: (126.0 / 255.0), alpha: 1.0)
             
-            var buttonImage = drawCircleWithColor(buttonColor, rect: imageRect)
-            var buttonImageSelected = drawCircleWithColor(buttonTitleColor, rect: imageRect)
+            var buttonImage = UIImage.drawCircleWithColor(buttonColor, rect: imageRect)
+            var buttonImageSelected = UIImage.drawCircleWithColor(buttonTitleColor, rect: imageRect)
             
             let buttonBuffer: CGFloat = 40.0
             
@@ -123,17 +105,11 @@ import UIKit
             button.setBackgroundImage(buttonImageSelected, forState: .Highlighted)
             button.setTitleColor(buttonColor, forState: .Highlighted)
             
-//            button.setTitle("On", forState: .Normal)
-//            button.setTitle("Off", forState: .Selected)
-//            button.setTitle("Off", forState: .Highlighted)
-            
             self.insertSubview(button, belowSubview: circleView!)
         }
-        
     }
     
-    func initCircleView()
-    {
+    func initCircleView() {
         self.circleView = UIImageView(frame: CGRectMake(0, 0, frame.width, frame.height))
         self.circleView?.image = self.drawRing()
         self.addSubview(self.circleView!)
@@ -144,16 +120,18 @@ import UIKit
         self.handleView = UIImageView(frame: CGRectZero)
         button = UIButton.buttonWithType(.Custom) as! UIButton
         super.init(coder: aDecoder)
+        
         self.addSubview(self.circleView!)
         self.backgroundColor = UIColor.clearColor()
     }
+}
+
+extension UIImage {
     
-    func drawCircleWithColor(color: UIColor, rect: CGRect) -> UIImage
-    {
+    static func drawCircleWithColor(color: UIColor, rect: CGRect) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(CGSizeMake(rect.width, rect.height), false, 0.0);
         
         var ctx = UIGraphicsGetCurrentContext()
-
         CGContextSetLineWidth(ctx, 0.0);
         CGContextSetBlendMode(ctx, kCGBlendModeNormal)
         CGContextSetFillColorWithColor(ctx, color.CGColor)
@@ -161,45 +139,35 @@ import UIKit
         CGContextFillPath(ctx);
         
         let buttonImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
-        
         UIGraphicsEndImageContext()
         
         return buttonImage
     }
-    
 }
 
 extension ColorWheel {
     //MARK: Handle
-    /** Draw a white knob over the circle **/
-    func drawHandle(size: CGSize) -> UIImage
-    {
+    
+    func drawHandle(size: CGSize) -> UIImage {
         let blurSize: CGFloat = 0
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake(size.width, size.height), false, 0.0);
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(size.width, size.height), false, 0.0)
         var ctx = UIGraphicsGetCurrentContext()
-        //I Love shadows
-        CGContextSetShadowWithColor(ctx, CGSizeMake(0, 0), blurSize, UIColor(red: 0, green: 0, blue: 0, alpha: 0.7).CGColor);
+        CGContextSetShadowWithColor(ctx, CGSizeMake(0, 0), blurSize, UIColor(red: 0, green: 0, blue: 0, alpha: 0.7).CGColor)
         
         //Get the handle position
-        //var handleCenter = pointFromAngle(angle)
         var handleCenter = CGPointMake(size.width / 2 + blurSize, size.height / 2 + blurSize)
         
         //Draw It!
-        UIColor(white:1.0, alpha:1.0).set();
-        //CGContextFillEllipseInRect(ctx, CGRectMake(handleCenter.x, handleCenter.y, self.ringWidth, self.ringWidth));
-        //CGContextFillEllipseInRect(ctx, CGRectMake(handleCenter.x, handleCenter.y, size.width, size.height));
-        CGContextFillEllipseInRect(ctx, CGRectMake(blurSize, blurSize, size.width - blurSize * 2, size.height - blurSize * 2));
+        UIColor(white:1.0, alpha:1.0).set()
+        CGContextFillEllipseInRect(ctx, CGRectMake(blurSize, blurSize, size.width - blurSize * 2, size.height - blurSize * 2))
         
         let handleImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext();
-        
+        UIGraphicsEndImageContext()
         
         return handleImage
     }
     
-    /** Move the Handle **/
-    func moveHandleToPoint(point: CGPoint)
-    {
+    func moveHandleToPoint(point: CGPoint) {
         //Get the center
         let centerPoint:CGPoint  = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
         //Calculate the direction from a center point and a arbitrary position.
@@ -208,9 +176,7 @@ extension ColorWheel {
         
         //Store the new angle
         angle = Int(360 - angleInt)
-        
         var newPoint: CGPoint = self.pointFromAngle(angle)
-        
         angle = angleInt
         
         handleView!.frame.origin.x = newPoint.x - handleView!.frame.size.width
@@ -224,41 +190,32 @@ extension ColorWheel {
         return color
     }
     
-    func getAngleForColor(color: UIColor) -> Int
-    {
+    func getAngleForColor(color: UIColor) -> Int {
         var col = CIColor(color: color)
-        
         var red = CGFloat(col!.red() * 255)
         var green = CGFloat(col!.green() * 255)
         var blue = CGFloat(col!.blue() * 255)
-        
         var hue = calculateHue(Int(red), green: Int(green), blue: Int(blue))
-//        var hue = calculateHue(Int(colRed), green: Int(colGreen), blue: Int(colBlue))
         var angle = Int(hue * CGFloat(sectors))
-        
-//        angle = Int(360 - angle)
         
         return angle
     }
     
     func changeHandleColor() {
         currentColor = getColorForAngle(angle)
-        
         button!.layer.borderColor = currentColor!.CGColor
         handleView?.tintColor = currentColor!
     }
     
-    func updateHandleWithPoint(point: CGPoint)
-    {
+    func updateHandleWithPoint(point: CGPoint) {
         self.moveHandleToPoint(point)
         changeHandleColor()
     }
     
     /** Given the angle, get the point position on circumference **/
-    func pointFromAngle(angleInt:Int)->CGPoint{
-        
+    func pointFromAngle(angleInt:Int)->CGPoint {
         //Circle center
-        let centerPoint = CGPointMake((self.frame.size.width + handleView!.frame.size.width)/2.0, (self.frame.size.height + handleView!.frame.size.height)/2.0);
+        let centerPoint = CGPointMake((self.frame.size.width + handleView!.frame.size.width)/2.0, (self.frame.size.height + handleView!.frame.size.height)/2.0)
         
         //The point position on the circumference
         var result:CGPoint = CGPointZero
@@ -278,11 +235,12 @@ extension ColorWheel {
         var v:CGPoint  = CGPointMake(p2.x - p1.x, p2.y - p1.y)
         let vmag:CGFloat = Square(Square(v.x) + Square(v.y))
         var result:Double = 0.0
-        v.x /= vmag;
-        v.y /= vmag;
+        v.x /= vmag
+        v.y /= vmag
         let radians = Double(atan2(v.y,v.x))
         result = RadiansToDegrees(radians)
-        return (result >= 0  ? result : result + 360.0);
+        
+        return (result >= 0  ? result : result + 360.0)
     }
 }
 
@@ -301,37 +259,30 @@ extension ColorWheel {
         return value * value
     }
     
-    func calculateHue(red: Int, green: Int, blue: Int) -> CGFloat
-    {
+    func calculateHue(red: Int, green: Int, blue: Int) -> CGFloat {
         var minVal = CGFloat(min(min(red, green), blue))
         var maxVal = CGFloat(max(max(red, green), blue))
         
         var hue: CGFloat = 0.0
         
-        if (maxVal == CGFloat(red))
-        {
+        if (maxVal == CGFloat(red)) {
             hue = CGFloat(green - blue) / CGFloat(maxVal - minVal)
         }
-        else if (maxVal == CGFloat(green))
-        {
+        else if (maxVal == CGFloat(green)) {
             hue = 2.0 + CGFloat(blue - red) / CGFloat(maxVal - minVal)
         }
-        else
-        {
+        else {
             hue = 4.0 + CGFloat(red - green) / CGFloat(maxVal - minVal)
         }
         
         hue *= 60
-        
         hue = hue < 0 ? hue + 360 : hue
-        
         hue = CGFloat(hue / 255.0)
         
         return hue
     }
     
-    func moveHandleToColor(color: UIColor)
-    {
+    func moveHandleToColor(color: UIColor) {
         var angle = getAngleForColor(color)
         var point = pointFromAngle(angle)
         
@@ -340,41 +291,31 @@ extension ColorWheel {
     }
 }
 
+//MARK: - Drawing
 extension ColorWheel {
-    //MARK: Drawing
     
-    func drawRing() -> UIImage
-    {
-        let size = CGSizeMake(self.bounds.size.width, self.bounds.size.height);
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake(size.width, size.height), false, 0.0);
-        
-//        self.radius = CGFloat(min((size.width - 10), (size.height - 10) / 2)) // -1 to prevent clipping
-        
-//        self.radius = CGFloat(min((size.width), (size.height) / 2)) // -1 to prevent clipping
+    func drawRing() -> UIImage {
+        let size = CGSizeMake(self.bounds.size.width, self.bounds.size.height)
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(size.width, size.height), false, 0.0)
         
         let center: CGPoint = CGPointMake(size.width/2, size.height/2)
-        
         let ctx = UIGraphicsGetCurrentContext()
         
-        UIColor.clearColor().setFill();
-        //UIRectFill(CGRectMake(0, 0, size.width, size.height));
-        
+        UIColor.clearColor().setFill()
         
         let angle: CGFloat = CGFloat(2 * M_PI / Double(sectors))
         var colorCirclePath: UIBezierPath = UIBezierPath()
         
-        for (var i: Int = 0; i < sectors; i++)
-        {
-            let startAngle = CGFloat(i) * CGFloat(angle)
-            let endAngle = (CGFloat(i) + 1) * CGFloat(angle)
+        var startAngle = CGFloat(0)
+        var endAngle = CGFloat(360)
+        
+        for (var i: Int = 0; i < sectors; i++) {
+            startAngle = CGFloat(i) * CGFloat(angle)
+            endAngle = (CGFloat(i) + 1) * CGFloat(angle)
             
             colorCirclePath = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
-            
-            colorCirclePath.addLineToPoint(center);
-            colorCirclePath.closePath();
-            
-//            var hue: CGFloat = CGFloat(i) / CGFloat(sectors)
-//            var color = UIColor(hue: hue, saturation: 1.0, brightness: 0.85, alpha: 1.0)
+            colorCirclePath.addLineToPoint(center)
+            colorCirclePath.closePath()
             
             var color = getColorForAngle(i)
             
@@ -385,25 +326,26 @@ extension ColorWheel {
         }
         
         // Remove circle in the middle to create the ring
-        CGContextSaveGState(ctx);
+        CGContextSaveGState(ctx)
         
-        CGContextSetLineWidth(ctx, 0.0);
-        CGContextSetBlendMode(ctx, kCGBlendModeClear); // Set blendMode to clear to erase center
+        CGContextSetLineWidth(ctx, 0.0)
+        CGContextSetBlendMode(ctx, kCGBlendModeClear) // Set blendMode to clear to erase center
         CGContextSetFillColorWithColor(ctx, UIColor.blueColor().CGColor)
-        let rectangle = CGRectMake(self.bounds.origin.x + self.ringWidth, self.bounds.origin.y + self.ringWidth, self.frame.width - self.ringWidth * 2, self.frame.height - self.ringWidth * 2);
-        CGContextAddEllipseInRect(ctx, rectangle);
-        CGContextFillPath(ctx);
-        CGContextRestoreGState(ctx);
+        let rectangle = CGRectMake(self.bounds.origin.x + self.ringWidth, self.bounds.origin.y + self.ringWidth, self.frame.width - self.ringWidth * 2, self.frame.height - self.ringWidth * 2)
+        CGContextAddEllipseInRect(ctx, rectangle)
+        CGContextFillPath(ctx)
+        CGContextRestoreGState(ctx)
         
         let ringImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext();
+        UIGraphicsEndImageContext()
         
         return ringImage
     }
 }
 
+ //MARK: - Touch Tracking
 extension ColorWheel {
-    //MARK: Touch Tracking
+   
     override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
         super.beginTrackingWithTouch(touch, withEvent: event)
         

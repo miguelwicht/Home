@@ -16,8 +16,7 @@ import Foundation
     public var proximity: Int?
     public var rssi: Int?
     
-    required public init(coder aDecoder: NSCoder)
-    {
+    required public init(coder aDecoder: NSCoder) {
         self.uuid = aDecoder.decodeObjectForKey("uuid") as! String
         self.major = aDecoder.decodeObjectForKey("major") as! Int
         self.minor = aDecoder.decodeObjectForKey("minor") as! Int
@@ -26,8 +25,7 @@ import Foundation
         self.rssi = aDecoder.decodeObjectForKey("rssi") as? Int
     }
     
-    func encodeWithCoder(aCoder: NSCoder)
-    {
+    func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(uuid, forKey: "uuid")
         aCoder.encodeObject(major, forKey: "major")
         aCoder.encodeObject(minor, forKey: "minor")
@@ -44,11 +42,10 @@ import Foundation
     }
 }
 
-//MARK: OHBeacon: Printable
+//MARK: - Printable
 extension OHBeacon : Printable {
 
-    override public var description: String
-    {
+    override public var description: String {
         var desc = ""
         desc += "OpenhabBeacon: {\n"
         desc += "\tuuid: \(uuid), \n"
@@ -63,7 +60,7 @@ extension OHBeacon : Printable {
     }
 }
 
-//MARK: OHBeacon: Hashable
+//MARK: - Hashable
 extension OHBeacon: Hashable {
     override public var hashValue: Int {
         get {
@@ -72,7 +69,7 @@ extension OHBeacon: Hashable {
     }
 }
 
-//MARK: OHBeacon: Equatable
+//MARK: - Equatable
 public func ==(lhs: OHBeacon, rhs: OHBeacon) -> Bool {
     return lhs.hashValue == rhs.hashValue
 }

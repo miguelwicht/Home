@@ -12,66 +12,52 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-//    var dataManager = OHDataManager()
-//    var restManager = OHRestManager()
     var beaconManager: OHBeaconManager?
     var statusBarBackgroundView: OHStatusBarView?
 
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-        
         registerDefaults()
         
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         setupAppearance()
         loadData()
-//        dataManager.loadLocalSitemaps()
-        
         prepareViewController()
         
-//        var settingsVC = OHSettingsViewController()
-//        
-//        
-//        self.window?.rootViewController = settingsVC
         self.window?.makeKeyAndVisible()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotated", name: UIDeviceOrientationDidChangeNotification, object: nil)
         
         return true
     }
     
-    func loadData()
-    {
+    func rotated() {
+        if(UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation)) {
+            println("landscape")
+            statusBarBackgroundView?.hidden = true
+        }
+        
+        if(UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation)) {
+            println("Portrait")
+            statusBarBackgroundView?.hidden = false
+        }
+    }
+    
+    func loadData() {
         OHDataManager.sharedInstance.loadData()
         var dataManager = OHDataManager.sharedInstance
     }
     
-    func prepareViewController()
-    {
+    func prepareViewController() {
         let defaults = NSUserDefaults.standardUserDefaults()
         
         var frontViewController: UIViewController?
         
-//        if var sitemaps = OHDataManager.sharedInstance.sitemaps {
-//            if sitemaps.count > 0 {
-//                frontViewController = OHRootViewController.new()
-//            }
-//        }
-        
-        if var sitemaps = OHDataManager.sharedInstance.sitemaps {
-        
-            if var sitemap = OHDataManager.sharedInstance.currentSitemap {
-                if sitemap.roomsInSitemap() == nil {
-                    frontViewController = OHSettingsViewController.new()
-                } else {
-                    frontViewController = OHRootViewController.new()
-                }
-            }
-        }
-        
-        if frontViewController == nil {
+        if let sitemaps = OHDataManager.sharedInstance.sitemaps, rooms = OHDataManager.sharedInstance.currentSitemap?.roomsInSitemap()  {
+            frontViewController = OHRootViewController.new()
+        } else {
             frontViewController = OHSettingsViewController.new()
         }
-        
         
         var rearViewController = OHRearMenuViewController.new()
         var containerViewController = SWRevealViewController(rearViewController: rearViewController, frontViewController: frontViewController)
@@ -86,8 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func setupAppearance()
-    {
+    func setupAppearance() {
         statusBarBackgroundView = OHStatusBarView(frame: CGRect(x: 0, y: 0, width: self.window!.frame.width, height: 20))
         
         var font = UIFont(name: "Muli", size: UIFont.systemFontSize())
@@ -95,15 +80,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UINavigationBar.appearance().barTintColor = OHDefaults.defaultNavigationBarColor()
         UINavigationBar.appearance().translucent = false
-        UINavigationBar.appearance().tintColor = UIColor(red: (51.0 / 255.0), green: (51.0 / 255.0), blue: (51.0 / 255.0), alpha: 1.0)
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         UINavigationBar.appearance().titleTextAttributes = [ NSFontAttributeName: UIFont(name: font!.fontName, size: 17.0)!, NSForegroundColorAttributeName: UIColor.whiteColor() ]
         
         UIButton.appearance().setTitleColor(OHDefaults.defaultTextColor(), forState: .Normal)
+        
+        UIPageControl.appearance().pageIndicatorTintColor = UIColor.colorFromRGB(red: 236, green: 240, blue: 241)
+        UIPageControl.appearance().currentPageIndicatorTintColor = OHDefaults.defaultNavigationBarColor()
     }
     
-    func registerDefaults()
-    {
+    func registerDefaults() {
         let defaults = NSUserDefaults.standardUserDefaults()
         
         if let path = NSBundle.mainBundle().pathForResource("Defaults", ofType: "plist") {
@@ -113,8 +99,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 defaults.synchronize()
             }
         }
-        
-        
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -141,6 +125,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         OHDataManager.sharedInstance.saveData()
     }
-
-
 }

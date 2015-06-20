@@ -33,8 +33,7 @@ public class OHWidget: NSObject {
     var mappings: [String]? = [""]
     var widgets: [OHWidget]?
     
-    required public init(coder aDecoder: NSCoder)
-    {
+    required public init(coder aDecoder: NSCoder) {
         self.widgetId = aDecoder.decodeObjectForKey("widgetId") as? String
         self.label = aDecoder.decodeObjectForKey("label") as? String
         self.icon = aDecoder.decodeObjectForKey("icon") as? String
@@ -59,8 +58,7 @@ public class OHWidget: NSObject {
         self.widgets = aDecoder.decodeObjectForKey("widgets") as? [OHWidget]
     }
     
-    func encodeWithCoder(aCoder: NSCoder)
-    {
+    func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(widgetId, forKey: "widgetId")
         aCoder.encodeObject(label, forKey: "label")
         aCoder.encodeObject(icon, forKey: "icon")
@@ -85,76 +83,58 @@ public class OHWidget: NSObject {
         aCoder.encodeObject(widgets, forKey: "widgets")
     }
     
-    public init(widget: [String: JSON])
-    {
+    public init(widget: [String: JSON]) {
         self.widgetId = widget["widgetId"]?.stringValue
         self.type = widget["type"]?.stringValue
         self.label = widget["label"]?.stringValue
         self.icon = widget["icon"]?.stringValue
         
         // parse linkedPage to OHLinkedPage
-        if var linkedPage = widget["linkedPage"]//?.dictionaryValue
-        {
-//            println(linkedPage)
-//            self.linkedPage = OHLinkedPage(pageId: linkedPage["id"]!.stringValue, icon: linkedPage["icon"]!.stringValue, title: linkedPage["icon"]!.stringValue, link: linkedPage["link"]!.stringValue, widgets: linkedPage["widgets"]!.arrayValue)
-            
+        if var linkedPage = widget["linkedPage"] {
             self.linkedPage = OHLinkedPage(linkedPage: linkedPage)
         }
         
         // parse widgets to OHWidget
-        if var wid = widget["widgets"]?.arrayValue
-        {
+        if var wid = widget["widgets"]?.arrayValue {
             self.widgets = OHRestParser.parseWidgets(wid)
         }
         
-        if var item = widget["item"]
-        {
+        if var item = widget["item"] {
             self.item = OHItem(item: item)
         }
     }
     
-    func getItems() -> [String: OHItem]
-    {
+    func getItems() -> [String: OHItem] {
         var items = [String: OHItem]()
-        
         var widgets = getWidgetsRecursevly()
-        
         items = extractItemsFromWidgets(widgets)
         
         return items
     }
     
-    func extractItemsFromWidgets(widgets: [OHWidget]) -> [String: OHItem]
-    {
+    func extractItemsFromWidgets(widgets: [OHWidget]) -> [String: OHItem] {
         var items = [String: OHItem]()
         
-//        if var ws = widgets {
-            for (index, widget) in enumerate(widgets)
-            {
-                var widgetItem = widget.item
-                
-                if var item = widgetItem {
-                    items[item.link] = item
-                }
+        for (index, widget) in enumerate(widgets) {
+            var widgetItem = widget.item
+            
+            if var item = widgetItem {
+                items[item.link] = item
             }
-//        }
+        }
         
         return items
     }
     
-    func getWidgetsRecursevly() -> [OHWidget]
-    {
+    func getWidgetsRecursevly() -> [OHWidget] {
         var widgetList = [OHWidget]()
         
         if var widgets = self.widgets {
-            
-            for (index, widget) in enumerate(widgets)
-            {
+            for (index, widget) in enumerate(widgets) {
                 widgetList.append(widget)
                 var widgetsFromWidget = widget.getWidgetsRecursevly()
                 
-                for (i, w) in enumerate(widgetsFromWidget)
-                {
+                for (i, w) in enumerate(widgetsFromWidget) {
                     widgetList.append(w)
                 }
             }
@@ -162,13 +142,11 @@ public class OHWidget: NSObject {
         
         if var linkedPage = self.linkedPage {
             if var widgets = linkedPage.widgets {
-                for (index, widget) in enumerate(widgets)
-                {
+                for (index, widget) in enumerate(widgets) {
                     widgetList.append(widget)
                     var widgetsFromWidget = widget.getWidgetsRecursevly()
                     
-                    for (i, w) in enumerate(widgetsFromWidget)
-                    {
+                    for (i, w) in enumerate(widgetsFromWidget) {
                         widgetList.append(w)
                     }
                 }
@@ -179,13 +157,11 @@ public class OHWidget: NSObject {
     }
 }
 
-//MARK: OHBeacon: Printable
+//MARK: - Printable
 extension OHWidget : Printable {
     
     override public var description: String {
-        
         var desc: String = ""
-        
         desc += "OHWidget: {\n"
         desc += "\titem: \(item) \n"
         desc += "\twidgetId: \(widgetId)\n"

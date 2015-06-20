@@ -10,8 +10,6 @@ import UIKit
 
 class PowerButton: ButtonWithCustomBackgroundSize {
     
-//    var toggleState: Bool = false
-    
     var iconView: UIImageView = UIImageView()
 
     required init(coder aDecoder: NSCoder) {
@@ -38,8 +36,7 @@ class PowerButton: ButtonWithCustomBackgroundSize {
         iconView.centerViewHorizontallyInSuperview()
     }
     
-    func buttonPressed(button: PowerButton)
-    {
+    func buttonPressed(button: PowerButton) {
         button.toggleState = button.toggleState ? false : true
     }
     

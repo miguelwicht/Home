@@ -9,14 +9,6 @@
 import UIKit
 
 class OHButton: UIButton {
-
-    /*
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
-        // Drawing code
-    }
-    */
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -30,8 +22,7 @@ class OHButton: UIButton {
         initAppearance()
     }
     
-    func initAppearance()
-    {
+    func initAppearance() {
         OHButton.appearance().setBackgroundImage(UIImage.imageWithColor(OHDefaults.defaultNavigationBarColor()), forState: UIControlState.Normal)
         OHButton.appearance().setBackgroundImage(UIImage.imageWithColor(OHDefaults.defaultCellBackgroundColor()), forState: UIControlState.Highlighted)
         OHButton.appearance().setBackgroundImage(UIImage.imageWithColor(OHDefaults.defaultCellBackgroundColor()), forState: UIControlState.Selected)
@@ -40,7 +31,6 @@ class OHButton: UIButton {
         OHButton.appearance().setTitleColor(UIColor.whiteColor(), forState: .Normal)
         OHButton.appearance().setTitleColor(OHDefaults.defaultTextColor(), forState: .Highlighted)
         OHButton.appearance().setTitleColor(OHDefaults.defaultTextColor(), forState: .Selected)
-        
         
         contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     }

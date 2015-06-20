@@ -13,7 +13,6 @@ class MDWSlider: UIControl {
     var leftImageView: UIImageView?
     var rightImageView: UIImageView?
     var slider = UISlider()
-//    var value = 0
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -34,36 +33,21 @@ class MDWSlider: UIControl {
         rightImage = rightImage!.resizableImageWithCapInsets(UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 3))
         slider.setMinimumTrackImage(leftImage, forState: .Normal)
         slider.setMaximumTrackImage(rightImage, forState: .Normal)
-        
-//        slider.addTarget(self, action: "valueChanged:", forControlEvents: UIControlEvents.ValueChanged)
     }
     
-//    func valueChanged(slider: UISlider)
-//    {
-//        value = slider.value
-//        
-//        self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
-//    }
-    
-    func addLeftImage(image: UIImage)
-    {
+    func addLeftImage(image: UIImage) {
         if var leftImageView = self.leftImageView {
             leftImageView.image = image
-        }
-        else
-        {
+        } else {
             leftImageView = UIImageView(image: image)
             addSubview(leftImageView!)
         }
     }
     
-    func addRightImage(image: UIImage)
-    {
+    func addRightImage(image: UIImage) {
         if var rightImageView = self.rightImageView {
             rightImageView.image = image
-        }
-        else
-        {
+        } else {
             rightImageView = UIImageView(image: image)
             addSubview(rightImageView!)
         }
@@ -79,7 +63,6 @@ class MDWSlider: UIControl {
             leftImageView.marginLeft = 0
             leftImageView.sizeToFit()
             leftMargin = leftImageView.neededSpaceWidth
-            
         }
         
         if var rightImageView = self.rightImageView {
@@ -92,5 +75,4 @@ class MDWSlider: UIControl {
         slider.centerViewHorizontallyInSuperview()
         slider.centerViewVerticallyInSuperview()
     }
-    
 }

@@ -21,7 +21,6 @@ class OHRearMenuViewController: UIViewController {
         super.loadView()
         
         tableView = UITableView(frame: CGRectZero, style: UITableViewStyle.Grouped)
-        
         view.backgroundColor = UIColor(red: (236.0 / 255.0), green: (236.0 / 255.0), blue: (236.0 / 255.0), alpha: 1.0)
         
         if var tableView = self.tableView {
@@ -40,17 +39,10 @@ class OHRearMenuViewController: UIViewController {
             view.addSubview(footerView!)
             
             tableView.setTranslatesAutoresizingMaskIntoConstraints(false)
-            
-//            tableView.setHeight(tableView.frame.height - headerView!.neededSpaceHeight - footerView!.frame.height)
-//            tableView.marginTop = headerView!.neededSpaceHeight
-            
             headerView?.setWidth(tableView.frame.width)
-            
             
             var footerButton: UIButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
             footerButton.setTranslatesAutoresizingMaskIntoConstraints(false)
-            
-            
             footerButton.setTitle("Settings".uppercaseString, forState: .Normal)
             footerButton.titleLabel?.font = OHDefaults.defaultFontWithSize(17)
             footerButton.setTitleColor(OHDefaults.defaultTextColor(), forState: .Normal)
@@ -65,18 +57,11 @@ class OHRearMenuViewController: UIViewController {
             views["tableView"] = tableView
             
             view.addConstraint(NSLayoutConstraint(item: footerView!, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Height, multiplier: 0.0, constant:44.5))
-            
             view.addConstraint(NSLayoutConstraint(item: footerView!, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant:0))
-            
             view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[footerView]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
-            
-            
-            
             view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(0)-[footerButton]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
             view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[footerButton]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
-            
             view.addConstraint(NSLayoutConstraint(item: tableView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: footerView, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant:0))
-            
             view.addConstraint(NSLayoutConstraint(item: tableView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: headerView!, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant:0))
             view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[tableView]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
         }
@@ -84,24 +69,14 @@ class OHRearMenuViewController: UIViewController {
         updateMenu()
     }
     
-    func footerButtonPressed(button: UIButton)
-    {
+    func footerButtonPressed(button: UIButton) {
         var settingsViewController = OHSettingsViewController()
         var navController = UINavigationController(rootViewController: settingsViewController)
-        
         self.presentViewController(navController, animated: true, completion: nil)
     }
     
-    func updateMenu()
-    {
+    func updateMenu() {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//        var dataManager = appDelegate.dataManager
-        
-//        if var sitemap = 
-        
-//        if var sitemap = dataManager.sitemaps?.first {
-//            widgets = OHRestParser.getMenuFromSitemap(sitemap)
-//        }
         
         if var sitemaps = OHDataManager.sharedInstance.sitemaps {
             var startIndex = sitemaps.startIndex
@@ -114,16 +89,11 @@ class OHRearMenuViewController: UIViewController {
             widgets = OHRestParser.getMenuFromSitemap(sitemap)
         }
         
-        
-        
         tableView?.reloadData()
-        
-        println(widgets)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
     }
 
@@ -132,8 +102,7 @@ class OHRearMenuViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func toggleSection(button: OHRearMenuSectionHeader)
-    {
+    func toggleSection(button: OHRearMenuSectionHeader) {
         button.toggle()
         tableView?.reloadData()
     }
@@ -158,19 +127,17 @@ extension OHRearMenuViewController: UITableViewDelegate {
                 var button = OHRearMenuSectionHeader()
                 button.section = section
                 button.showSection = false
-                sectionHeaders[section] = button
                 
+                sectionHeaders[section] = button
                 var widget = widgets[section]
                 
                 button.setTitle(widget.label!.uppercaseString, forState: .Normal)
-                
                 button.addTarget(self, action: "toggleSection:", forControlEvents: .TouchUpInside)
                 button.borderTop.hidden = section == 0 ? true : false
             }
         }
         
         return sectionHeaders[section] != nil ? sectionHeaders[section]! : nil
-        
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -204,56 +171,38 @@ extension OHRearMenuViewController: UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
         var item = widgets![indexPath.section].linkedPage!.widgets![indexPath.row]
-        println(item)
 
-        if var item = widgets![indexPath.section].linkedPage!.widgets![indexPath.row].item
-        {
-            if item.isLightFromTags()
-            {
+        if var item = widgets![indexPath.section].linkedPage!.widgets![indexPath.row].item {
+            if item.isLightFromTags() {
                 pushLightsController(widgets![indexPath.section].linkedPage!.widgets![indexPath.row])
-            }
-            else if item.hasTag("OH_Scene")
-            {
+            } else if item.hasTag("OH_Scene") {
                 item.sendCommand("ON")
                 tableView.deselectRowAtIndexPath(indexPath, animated: true)
-            }
-            else if item.hasTagWithPrefix("OH_Menu_Sitemap_")
-            {
-                if var sitemapName = item.getTagWithoutPrefix("OH_Menu_Sitemap_")
-                {
-                    if var sitemaps = OHDataManager.sharedInstance.sitemaps
-                    {
-                        if var sitemap = sitemaps[sitemapName]
-                        {
+            } else if item.hasTagWithPrefix("OH_Menu_Sitemap_") {
+                if var sitemapName = item.getTagWithoutPrefix("OH_Menu_Sitemap_") {
+                    if var sitemaps = OHDataManager.sharedInstance.sitemaps {
+                        if var sitemap = sitemaps[sitemapName] {
                             OHDataManager.sharedInstance.currentSitemap = sitemap
                         }
                     }
                 }
             }
         }
-        
     }
     
-    func pushLightsController(widget: OHWidget)
-    {
+    func pushLightsController(widget: OHWidget) {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        if var containerViewController = appDelegate.window?.rootViewController as? SWRevealViewController
-        {
-            if var rootViewController = containerViewController.frontViewController as? OHRootViewController
-            {
+        if var containerViewController = appDelegate.window?.rootViewController as? SWRevealViewController {
+            if var rootViewController = containerViewController.frontViewController as? OHRootViewController {
                 var vc = OHLightController()
                 vc.title = widget.label
                 
-                if var bulbs = widget.linkedPage?.widgets
-                {
+                if var bulbs = widget.linkedPage?.widgets {
                     vc.initWidget(bulbs)
-                    
                     var lights = [OHLight]()
                     
-                    for (index, bulb) in enumerate(bulbs)
-                    {
+                    for (index, bulb) in enumerate(bulbs) {
                         var light = OHLight(widget: bulb)
                         lights.append(light)
                     }
@@ -262,12 +211,10 @@ extension OHRearMenuViewController: UITableViewDelegate {
                 }
                 
                 rootViewController.pushViewController(vc, animated: true)
-                
                 rootViewController.revealViewController().revealToggle(self)
             }
         }
     }
-    
 }
 
 extension OHRearMenuViewController: UITableViewDataSource {
@@ -276,26 +223,20 @@ extension OHRearMenuViewController: UITableViewDataSource {
         return self.widgets != nil ? self.widgets!.count : 0
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let sectionHeader = sectionHeaders[section] {
             var button = sectionHeader
             var numberOfItems = widgets?[section].linkedPage?.widgets?.count != nil ? widgets![section].linkedPage!.widgets!.count : 0
             
             return button!.showSection ? numberOfItems : 0
-        }
-        else {
+        } else {
             return 0
         }
-        
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
-    {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as! OHRearMenuTableViewCell
-        
         var numberOfItemsInSection = self.tableView(tableView, numberOfRowsInSection: indexPath.section)
-        
         cell.lineView.hidden = numberOfItemsInSection == indexPath.row + 1 ? true : false
         
         var item = widgets![indexPath.section].linkedPage!.widgets![indexPath.row]
@@ -308,5 +249,4 @@ extension OHRearMenuViewController: UITableViewDataSource {
         
         return cell
     }
-    
 }

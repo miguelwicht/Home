@@ -11,7 +11,6 @@ import UIKit
 class OHRearMenuSectionHeader: UIButton {
     
     var section: Int?
-//    var showSection: Bool = true
     var showSectionImage = UIImage(named: "arrow_right")
     var hideSectionImage = UIImage(named: "arrow_down")
     var borderTop = UIView()
@@ -26,17 +25,14 @@ class OHRearMenuSectionHeader: UIButton {
         configurateViews()
     }
     
-    func configurateViews()
-    {
+    func configurateViews() {
         setTitleColor(OHDefaults.defaultTextColor(), forState: .Normal)
         setTitleColor(OHDefaults.defaultTextColor(), forState: .Highlighted)
-//        setImage(UIImage(named: "arrow_left"), forState: .Normal)
         
         if var titleLabel = self.titleLabel {
-            titleLabel.font = OHDefaults.defaultFontWithSize(20)  //UIFont(name:  "Muli-Regular", size: 32)
+            titleLabel.font = OHDefaults.defaultFontWithSize(20)
         }
-        self.backgroundColor = OHDefaults.defaultMenuHeaderBackgroundColor()//UIColor.colorFromRGB(red: 248, green: 248, blue: 248, alpha: 1.0)
-//        self.addTarget(self, action: "toggle", forControlEvents: .TouchUpInside)
+        backgroundColor = OHDefaults.defaultMenuHeaderBackgroundColor()
         
         borderTop.backgroundColor = UIColor(red: (39.0 / 255.0), green: (39.0 / 255.0), blue: (39.0 / 255.0), alpha: 0.5)
         addSubview(borderTop)
@@ -57,8 +53,6 @@ class OHRearMenuSectionHeader: UIButton {
             imageView!.centerViewVerticallyInSuperview()
         }
         
-        
-        
         borderTop.marginTop = 0
         borderTop.setHeight(0)
         borderTop.setWidth(self.frame.width)
@@ -66,23 +60,18 @@ class OHRearMenuSectionHeader: UIButton {
         borderBottom.marginBottom = 0
         borderBottom.setHeight(1)
         borderBottom.setWidth(self.frame.width)
-        
-        
     }
     
     func toggle() {
         showSection = showSection ? false : true
-//        layoutSubviews()
     }
     
     var showSection: Bool = false {
         didSet {
             if showSection {
                 setImage(hideSectionImage, forState: .Normal)
-                //            borderBottom.hidden = false
             } else {
                 setImage(showSectionImage, forState: .Normal)
-                //            borderBottom.hidden = true
             }
         }
     }

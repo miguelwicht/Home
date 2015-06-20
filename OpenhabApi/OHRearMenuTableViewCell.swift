@@ -17,11 +17,10 @@ class OHRearMenuTableViewCell: UITableViewCell {
         // Initialization code
     }
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?)
-    {
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
         self.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-//        backgroundColor = UIColor(red: (234.0 / 255.0), green: (234.0 / 255.0), blue: (234.0 / 255.0), alpha: 1.0)
         backgroundColor = OHDefaults.defaultCellBackgroundColor()
         preservesSuperviewLayoutMargins = true
         
@@ -29,7 +28,6 @@ class OHRearMenuTableViewCell: UITableViewCell {
         textLabel?.font = OHDefaults.defaultFontWithSize(18)
         imageView?.image = UIImage(named: "bulb")?.imageWithRenderingMode(.AlwaysTemplate)
         imageView?.tintColor = OHDefaults.defaultTextColor()
-//        textLabel?.backgroundColor = UIColor.purpleColor()
         lineView.backgroundColor = UIColor(red: (194.0 / 255.0), green: (194.0 / 255.0), blue: (194.0 / 255.0), alpha: 1.0)
         addSubview(lineView)
         
@@ -43,23 +41,19 @@ class OHRearMenuTableViewCell: UITableViewCell {
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
         // Configure the view for the selected state
     }
     
-    func prepareViewsForSelectedState()
-    {
+    func prepareViewsForSelectedState(){
         if self.selected || self.highlighted {
             imageView?.tintColor = UIColor.whiteColor()
             textLabel?.textColor = UIColor.whiteColor()
             tintColor = UIColor.whiteColor()
-        }
-        else {
+        } else {
             textLabel?.textColor = OHDefaults.defaultTextColor()
             imageView?.tintColor = OHDefaults.defaultTextColor()
             accessoryView?.tintColor = nil
         }
-        
     }
 
     override func layoutSubviews() {

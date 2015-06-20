@@ -16,13 +16,12 @@ class OHRearMenuFooterView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.addSubview(label)
-        
-        self.addSubview(lineView)
+        addSubview(label)
+        addSubview(lineView)
         lineView.backgroundColor = UIColor(red: (142.0 / 255.0), green: (136.0 / 255.0), blue: (136.0 / 255.0), alpha: 1.0)
         label.textColor = OHDefaults.defaultTextColor()
         label.font = OHDefaults.defaultFontWithSize(18)
-        self.backgroundColor = UIColor.whiteColor()
+        backgroundColor = UIColor.whiteColor()
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -35,7 +34,7 @@ class OHRearMenuFooterView: UIView {
         label.marginLeft = 15
         
         lineView.setHeight(0.5)
-        lineView.setWidth(self.frame.width)
+        lineView.setWidth(frame.width)
         lineView.marginTop = 0.0
     }
     

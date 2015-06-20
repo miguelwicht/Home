@@ -29,10 +29,7 @@ class OHStatusBarView: UIView {
     
     var highlighted : Bool = false {
         didSet {
-//            backgroundColor = highlighted ? highlightedColor : normalColor
-            
             var interval: NSTimeInterval = 0.3
-            
             let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             
             if (highlighted) {

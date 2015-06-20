@@ -16,8 +16,7 @@ public class OHItem: NSObject {
     let link: String
     var tags: [String]?
     
-    required public init(coder aDecoder: NSCoder)
-    {
+    required public init(coder aDecoder: NSCoder) {
         self.type = aDecoder.decodeObjectForKey("type") as! String
         self.name = aDecoder.decodeObjectForKey("name") as! String
         self.state = aDecoder.decodeObjectForKey("state") as! String
@@ -25,8 +24,7 @@ public class OHItem: NSObject {
         self.tags = aDecoder.decodeObjectForKey("tags") as? [String]
     }
     
-    func encodeWithCoder(aCoder: NSCoder)
-    {
+    func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(type, forKey: "type")
         aCoder.encodeObject(name, forKey: "name")
         aCoder.encodeObject(state, forKey: "state")
@@ -34,16 +32,14 @@ public class OHItem: NSObject {
         aCoder.encodeObject(tags, forKey: "tags")
     }
     
-    public init(type: String, name: String, state: String, link: String)
-    {
+    public init(type: String, name: String, state: String, link: String) {
         self.type = type
         self.name = name
         self.state = state
         self.link = link
     }
     
-    public init(item: JSON)
-    {
+    public init(item: JSON) {
         var i = item.dictionaryValue
         
         self.type = i["type"]!.stringValue
@@ -54,16 +50,13 @@ public class OHItem: NSObject {
         super.init()
         
         if var tags = i["tags"]?.arrayValue {
-            
             if tags.count > 0 {
                 self.addTags(tags)
             }
-            
         }
     }
     
     func addTags(tags: [JSON]) {
-        
         self.tags = [String]()
         
         for(index, tag) in enumerate(tags) {
@@ -71,26 +64,21 @@ public class OHItem: NSObject {
         }
     }
     
-    public func stateAsInt() -> Int
-    {
+    public func stateAsInt() -> Int {
         return state.toInt()!
     }
     
-    public func stateAsFloat() -> Float
-    {
+    public func stateAsFloat() -> Float {
         let numberFormatter = NSNumberFormatter()
         
         return numberFormatter.numberFromString(state)!.floatValue
     }
     
-    public func stateAsUIColor() -> UIColor
-    {
+    public func stateAsUIColor() -> UIColor {
         let fallbackColor = UIColor(hue: 0.0, saturation: 0.0, brightness: 0.0, alpha: 1.0)
-        
         let values: [String] = self.state.componentsSeparatedByString(",")
         
-        if (values.count == 3)
-        {
+        if (values.count == 3) {
             let numberFormatter = NSNumberFormatter()
             let hue: CGFloat = CGFloat(numberFormatter.numberFromString(values[0])!.floatValue)
             let saturation: CGFloat = CGFloat(numberFormatter.numberFromString(values[1])!.floatValue)
@@ -100,11 +88,9 @@ public class OHItem: NSObject {
         }
         
         return fallbackColor
-        
     }
     
-    public func sendCommand(command: String)
-    {
+    public func sendCommand(command: String) {
         let urlPath = self.link
         let request = NSMutableURLRequest(URL: NSURL(string: urlPath)!)
         request.HTTPMethod = "POST"
@@ -125,7 +111,6 @@ public class OHItem: NSObject {
             println(responseString)
             
             self.updateState()
-            
         }
         task.resume()
     }
@@ -148,12 +133,8 @@ public class OHItem: NSObject {
             println(responseString)
             
             var json = JSON(data: data)
-            
             var item = OHItem(item: json)
-            
             self.state = item.state
-            
-            
         }
         task.resume()
     }
@@ -162,31 +143,28 @@ public class OHItem: NSObject {
 //MARK: OHSitemap: Printable
 extension OHItem : Printable {
     
-    override public var description:String
-        {
-            let className = reflect(self).summary
-            var desc:String = ""
-            desc += "\n\(className):\n{\n"
-            desc += "\tname: \(self.type),\n"
-            desc += "\tlabel: \(self.name),\n"
-            desc += "\tstate: \(self.state),\n"
-            desc += "\tlink: \(self.link),\n"
-            desc += "\ttags: \(self.tags),\n"
-            
-            return desc
+    override public var description:String {
+        let className = reflect(self).summary
+        var desc:String = ""
+        desc += "\n\(className):\n{\n"
+        desc += "\tname: \(self.type),\n"
+        desc += "\tlabel: \(self.name),\n"
+        desc += "\tstate: \(self.state),\n"
+        desc += "\tlink: \(self.link),\n"
+        desc += "\ttags: \(self.tags),\n"
+        
+        return desc
     }
 }
 
 //MARK: Tag helpers
 extension OHItem {
     
-    func iconNameFromTags() -> String?
-    {
+    func iconNameFromTags() -> String? {
         var name: String?
         
         if var tags = self.tags {
-            for (index, tag) in enumerate(tags)
-            {
+            for (index, tag) in enumerate(tags) {
                 if tag.rangeOfString("OH_Icon_") != nil {
                     name = tag.stringByReplacingOccurrencesOfString("OH_Icon_", withString: "")
                     break
@@ -197,13 +175,11 @@ extension OHItem {
         return name
     }
     
-    func numberOfRowsFromTags() -> Int?
-    {
+    func numberOfRowsFromTags() -> Int? {
         var numberOfRows: Int?
     
         if var tags = self.tags {
-            for (index, tag) in enumerate(tags)
-            {
+            for (index, tag) in enumerate(tags) {
                 if tag.rangeOfString("OH_Outlet_Rows_") != nil {
                     var tagString = tag.stringByReplacingOccurrencesOfString("OH_Outlet_Rows_", withString: "")
                     numberOfRows = tagString.toInt()!
@@ -215,13 +191,11 @@ extension OHItem {
         return numberOfRows
     }
     
-    func isLightFromTags() -> Bool
-    {
+    func isLightFromTags() -> Bool {
         var isLight = false
         
         if var tags = self.tags {
-            for (index, tag) in enumerate(tags)
-            {
+            for (index, tag) in enumerate(tags) {
                 if tag.rangeOfString("OH_Light") != nil {
                     isLight = true
                     break
@@ -232,12 +206,10 @@ extension OHItem {
         return isLight
     }
     
-    func hasTag(tag: String) -> Bool
-    {
+    func hasTag(tag: String) -> Bool {
         var hasTag = false
         
-        if var tags = self.tags
-        {
+        if var tags = self.tags {
             hasTag = contains(tags, tag)
         }
         
@@ -247,10 +219,8 @@ extension OHItem {
     func hasTagWithPrefix(prefix: String) -> Bool {
         var hasTag = false
         
-        if var tags = self.tags
-        {
-            for (index, tag) in enumerate(tags)
-            {
+        if var tags = self.tags {
+            for (index, tag) in enumerate(tags) {
                 if tag.rangeOfString(prefix) != nil {
                     hasTag = true
                     break
@@ -262,12 +232,10 @@ extension OHItem {
     }
     
     func getTagWithoutPrefix(prefix: String) -> String? {
-        
         var tagWithoutPrefix: String?
         
         if var tags = self.tags {
-            for (index, tag) in enumerate(tags)
-            {
+            for (index, tag) in enumerate(tags) {
                 if tag.rangeOfString(prefix) != nil {
                     tagWithoutPrefix = tag.stringByReplacingOccurrencesOfString(prefix, withString: "")
                     break

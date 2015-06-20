@@ -76,6 +76,7 @@ extension OHDefaults {
 }
 
 extension OHDefaults {
+    
     static func roomCollectionViewItemSize() -> CGSize {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         var width = appDelegate.window?.frame.size.width

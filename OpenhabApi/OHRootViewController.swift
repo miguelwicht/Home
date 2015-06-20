@@ -10,14 +10,11 @@ import UIKit
 
 class OHRootViewController: UINavigationController {
     
-    required init(coder aDecoder: NSCoder)
-    {
+    required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-//        initSettings()
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?)
-    {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -34,14 +31,12 @@ class OHRootViewController: UINavigationController {
         if var menuViewController = revealViewController().rearViewController as? OHRearMenuViewController {
             menuViewController.updateMenu()
         }
+        
         var sitemap = sitemaps[startIndex].1
         sitemap = OHDataManager.sharedInstance.currentSitemap!
         pushViewControllerWithSitemap(sitemap)
         
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "sitemapDidChangeHandler", name: "OHDataManagerCurrentSitemapDidChangeNotification", object: nil)
-        
-//        .addGestureRecognizer(revealViewController().panGestureRecognizer())
     }
 
     override func didReceiveMemoryWarning() {
@@ -60,13 +55,10 @@ class OHRootViewController: UINavigationController {
 
 extension OHRootViewController {
     
-    func sitemapDidChangeHandler()
-    {
-        
+    func sitemapDidChangeHandler() {
         var dataManager = OHDataManager.sharedInstance
         
-        if var currentSitemap = OHDataManager.sharedInstance.currentSitemap
-        {
+        if var currentSitemap = OHDataManager.sharedInstance.currentSitemap {
             self.popToRootViewControllerAnimated(false)
             self.pushViewControllerWithSitemap(currentSitemap)
             
@@ -78,17 +70,14 @@ extension OHRootViewController {
         }
     }
     
-    func initSettings()
-    {
+    func initSettings() {
         var settingsVC = OHSettingsViewController()
         self.presentViewController(settingsVC, animated: true, completion: nil)
     }
     
-    func pushViewControllerWithSitemap(sitemap: OHSitemap)
-    {
+    func pushViewControllerWithSitemap(sitemap: OHSitemap) {
         var vc: OHRoomsViewController = OHRoomsViewController(sitemap: sitemap)
         vc.title = sitemap.label
-        
         self.pushViewController(vc, animated: false)
     }
 }

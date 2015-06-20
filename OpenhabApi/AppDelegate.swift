@@ -17,13 +17,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-        
         registerDefaults()
         
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         setupAppearance()
         loadData()
-        
         prepareViewController()
         
         self.window?.makeKeyAndVisible()
@@ -34,27 +32,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func rotated() {
-        if(UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation))
-        {
+        if(UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation)) {
             println("landscape")
             statusBarBackgroundView?.hidden = true
         }
         
-        if(UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation))
-        {
+        if(UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation)) {
             println("Portrait")
             statusBarBackgroundView?.hidden = false
         }
     }
     
-    func loadData()
-    {
+    func loadData() {
         OHDataManager.sharedInstance.loadData()
         var dataManager = OHDataManager.sharedInstance
     }
     
-    func prepareViewController()
-    {
+    func prepareViewController() {
         let defaults = NSUserDefaults.standardUserDefaults()
         
         var frontViewController: UIViewController?
@@ -64,22 +58,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             frontViewController = OHSettingsViewController.new()
         }
-        
-//        if var sitemaps = OHDataManager.sharedInstance.sitemaps {
-//        
-//            if var sitemap = OHDataManager.sharedInstance.currentSitemap {
-//                if sitemap.roomsInSitemap() == nil {
-//                    frontViewController = OHSettingsViewController.new()
-//                } else {
-//                    frontViewController = OHRootViewController.new()
-//                }
-//            }
-//        }
-        
-//        if frontViewController == nil {
-//            frontViewController = OHSettingsViewController.new()
-//        }
-        
         
         var rearViewController = OHRearMenuViewController.new()
         var containerViewController = SWRevealViewController(rearViewController: rearViewController, frontViewController: frontViewController)
@@ -94,8 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func setupAppearance()
-    {
+    func setupAppearance() {
         statusBarBackgroundView = OHStatusBarView(frame: CGRect(x: 0, y: 0, width: self.window!.frame.width, height: 20))
         
         var font = UIFont(name: "Muli", size: UIFont.systemFontSize())
@@ -112,8 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIPageControl.appearance().currentPageIndicatorTintColor = OHDefaults.defaultNavigationBarColor()
     }
     
-    func registerDefaults()
-    {
+    func registerDefaults() {
         let defaults = NSUserDefaults.standardUserDefaults()
         
         if let path = NSBundle.mainBundle().pathForResource("Defaults", ofType: "plist") {
@@ -123,8 +99,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 defaults.synchronize()
             }
         }
-        
-        
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -151,6 +125,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         OHDataManager.sharedInstance.saveData()
     }
-
-
 }

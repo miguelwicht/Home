@@ -9,7 +9,7 @@
 import UIKit
 import XCTest
 
-class OpenhabApiTests: XCTestCase {
+class HomeTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

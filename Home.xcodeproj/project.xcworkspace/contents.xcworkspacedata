@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:OpenhabApi.xcodeproj">
+      location = "self:/Users/miguelwicht/Projects/OpenhabApi/Home.xcodeproj">
    </FileRef>
 </Workspace>

@@ -217,13 +217,6 @@
       "idiom" : "mac",
       "filename" : "iTunesArtwork@2x.png",
       "scale" : "2x"
-    },
-    {
-      "size" : "29x29",
-      "idiom" : "iphone",
-      "filename" : "Icon-Small@3x.png",
-      "unassigned" : true,
-      "scale" : "3x"
     }
   ],
   "info" : {

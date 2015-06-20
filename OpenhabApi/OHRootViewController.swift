@@ -40,6 +40,8 @@ class OHRootViewController: UINavigationController {
         
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "sitemapDidChangeHandler", name: "OHDataManagerCurrentSitemapDidChangeNotification", object: nil)
+        
+//        .addGestureRecognizer(revealViewController().panGestureRecognizer())
     }
 
     override func didReceiveMemoryWarning() {
@@ -87,7 +89,7 @@ extension OHRootViewController {
         var vc: OHRoomsViewController = OHRoomsViewController(sitemap: sitemap)
         vc.title = sitemap.label
         
-        self.pushViewController(vc, animated: true)
+        self.pushViewController(vc, animated: false)
     }
 }
 

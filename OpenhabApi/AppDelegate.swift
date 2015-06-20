@@ -12,11 +12,8 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-//    var dataManager = OHDataManager()
-//    var restManager = OHRestManager()
     var beaconManager: OHBeaconManager?
     var statusBarBackgroundView: OHStatusBarView?
-
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -26,17 +23,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         setupAppearance()
         loadData()
-//        dataManager.loadLocalSitemaps()
         
         prepareViewController()
         
-//        var settingsVC = OHSettingsViewController()
-//        
-//        
-//        self.window?.rootViewController = settingsVC
         self.window?.makeKeyAndVisible()
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotated", name: UIDeviceOrientationDidChangeNotification, object: nil)
+        
         return true
+    }
+    
+    func rotated() {
+        if(UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation))
+        {
+            println("landscape")
+            statusBarBackgroundView?.hidden = true
+        }
+        
+        if(UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation))
+        {
+            println("Portrait")
+            statusBarBackgroundView?.hidden = false
+        }
     }
     
     func loadData()
@@ -51,26 +59,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var frontViewController: UIViewController?
         
+        if let sitemaps = OHDataManager.sharedInstance.sitemaps, rooms = OHDataManager.sharedInstance.currentSitemap?.roomsInSitemap()  {
+            frontViewController = OHRootViewController.new()
+        } else {
+            frontViewController = OHSettingsViewController.new()
+        }
+        
 //        if var sitemaps = OHDataManager.sharedInstance.sitemaps {
-//            if sitemaps.count > 0 {
-//                frontViewController = OHRootViewController.new()
+//        
+//            if var sitemap = OHDataManager.sharedInstance.currentSitemap {
+//                if sitemap.roomsInSitemap() == nil {
+//                    frontViewController = OHSettingsViewController.new()
+//                } else {
+//                    frontViewController = OHRootViewController.new()
+//                }
 //            }
 //        }
         
-        if var sitemaps = OHDataManager.sharedInstance.sitemaps {
-        
-            if var sitemap = OHDataManager.sharedInstance.currentSitemap {
-                if sitemap.roomsInSitemap() == nil {
-                    frontViewController = OHSettingsViewController.new()
-                } else {
-                    frontViewController = OHRootViewController.new()
-                }
-            }
-        }
-        
-        if frontViewController == nil {
-            frontViewController = OHSettingsViewController.new()
-        }
+//        if frontViewController == nil {
+//            frontViewController = OHSettingsViewController.new()
+//        }
         
         
         var rearViewController = OHRearMenuViewController.new()

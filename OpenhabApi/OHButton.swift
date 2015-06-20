@@ -32,8 +32,16 @@ class OHButton: UIButton {
     
     func initAppearance()
     {
-        OHButton.appearance().backgroundColor = OHDefaults.defaultNavigationBarColor()
-        titleLabel!.font = OHDefaults.defaultFontWithSize(17)
+        OHButton.appearance().setBackgroundImage(UIImage.imageWithColor(OHDefaults.defaultNavigationBarColor()), forState: UIControlState.Normal)
+        OHButton.appearance().setBackgroundImage(UIImage.imageWithColor(OHDefaults.defaultCellBackgroundColor()), forState: UIControlState.Highlighted)
+        OHButton.appearance().setBackgroundImage(UIImage.imageWithColor(OHDefaults.defaultCellBackgroundColor()), forState: UIControlState.Selected)
+        
+        titleLabel!.font = OHDefaults.defaultFontWithSize(21)
         OHButton.appearance().setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        OHButton.appearance().setTitleColor(OHDefaults.defaultTextColor(), forState: .Highlighted)
+        OHButton.appearance().setTitleColor(OHDefaults.defaultTextColor(), forState: .Selected)
+        
+        
+        contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     }
 }

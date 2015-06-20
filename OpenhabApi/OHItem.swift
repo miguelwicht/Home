@@ -12,7 +12,7 @@ public class OHItem: NSObject {
     
     let type: String
     let name: String
-    let state: String
+    var state: String
     let link: String
     var tags: [String]?
     
@@ -122,6 +122,38 @@ public class OHItem: NSObject {
             }
             
             let responseString = NSString(data: data, encoding: NSUTF8StringEncoding)
+            println(responseString)
+            
+            self.updateState()
+            
+        }
+        task.resume()
+    }
+    
+    public func updateState() {
+        let urlPath = self.link
+        let request = NSMutableURLRequest(URL: NSURL(string: urlPath)!)
+        request.HTTPMethod = "GET"
+        request.setValue("text/plain; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
+            data, response, error in
+            
+            if error != nil {
+                println("error=\(error)")
+                return
+            }
+            
+            let responseString = NSString(data: data, encoding: NSUTF8StringEncoding)
+            println(responseString)
+            
+            var json = JSON(data: data)
+            
+            var item = OHItem(item: json)
+            
+            self.state = item.state
+            
+            
         }
         task.resume()
     }
@@ -145,6 +177,7 @@ extension OHItem : Printable {
     }
 }
 
+//MARK: Tag helpers
 extension OHItem {
     
     func iconNameFromTags() -> String?
@@ -180,5 +213,68 @@ extension OHItem {
         }
         
         return numberOfRows
+    }
+    
+    func isLightFromTags() -> Bool
+    {
+        var isLight = false
+        
+        if var tags = self.tags {
+            for (index, tag) in enumerate(tags)
+            {
+                if tag.rangeOfString("OH_Light") != nil {
+                    isLight = true
+                    break
+                }
+            }
+        }
+        
+        return isLight
+    }
+    
+    func hasTag(tag: String) -> Bool
+    {
+        var hasTag = false
+        
+        if var tags = self.tags
+        {
+            hasTag = contains(tags, tag)
+        }
+        
+        return hasTag
+    }
+    
+    func hasTagWithPrefix(prefix: String) -> Bool {
+        var hasTag = false
+        
+        if var tags = self.tags
+        {
+            for (index, tag) in enumerate(tags)
+            {
+                if tag.rangeOfString(prefix) != nil {
+                    hasTag = true
+                    break
+                }
+            }
+        }
+        
+        return hasTag
+    }
+    
+    func getTagWithoutPrefix(prefix: String) -> String? {
+        
+        var tagWithoutPrefix: String?
+        
+        if var tags = self.tags {
+            for (index, tag) in enumerate(tags)
+            {
+                if tag.rangeOfString(prefix) != nil {
+                    tagWithoutPrefix = tag.stringByReplacingOccurrencesOfString(prefix, withString: "")
+                    break
+                }
+            }
+        }
+        
+        return tagWithoutPrefix
     }
 }

@@ -37,6 +37,7 @@
 		22A899CE1AFA0934004FFC16 /* OHRootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A899CD1AFA0934004FFC16 /* OHRootViewController.swift */; };
 		22A899D01AFA0DA7004FFC16 /* OHDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A899CF1AFA0DA7004FFC16 /* OHDataManager.swift */; };
 		22A899D21AFA30B1004FFC16 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A899D11AFA30B1004FFC16 /* UIView+Extension.swift */; };
+		22AB939A1B31F1C800990BFC /* MDWNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AB93991B31F1C800990BFC /* MDWNotificationController.swift */; };
 		22B3BAE11AE64B4E006150AC /* OHSitemapParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B3BAE01AE64B4E006150AC /* OHSitemapParser.swift */; };
 		22B3BAE31AE64D82006150AC /* OHWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B3BAE21AE64D82006150AC /* OHWidget.swift */; };
 		22B3BAE51AE68AA5006150AC /* OHRoomsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B3BAE41AE68AA5006150AC /* OHRoomsViewController.swift */; };
@@ -110,6 +111,7 @@
 		22A899CD1AFA0934004FFC16 /* OHRootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHRootViewController.swift; sourceTree = "<group>"; };
 		22A899CF1AFA0DA7004FFC16 /* OHDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHDataManager.swift; sourceTree = "<group>"; };
 		22A899D11AFA30B1004FFC16 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		22AB93991B31F1C800990BFC /* MDWNotificationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDWNotificationController.swift; sourceTree = "<group>"; };
 		22B3BAE01AE64B4E006150AC /* OHSitemapParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHSitemapParser.swift; sourceTree = "<group>"; };
 		22B3BAE21AE64D82006150AC /* OHWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHWidget.swift; sourceTree = "<group>"; };
 		22B3BAE41AE68AA5006150AC /* OHRoomsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHRoomsViewController.swift; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 				22C7EFF41B258A5E00A430C4 /* UIColor+Extension.swift */,
 				226DC8CF1B2881820070D23E /* OHButton.swift */,
 				226DC8D11B28A1210070D23E /* OHLoadingView.swift */,
+				22AB93991B31F1C800990BFC /* MDWNotificationController.swift */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -469,6 +472,7 @@
 				228156031B20520C005A137A /* OHSettingsViewController.swift in Sources */,
 				223C7FB81AE7C4040079A41C /* OHHomepage.swift in Sources */,
 				22E83C0C1ADEACFD0055B77A /* OHLinkedPage.swift in Sources */,
+				22AB939A1B31F1C800990BFC /* MDWNotificationController.swift in Sources */,
 				22C7EFF51B258A5E00A430C4 /* UIColor+Extension.swift in Sources */,
 				221D82AC1B10AD89007135F1 /* OHRearMenuHeaderView.swift in Sources */,
 				221AA8631B074651008805A5 /* OHDropdownMenuButton.swift in Sources */,

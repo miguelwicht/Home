@@ -49,6 +49,7 @@ import Foundation
     {
         if var dimmer = self.dimmer {
             dimmer.sendCommand("\(value)")
+            dimmer.state = "\(value)"
         }
     }
     

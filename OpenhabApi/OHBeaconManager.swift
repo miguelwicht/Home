@@ -12,6 +12,7 @@ import CoreLocation
 let OHBeaconManagerDidRangeBeaconsNotification = "com.miguelwicht.OHBeaconManagerDidRangeBeaconsNotification"
 let OHBeaconManagerDidEnterRegionNotification = "com.miguelwicht.OHBeaconManagerDidEnterRegionNotification"
 let OHBeaconManagerDidExitRegionNotification = "com.miguelwicht.OHBeaconManagerDidEnterRegionNotification"
+let OHBeaconManagerDidChangeAuthorizationNotification = "com.miguelwicht.OHBeaconManagerDidChangeAuthorizationNotification"
 
 class OHBeaconManager : NSObject {
     
@@ -24,6 +25,12 @@ class OHBeaconManager : NSObject {
     var rangedRegions: [CLBeaconRegion]?
     
     var rangingTimer: NSTimer?
+    
+    var authorizationStatus: CLAuthorizationStatus = CLLocationManager.authorizationStatus() {
+        didSet {
+            NSNotificationCenter.defaultCenter().postNotificationName(OHBeaconManagerDidChangeAuthorizationNotification, object: nil)
+        }
+    }
 
     required override init() {
         super.init()
@@ -34,6 +41,10 @@ class OHBeaconManager : NSObject {
         
         createBeaconRegionsFromBeacons(beacons)
         initLocationManager()
+    }
+    
+    static func getAuthorizationStatus() -> CLAuthorizationStatus {
+        return CLLocationManager.authorizationStatus()
     }
     
     func createBeaconRegionsFromBeacons(beacons: [OHBeacon]) {
@@ -301,4 +312,17 @@ extension OHBeaconManager: CLLocationManagerDelegate {
         NSNotificationCenter.defaultCenter().postNotificationName(OHBeaconManagerDidExitRegionNotification, object: region)
     }
     
+}
+
+extension OHBeaconManager: CLLocationManagerDelegate {
+    
+    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus)
+    {
+        if status == CLAuthorizationStatus.AuthorizedAlways || status == CLAuthorizationStatus.AuthorizedWhenInUse {
+            manager.startUpdatingLocation()
+            
+            
+            // ...
+        }
+    }
 }

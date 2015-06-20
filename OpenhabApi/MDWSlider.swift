@@ -13,7 +13,7 @@ class MDWSlider: UIControl {
     var leftImageView: UIImageView?
     var rightImageView: UIImageView?
     var slider = UISlider()
-    var value = 0
+//    var value = 0
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

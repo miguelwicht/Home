@@ -108,8 +108,6 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
         
         var width = CGFloat(self.collectionView!.bounds.width * pageCount)
         let height: CGFloat = self.collectionView!.bounds.height
-        println("Bounds: \(self.collectionView!.bounds)")
-        println("Frame: \(self.collectionView!.frame)")
         
         return CGSizeMake(width, height)
     }
@@ -196,6 +194,10 @@ class OHWidgetCollectionViewLayout: UICollectionViewFlowLayout {
         
         return attr
         
+    }
+    
+    override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
+        return !CGSizeEqualToSize(newBounds.size, self.collectionView!.frame.size)
     }
     
     

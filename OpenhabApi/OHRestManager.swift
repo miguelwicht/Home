@@ -21,7 +21,7 @@ import Foundation
 class OHRestManager : NSObject {
 
     var delegate: OHRestManagerDelegate?
-    let baseUrl: String
+    var baseUrl: String
     var acceptHeader: String = "application/json"
     
     var sitemaps = [OHSitemap]()

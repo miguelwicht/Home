@@ -16,6 +16,9 @@ class OHRoomsViewController: OHBaseViewController {
     var roomSwitcherController: OHDropdownMenuTableViewController?
     var currentRoom: OHRoomViewController?
     var isWaitingForBeacons: Bool = true
+    var panGestureRecognizer: UIGestureRecognizer?
+    
+    var determineLocationButton: UIButton?
     
     //MARK: Initializers
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -34,7 +37,6 @@ class OHRoomsViewController: OHBaseViewController {
         self.sitemap = sitemap
         
         rooms = sitemap.roomsInSitemap()
-        println(rooms)
         initNotificationCenterNotifications()
         addDropdownToNavigationBar()
     }
@@ -52,11 +54,51 @@ class OHRoomsViewController: OHBaseViewController {
             switchToRoom(rooms!.first!)
             initRoomSwitcherController()
         }
+        
+        addObservers()
     }
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        if var revealViewController = revealViewController() {
+            panGestureRecognizer = revealViewController.panGestureRecognizer()
+            if let panGestureRecognizer = self.panGestureRecognizer {
+                self.view.addGestureRecognizer(panGestureRecognizer)
+            }
+        }
+        
+        
+        
+    }
+    
+    func addObservers() {
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "authorizationDidChangeHandler", name: OHBeaconManagerDidChangeAuthorizationNotification, object: nil)
+    }
+    
+    func removeObservers() {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    func authorizationDidChangeHandler() {
+        
+        let authStatus = OHBeaconManager.getAuthorizationStatus()
+        
+        if  authStatus == CLAuthorizationStatus.AuthorizedAlways || authStatus == CLAuthorizationStatus.AuthorizedWhenInUse {
+            determineLocationButton?.hidden = false
+        } else {
+            determineLocationButton?.hidden = true
+        }
+    }
+    
+    deinit {
+        if let panGestureRecognizer = self.panGestureRecognizer {
+            self.view.removeGestureRecognizer(panGestureRecognizer)
+        }
+        
+        removeObservers()
     }
 }
 
@@ -72,9 +114,13 @@ extension OHRoomsViewController {
             addChildViewController(roomSwitcherController)
             view.addSubview(roomSwitcherController.view)
             
-            roomSwitcherController.view.marginTop = 0//self.navigationController!.navigationBar.neededSpaceHeight
-            roomSwitcherController.view.setHeight(CGFloat(self.view.frame.height)) //- self.navigationController!.navigationBar.neededSpaceHeight))
             roomSwitcherController.tableView.delegate = self
+            
+            var views = [String: AnyObject]()
+            views["roomSwticher"] = roomSwitcherController.view
+            
+            self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(0)-[roomSwticher]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+            self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[roomSwticher]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
         }
         
         toggleDropdownMenu(self.navigationItem.titleView as! UIButton)
@@ -166,7 +212,7 @@ extension OHRoomsViewController {
                 var roomWidget = OHDataManager.sharedInstance.beaconWidget![beaconOH]
                 
                 if var room = roomWidget {
-                    println("room found: \(room)")
+//                    println("room found: \(room)")
                     switchToRoom(room)
                 }
                 else {
@@ -239,6 +285,10 @@ extension OHRoomsViewController {
         menuItemButton.imageView!.setHeight(40)
         menuItemButton.imageView!.contentMode = UIViewContentMode.ScaleAspectFit
         menuItemButton.addTarget(self, action: "startDetectingRoom:", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        determineLocationButton = menuItemButton
+        
+        authorizationDidChangeHandler()
     }
     
     func addDropdownToNavigationBar()

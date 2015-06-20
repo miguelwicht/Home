@@ -37,21 +37,21 @@ class OHDropdownMenuButton: UIButton {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.imageView?.sizeToFit()
-        self.titleLabel?.sizeToFit()
+//        self.imageView?.sizeToFit()
+//        self.titleLabel?.sizeToFit()
         
         var spacerWidth: CGFloat = 10.0
         
         var buttonContentWidth = titleLabel!.frame.width + spacerWidth + imageView!.frame.width
-        
+//
         if buttonContentWidth > self.frame.width - 30 {
             self.titleLabel?.setWidth(self.frame.width - 30 - spacerWidth - imageView!.frame.width)
-            self.titleLabel?.adjustsFontSizeToFitWidth = true
+//            self.titleLabel?.adjustsFontSizeToFitWidth = true
         }
         else {
-            self.titleLabel?.adjustsFontSizeToFitWidth = false
+//            self.titleLabel?.adjustsFontSizeToFitWidth = false
         }
-        
+//
         var imageViewSize = self.imageView?.frame
         var marginLeft = (frame.width - (imageViewSize!.width + self.titleLabel!.frame.width + spacerWidth)) / 2
         

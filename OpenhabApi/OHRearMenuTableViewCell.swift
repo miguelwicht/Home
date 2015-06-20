@@ -23,7 +23,7 @@ class OHRearMenuTableViewCell: UITableViewCell {
         self.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
 //        backgroundColor = UIColor(red: (234.0 / 255.0), green: (234.0 / 255.0), blue: (234.0 / 255.0), alpha: 1.0)
         backgroundColor = OHDefaults.defaultCellBackgroundColor()
-        preservesSuperviewLayoutMargins = false
+        preservesSuperviewLayoutMargins = true
         
         textLabel?.textColor = OHDefaults.defaultTextColor()
         textLabel?.font = OHDefaults.defaultFontWithSize(18)

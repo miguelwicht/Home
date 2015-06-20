@@ -30,34 +30,55 @@ class OHRearMenuViewController: UIViewController {
             tableView.frame = view.frame
             tableView.dataSource = self
             tableView.delegate = self
-//            tableView.separatorColor = UIColor.clearColor()
-//            tableView.separatorInset = UIEdgeInsetsZero
-            
             tableView.backgroundColor = UIColor(red: (236.0 / 255.0), green: (236.0 / 255.0), blue: (236.0 / 255.0), alpha: 1.0)
             
             headerView = OHRearMenuHeaderView(frame: CGRect(x: 0, y: 20, width: tableView.frame.width, height: 44.5))
             headerView!.label.text = "Overview".uppercaseString
             view.addSubview(headerView!)
             
-            footerView = OHRearMenuFooterView(frame: CGRect(x: 0, y: 20, width: tableView.frame.width, height: 44.5))
+            footerView = OHRearMenuFooterView()
             view.addSubview(footerView!)
-            footerView?.marginBottom = 0
             
-            tableView.setHeight(tableView.frame.height - headerView!.neededSpaceHeight - footerView!.frame.height)
-            tableView.marginTop = headerView!.neededSpaceHeight
+            tableView.setTranslatesAutoresizingMaskIntoConstraints(false)
+            
+//            tableView.setHeight(tableView.frame.height - headerView!.neededSpaceHeight - footerView!.frame.height)
+//            tableView.marginTop = headerView!.neededSpaceHeight
             
             headerView?.setWidth(tableView.frame.width)
             
             
             var footerButton: UIButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+            footerButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+            
+            
             footerButton.setTitle("Settings".uppercaseString, forState: .Normal)
             footerButton.titleLabel?.font = OHDefaults.defaultFontWithSize(17)
             footerButton.setTitleColor(OHDefaults.defaultTextColor(), forState: .Normal)
             footerView!.addSubview(footerButton)
-            footerButton.sizeToFit()
-            footerButton.centerViewVerticallyInSuperview()
-            footerButton.marginLeft = 15
             footerButton.addTarget(self, action: "footerButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+            
+            footerView?.setTranslatesAutoresizingMaskIntoConstraints(false)
+            
+            var views = [String: AnyObject]()
+            views["footerView"] = footerView
+            views["footerButton"] = footerButton
+            views["tableView"] = tableView
+            
+            view.addConstraint(NSLayoutConstraint(item: footerView!, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Height, multiplier: 0.0, constant:44.5))
+            
+            view.addConstraint(NSLayoutConstraint(item: footerView!, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant:0))
+            
+            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[footerView]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+            
+            
+            
+            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(0)-[footerButton]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[footerButton]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+            
+            view.addConstraint(NSLayoutConstraint(item: tableView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: footerView, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant:0))
+            
+            view.addConstraint(NSLayoutConstraint(item: tableView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: headerView!, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant:0))
+            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[tableView]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
         }
         
         updateMenu()
@@ -66,7 +87,9 @@ class OHRearMenuViewController: UIViewController {
     func footerButtonPressed(button: UIButton)
     {
         var settingsViewController = OHSettingsViewController()
-        self.presentViewController(settingsViewController, animated: true, completion: nil)
+        var navController = UINavigationController(rootViewController: settingsViewController)
+        
+        self.presentViewController(navController, animated: true, completion: nil)
     }
     
     func updateMenu()
@@ -178,6 +201,71 @@ extension OHRearMenuViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 52
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        var item = widgets![indexPath.section].linkedPage!.widgets![indexPath.row]
+        println(item)
+
+        if var item = widgets![indexPath.section].linkedPage!.widgets![indexPath.row].item
+        {
+            if item.isLightFromTags()
+            {
+                pushLightsController(widgets![indexPath.section].linkedPage!.widgets![indexPath.row])
+            }
+            else if item.hasTag("OH_Scene")
+            {
+                item.sendCommand("ON")
+                tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            }
+            else if item.hasTagWithPrefix("OH_Menu_Sitemap_")
+            {
+                if var sitemapName = item.getTagWithoutPrefix("OH_Menu_Sitemap_")
+                {
+                    if var sitemaps = OHDataManager.sharedInstance.sitemaps
+                    {
+                        if var sitemap = sitemaps[sitemapName]
+                        {
+                            OHDataManager.sharedInstance.currentSitemap = sitemap
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    func pushLightsController(widget: OHWidget)
+    {
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        if var containerViewController = appDelegate.window?.rootViewController as? SWRevealViewController
+        {
+            if var rootViewController = containerViewController.frontViewController as? OHRootViewController
+            {
+                var vc = OHLightController()
+                vc.title = widget.label
+                
+                if var bulbs = widget.linkedPage?.widgets
+                {
+                    vc.initWidget(bulbs)
+                    
+                    var lights = [OHLight]()
+                    
+                    for (index, bulb) in enumerate(bulbs)
+                    {
+                        var light = OHLight(widget: bulb)
+                        lights.append(light)
+                    }
+                    
+                    vc.initLights(lights)
+                }
+                
+                rootViewController.pushViewController(vc, animated: true)
+                
+                rootViewController.revealViewController().revealToggle(self)
+            }
+        }
     }
     
 }

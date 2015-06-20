@@ -11,12 +11,23 @@ import UIKit
 class OHLightController: UIViewController {
     
     let scrollView = UIScrollView()
+    let contentView = UIView()
+    
     var widgets: [OHWidget]?
     var dimmer: MDWSlider?
     var colorWheel: ColorWheel?
     var saturationSlider: MDWSlider?
     
-    var lights: [OHLight]?
+    var lights: [OHLight]? {
+        didSet {
+            if var lights = self.lights {
+                for (index, light) in enumerate(lights) {
+                    light.dimmer?.updateState()
+                    light.color?.updateState()
+                }
+            }
+        }
+    }
     var selectedLights = [OHLight]()
     
     var collectionViewController: OHWidgetCollectionViewController?
@@ -29,14 +40,20 @@ class OHLightController: UIViewController {
     override func loadView() {
         super.loadView()
         
+        initScrollView()
+        
+        createCollectionView([OHWidget](), rows: 1)
+        
         view.backgroundColor = UIColor.whiteColor()
-        view.addSubview(self.scrollView)
-        scrollView.frame = view.frame
+//        view.addSubview(self.scrollView)
+//        scrollView.frame = view.frame
         
         initColorWheel()
         initDimmer()
         initBrightnessLabel()
         initSaturationSlider()
+        
+        addLayoutConstraints()
     }
     
     func initColorWheel()
@@ -44,7 +61,7 @@ class OHLightController: UIViewController {
         colorWheel = ColorWheel(frame: CGRect(x: 45, y: 138, width: 237, height: 237))
         
         if var colorWheel = self.colorWheel {
-            scrollView.addSubview(colorWheel)
+            contentView.addSubview(colorWheel)
             
             colorWheel.centerViewHorizontallyInSuperview()
             colorWheel.centerViewVerticallyInSuperview()
@@ -60,7 +77,7 @@ class OHLightController: UIViewController {
         saturationSlider = MDWSlider(frame: CGRect(x: 15, y: 0, width: self.scrollView.frame.width - 30, height: 40))
         
         if var saturationSlider = self.saturationSlider {
-            scrollView.addSubview(saturationSlider)
+            contentView.addSubview(saturationSlider)
             saturationSlider.centerViewHorizontallyInSuperview()
 //            saturationSlider.marginBottom = 50
             saturationSlider.addLeftImage(UIImage(named: "sun_small")!)
@@ -90,7 +107,7 @@ class OHLightController: UIViewController {
         dimmer = MDWSlider(frame: CGRect(x: 15, y: 0, width: self.scrollView.frame.width - 30, height: 40))
         
         if var dimmer = self.dimmer {
-            scrollView.addSubview(dimmer)
+            contentView.addSubview(dimmer)
             dimmer.centerViewHorizontallyInSuperview()
             dimmer.marginBottom = 50
             dimmer.addLeftImage(UIImage(named: "sun_small")!)
@@ -103,7 +120,8 @@ class OHLightController: UIViewController {
     {
         brightnessLabel.text = "Brightness".uppercaseString
         brightnessLabel.font = OHDefaults.defaultFontWithSize(20)
-        scrollView.addSubview(brightnessLabel)
+        brightnessLabel.textAlignment = NSTextAlignment.Center
+        contentView.addSubview(brightnessLabel)
     }
     
     func colorValueChanged(colorWheel: ColorWheel)
@@ -144,7 +162,7 @@ class OHLightController: UIViewController {
         
         for (index, light) in enumerate(selectedLights)
         {
-//            light.setDimmerValue(Int(dimmer.value * 100))
+            light.setDimmerValue(Int(dimmer.value * 100))
         }
         
         var value = Int(dimmer.value * 100)
@@ -176,30 +194,109 @@ class OHLightController: UIViewController {
     {
         self.lights = lights
         
-        createCollectionView([OHWidget](), rows: 1)
+        self.collectionViewController?.collectionView?.reloadData()
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-        var collectionViewControllerBottom = CGFloat(60)
+//        var collectionViewControllerBottom = CGFloat(60)
+//        
+//        if var collectionViewController = self.collectionViewController {
+//            collectionViewController.view.marginTop = 20
+//            collectionViewControllerBottom = collectionViewController.view.neededSpaceHeight + 30
+//        }
         
-        if var collectionViewController = self.collectionViewController {
-            collectionViewController.view.marginTop = 20
-            collectionViewControllerBottom = collectionViewController.view.neededSpaceHeight + 30
-        }
+//        colorWheel?.marginTop = collectionViewControllerBottom
         
-        colorWheel?.marginTop = collectionViewControllerBottom
+//        brightnessLabel.sizeToFit()
+//        brightnessLabel.centerViewHorizontallyInSuperview()
+//        brightnessLabel.marginTop = colorWheel!.neededSpaceHeight + 30
         
-        brightnessLabel.sizeToFit()
-        brightnessLabel.centerViewHorizontallyInSuperview()
-        brightnessLabel.marginTop = colorWheel!.neededSpaceHeight + 30
+//        dimmer!.marginTop = brightnessLabel.neededSpaceHeight + 20
         
-        dimmer!.marginTop = brightnessLabel.neededSpaceHeight + 20
+//        if var dimmer = self.dimmer {
+//            saturationSlider!.marginTop = dimmer.neededSpaceHeight + 20
+//        }
+    }
+    
+    func addLayoutConstraints() {
+        var views = [String: AnyObject]()
+        views["colorWheel"] = colorWheel
+        views["brightnessLabel"] = brightnessLabel
+        views["dimmer"] = dimmer
+        views["saturationSlider"] = saturationSlider
+        views["collectionView"] = collectionViewController!.view
         
-        if var dimmer = self.dimmer {
-            saturationSlider!.marginTop = dimmer.neededSpaceHeight + 20
-        }
+        //        views["navigationBar"] = navigationController.view
+        
+        colorWheel!.setTranslatesAutoresizingMaskIntoConstraints(false)
+        brightnessLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        dimmer!.setTranslatesAutoresizingMaskIntoConstraints(false)
+        saturationSlider!.setTranslatesAutoresizingMaskIntoConstraints(false)
+        collectionViewController?.view.setTranslatesAutoresizingMaskIntoConstraints(false)
+        
+        
+        
+        
+        var heightConstraint = NSLayoutConstraint(item: collectionViewController!.view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Height, multiplier: 0.0, constant: collectionViewController!.view.frame.height)
+        
+        contentView.addConstraint(heightConstraint)
+        
+        
+        contentView.addConstraint(NSLayoutConstraint(item: dimmer!, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Height, multiplier: 0.0, constant: 40))
+        contentView.addConstraint(NSLayoutConstraint(item: saturationSlider!, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Height, multiplier: 0.0, constant: 40))
+    
+        contentView.addConstraint(NSLayoutConstraint(item: colorWheel!, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Height, multiplier: 0.0, constant: colorWheel!.frame.height))
+        //        navigationController.view.setTranslatesAutoresizingMaskIntoConstraints(false)
+        contentView.addConstraint(NSLayoutConstraint(item: colorWheel!, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0))
+        contentView.addConstraint(NSLayoutConstraint(item: colorWheel!, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Width, multiplier: 0.0, constant: colorWheel!.frame.width))
+        
+        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(15)-[collectionView]-(15)-[colorWheel]-(15)-[brightnessLabel]-(15)-[dimmer]-(15)-[saturationSlider]", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+        //        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[navigationBar]|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+//        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[colorWheel]-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(15)-[brightnessLabel]-(15)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(15)-[dimmer]-(15)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(15)-[saturationSlider]-(15)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+        contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView]|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+        
+        var scrollViewHeightConstraint = NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: saturationSlider, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 15)
+        
+        view.addConstraint(scrollViewHeightConstraint)
+    }
+    
+    func initScrollView()
+    {
+        scrollView.delegate = self
+        scrollView.frame = view.frame
+        view.addSubview(scrollView)
+        
+        scrollView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        
+        
+        scrollView.addSubview(contentView)
+        contentView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        
+        addScrollViewConstraints()
+        
+        //
+        //        scrollView.marginTop = 0
+        //        scrollView.marginLeft = 0
+    }
+    
+    func addScrollViewConstraints()
+    {
+        var views = [String: AnyObject]()
+        views["scrollView"] = scrollView
+        views["contentView"] = contentView
+        
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(0)-[scrollView]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[scrollView]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+        
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(0)-[contentView]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[contentView]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+        
+        self.view.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Width, multiplier: 1.0, constant: 0))
     }
 }
 
@@ -227,7 +324,7 @@ extension OHLightController {
             
             collectionViewController.view.frame = CGRectMake(0, 0, self.view.frame.width - 30, height)
             self.addChildViewController(collectionViewController)
-            scrollView.addSubview(collectionViewController.view)
+            contentView.addSubview(collectionViewController.view)
             
             collectionViewController.view.centerViewHorizontallyInSuperview()
             collectionViewController.view.centerViewVerticallyInSuperview()
@@ -274,6 +371,14 @@ extension OHLightController: UICollectionViewDataSource {
             var light = lights[indexPath.item]
             
             selectedLights.append(light)
+            
+            if var dimmer = light.dimmer {
+            
+                var value: Float = (dimmer.state as NSString).floatValue
+            
+                self.dimmer?.slider.setValue(value / 100, animated: true)
+//                self.dimmer?.value = 
+            }
         }
     }
     

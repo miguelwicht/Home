@@ -118,7 +118,7 @@ import UIKit
     required init(coder aDecoder: NSCoder) {
         self.circleView = UIImageView(frame: CGRectZero)
         self.handleView = UIImageView(frame: CGRectZero)
-        button = UIButton.buttonWithType(.Custom) as! UIButton
+        button = UIButton.buttonWithType(.Custom) as? UIButton
         super.init(coder: aDecoder)
         
         self.addSubview(self.circleView!)

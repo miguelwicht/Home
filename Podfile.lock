@@ -1,0 +1,19 @@
+PODS:
+  - AngleGradientLayer (1.2.1)
+  - HexColors (2.2.1)
+  - SwiftyJSON (2.2.0)
+  - TSMessages (0.9.12):
+    - HexColors
+
+DEPENDENCIES:
+  - AngleGradientLayer (~> 1.2.1)
+  - SwiftyJSON (~> 2.2.0)
+  - TSMessages
+
+SPEC CHECKSUMS:
+  AngleGradientLayer: ca994d14c307accf710a29beb9e46ea907e62bd0
+  HexColors: abfd172e329dab59888614ccba6f216cec59289d
+  SwiftyJSON: 0b3e6c07af17ff745e77e8e9984097b55c956e5c
+  TSMessages: 2a52642128d7ab15b46930c810b9c9403a2b58f3
+
+COCOAPODS: 0.37.2

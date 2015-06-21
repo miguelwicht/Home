@@ -25,7 +25,6 @@
 		227DDC311ADBE25A001EAE08 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 227DDC301ADBE25A001EAE08 /* Images.xcassets */; };
 		227DDC341ADBE25A001EAE08 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 227DDC321ADBE25A001EAE08 /* LaunchScreen.xib */; };
 		227DDC4A1ADBE2A1001EAE08 /* OHRestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DDC491ADBE2A1001EAE08 /* OHRestManager.swift */; };
-		227DDC4C1ADBE8D1001EAE08 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DDC4B1ADBE8D1001EAE08 /* SwiftyJSON.swift */; };
 		227DDC501ADC09BC001EAE08 /* OHBeacon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DDC4F1ADC09BC001EAE08 /* OHBeacon.swift */; };
 		227DDC5A1ADD3C32001EAE08 /* OHSitemap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DDC591ADD3C32001EAE08 /* OHSitemap.swift */; };
 		227DDC5C1ADD4EB6001EAE08 /* OHSitemapsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DDC5B1ADD4EB6001EAE08 /* OHSitemapsTableViewController.swift */; };
@@ -41,7 +40,6 @@
 		22B3BAE31AE64D82006150AC /* OHWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B3BAE21AE64D82006150AC /* OHWidget.swift */; };
 		22B3BAE51AE68AA5006150AC /* OHRoomsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B3BAE41AE68AA5006150AC /* OHRoomsViewController.swift */; };
 		22C632F01B04B8BD00BB0A17 /* OHBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C632EF1B04B8BD00BB0A17 /* OHBaseViewController.swift */; };
-		22C632F91B04E42500BB0A17 /* AngleGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 22C632F61B04E42500BB0A17 /* AngleGradientLayer.m */; };
 		22C632FA1B04E42500BB0A17 /* ButtonWithCustomBackgroundSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C632F71B04E42500BB0A17 /* ButtonWithCustomBackgroundSize.swift */; };
 		22C632FB1B04E42500BB0A17 /* ColorWheel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C632F81B04E42500BB0A17 /* ColorWheel.swift */; };
 		22C7EFF31B2589FD00A430C4 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C7EFF21B2589FD00A430C4 /* UIImage+Extension.swift */; };
@@ -62,6 +60,8 @@
 		22EC1D071B01174300A39857 /* OHLightController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EC1D061B01174300A39857 /* OHLightController.swift */; };
 		22EC1D091B02004C00A39857 /* OHRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EC1D081B02004C00A39857 /* OHRoomViewController.swift */; };
 		22FF37A01B21A8AE00D69741 /* OHStatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FF379F1B21A8AE00D69741 /* OHStatusBarView.swift */; };
+		B6D5B579284AA3F84C8F141B /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686D2B9FF181684C2C298FFB /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		CA79BD91B6113CCDF5C18267 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686D2B9FF181684C2C298FFB /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,7 +98,6 @@
 		227DDC391ADBE25B001EAE08 /* HomeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HomeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		227DDC3E1ADBE25B001EAE08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../HomeTests/Info.plist; sourceTree = "<group>"; };
 		227DDC491ADBE2A1001EAE08 /* OHRestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHRestManager.swift; sourceTree = "<group>"; };
-		227DDC4B1ADBE8D1001EAE08 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		227DDC4F1ADC09BC001EAE08 /* OHBeacon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHBeacon.swift; sourceTree = "<group>"; };
 		227DDC591ADD3C32001EAE08 /* OHSitemap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHSitemap.swift; sourceTree = "<group>"; };
 		227DDC5B1ADD4EB6001EAE08 /* OHSitemapsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHSitemapsTableViewController.swift; sourceTree = "<group>"; };
@@ -116,8 +115,6 @@
 		22B3BAE41AE68AA5006150AC /* OHRoomsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHRoomsViewController.swift; sourceTree = "<group>"; };
 		22C632EF1B04B8BD00BB0A17 /* OHBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHBaseViewController.swift; sourceTree = "<group>"; };
 		22C632F41B04E42400BB0A17 /* Home-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Home-Bridging-Header.h"; sourceTree = "<group>"; };
-		22C632F51B04E42500BB0A17 /* AngleGradientLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AngleGradientLayer.h; sourceTree = "<group>"; };
-		22C632F61B04E42500BB0A17 /* AngleGradientLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AngleGradientLayer.m; sourceTree = "<group>"; };
 		22C632F71B04E42500BB0A17 /* ButtonWithCustomBackgroundSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonWithCustomBackgroundSize.swift; sourceTree = "<group>"; };
 		22C632F81B04E42500BB0A17 /* ColorWheel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorWheel.swift; sourceTree = "<group>"; };
 		22C7EFF21B2589FD00A430C4 /* UIImage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
@@ -138,6 +135,9 @@
 		22EC1D061B01174300A39857 /* OHLightController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHLightController.swift; sourceTree = "<group>"; };
 		22EC1D081B02004C00A39857 /* OHRoomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHRoomViewController.swift; sourceTree = "<group>"; };
 		22FF379F1B21A8AE00D69741 /* OHStatusBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHStatusBarView.swift; sourceTree = "<group>"; };
+		5942E85F0CFD997116914CAE /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		686D2B9FF181684C2C298FFB /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1AA0E88A04A79C51B56C98C /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +145,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6D5B579284AA3F84C8F141B /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,12 +153,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA79BD91B6113CCDF5C18267 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0442F5747958832ABBC7129E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				686D2B9FF181684C2C298FFB /* Pods.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		21CCC1BD0422218C66CCB4F9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5942E85F0CFD997116914CAE /* Pods.debug.xcconfig */,
+				E1AA0E88A04A79C51B56C98C /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		221AA8611B074624008805A5 /* OHDropdownMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -195,6 +214,8 @@
 				227DDC261ADBE25A001EAE08 /* Home */,
 				227DDC3C1ADBE25B001EAE08 /* HomeTests */,
 				227DDC251ADBE25A001EAE08 /* Products */,
+				21CCC1BD0422218C66CCB4F9 /* Pods */,
+				0442F5747958832ABBC7129E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -222,7 +243,6 @@
 				22C632F21B04BD6A00BB0A17 /* Deprecated */,
 				22C632F41B04E42400BB0A17 /* Home-Bridging-Header.h */,
 			);
-			name = Home;
 			path = Home;
 			sourceTree = "<group>";
 		};
@@ -245,7 +265,6 @@
 				22D4879D1B361418008533B8 /* HomeTests.swift */,
 				227DDC3D1ADBE25B001EAE08 /* Supporting Files */,
 			);
-			name = HomeTests;
 			path = HomeTests;
 			sourceTree = "<group>";
 		};
@@ -300,8 +319,6 @@
 		22C632FC1B04E45000BB0A17 /* ColorWheelButton */ = {
 			isa = PBXGroup;
 			children = (
-				22C632F51B04E42500BB0A17 /* AngleGradientLayer.h */,
-				22C632F61B04E42500BB0A17 /* AngleGradientLayer.m */,
 				22C632F71B04E42500BB0A17 /* ButtonWithCustomBackgroundSize.swift */,
 				22C632F81B04E42500BB0A17 /* ColorWheel.swift */,
 				22CC649F1B1DCDD100635978 /* PowerButton.swift */,
@@ -344,7 +361,6 @@
 			isa = PBXGroup;
 			children = (
 				226F9E7C1B0CC98200231D5C /* SWRevealViewController */,
-				227DDC4B1ADBE8D1001EAE08 /* SwiftyJSON.swift */,
 			);
 			name = Vendor;
 			sourceTree = "<group>";
@@ -372,9 +388,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 227DDC431ADBE25B001EAE08 /* Build configuration list for PBXNativeTarget "Home" */;
 			buildPhases = (
+				DBCAFA80FFF6387CD137E83C /* Check Pods Manifest.lock */,
 				227DDC201ADBE25A001EAE08 /* Sources */,
 				227DDC211ADBE25A001EAE08 /* Frameworks */,
 				227DDC221ADBE25A001EAE08 /* Resources */,
+				CF604384B4D703A52D2B2972 /* Embed Pods Frameworks */,
+				B5C750DDEA3C1277A87414A2 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -389,9 +408,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 227DDC461ADBE25B001EAE08 /* Build configuration list for PBXNativeTarget "HomeTests" */;
 			buildPhases = (
+				5934EE077CE373E9A435FB4E /* Check Pods Manifest.lock */,
 				227DDC351ADBE25B001EAE08 /* Sources */,
 				227DDC361ADBE25B001EAE08 /* Frameworks */,
 				227DDC371ADBE25B001EAE08 /* Resources */,
+				5714CA098FE105FE2D572EEF /* Embed Pods Frameworks */,
+				F8CDF2723840C891B978882A /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -466,6 +488,99 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		5714CA098FE105FE2D572EEF /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5934EE077CE373E9A435FB4E /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B5C750DDEA3C1277A87414A2 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CF604384B4D703A52D2B2972 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DBCAFA80FFF6387CD137E83C /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		F8CDF2723840C891B978882A /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		227DDC201ADBE25A001EAE08 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -491,7 +606,6 @@
 				22D782ED1AEF7FF8006BFDF8 /* OHWidgetCollectionViewController.swift in Sources */,
 				22B3BAE51AE68AA5006150AC /* OHRoomsViewController.swift in Sources */,
 				22C7EFF31B2589FD00A430C4 /* UIImage+Extension.swift in Sources */,
-				227DDC4C1ADBE8D1001EAE08 /* SwiftyJSON.swift in Sources */,
 				22CC64AC1B1F234B00635978 /* OHRearMenuFooterView.swift in Sources */,
 				22A899D21AFA30B1004FFC16 /* UIView+Extension.swift in Sources */,
 				22EC1D071B01174300A39857 /* OHLightController.swift in Sources */,
@@ -506,7 +620,6 @@
 				22EC1D091B02004C00A39857 /* OHRoomViewController.swift in Sources */,
 				221AA8601B074617008805A5 /* OHDropdownMenuTableViewCell.swift in Sources */,
 				22CC64A21B1DDC4A00635978 /* MDWSlider.swift in Sources */,
-				22C632F91B04E42500BB0A17 /* AngleGradientLayer.m in Sources */,
 				227DDC5A1ADD3C32001EAE08 /* OHSitemap.swift in Sources */,
 				228156091B2070B8005A137A /* OHDefaults.swift in Sources */,
 				22CC64A01B1DCDD100635978 /* PowerButton.swift in Sources */,
@@ -644,6 +757,7 @@
 		};
 		227DDC441ADBE25B001EAE08 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5942E85F0CFD997116914CAE /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -660,6 +774,7 @@
 		};
 		227DDC451ADBE25B001EAE08 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E1AA0E88A04A79C51B56C98C /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -675,6 +790,7 @@
 		};
 		227DDC471ADBE25B001EAE08 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5942E85F0CFD997116914CAE /* Pods.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -694,6 +810,7 @@
 		};
 		227DDC481ADBE25B001EAE08 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E1AA0E88A04A79C51B56C98C /* Pods.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (

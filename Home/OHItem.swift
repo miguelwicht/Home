@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 public class OHItem: NSObject {
     

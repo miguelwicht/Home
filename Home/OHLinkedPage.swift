@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 @objc public class OHLinkedPage: NSObject {
     

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 //MARK: OHRestManagerDelegate
 @objc protocol OHRestManagerDelegate {

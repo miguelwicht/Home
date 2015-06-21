@@ -1,0 +1,6 @@
+framework module AngleGradientLayer {
+  umbrella header "Pods-HomeTests-AngleGradientLayer-umbrella.h"
+
+  export *
+  module * { export * }
+}

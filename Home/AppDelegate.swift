@@ -33,12 +33,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func rotated() {
         if(UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation)) {
-            println("landscape")
             statusBarBackgroundView?.hidden = true
         }
         
         if(UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation)) {
-            println("Portrait")
             statusBarBackgroundView?.hidden = false
         }
     }

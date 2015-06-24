@@ -56,7 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let sitemaps = OHDataManager.sharedInstance.sitemaps, rooms = OHDataManager.sharedInstance.currentSitemap?.roomsInSitemap()  {
             frontViewController = OHRootViewController.new()
         } else {
-            frontViewController = OHSettingsViewController.new()
+            frontViewController = UINavigationController(rootViewController: OHSettingsViewController.new())
         }
         
         var rearViewController = OHRearMenuViewController.new()

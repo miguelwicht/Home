@@ -163,6 +163,17 @@ extension OHDataManager: OHRestManagerDelegate {
         }
         
         self.sitemaps = sitemapsDict
+        
+        if self.currentSitemap == nil {
+            // init current sitemap if non is set
+            self.currentSitemap = self.sitemaps!.values.first
+        } else {
+            // update current sitemap if updated one exists
+            if var sitemap = self.sitemaps![self.currentSitemap!.name] {
+                self.currentSitemap = sitemap
+            }
+        }
+        
         saveData()
     }
     

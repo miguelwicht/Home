@@ -29,6 +29,8 @@ class OHSettingsViewController: OHBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        showMessage()
     }
     
     override func didReceiveMemoryWarning() {
@@ -253,6 +255,12 @@ extension OHSettingsViewController {
         if didUpdateSitemapsObserver != nil {
             nc.removeObserver(didUpdateSitemapsObserver)
         }
+    }
+    
+    override func restErrorHandler(notification: NSNotification) {
+        super.restErrorHandler(notification)
+        
+        removeLoadingView()
     }
 }
 

@@ -7,6 +7,8 @@
 
 import Foundation
 
+let OHRestManagerConnectionDidFailNotification = "OHRestManagerConnectionDidFailNotification"
+
 //MARK: OHRestManagerDelegate
 @objc protocol OHRestManagerDelegate {
     optional func didGetItems(items: [OHItem])
@@ -68,6 +70,11 @@ extension OHRestManager {
                 
             if error != nil {
                 println("error=\(error)")
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//                    NSNotificationCenter.defaultCenter().postNotificationName("OHRestManagerCouldNotLoadData", object:self, userInfo: 
+                    var userInfo: [String: String] = ["error": error.localizedDescription]
+                    NSNotificationCenter.defaultCenter().postNotificationName(OHRestManagerConnectionDidFailNotification, object: self, userInfo: userInfo)
+                })
                 return
             }
             

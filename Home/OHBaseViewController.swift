@@ -13,17 +13,20 @@ class OHBaseViewController: UIViewController {
     let scrollView = UIScrollView()
     let contentView = UIView()
     var loadingView = OHLoadingView()
+    var notification: MDWNotificationController?
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nil, bundle: nil)
         
         initNavigationBar()
+        addRestObserver()
     }
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         initNavigationBar()
+        addRestObserver()
     }
     
     override func loadView() {
@@ -119,4 +122,47 @@ extension OHBaseViewController {
     }
     
     func addRightNavigationBarItems() {}
+}
+
+extension OHBaseViewController {
+    func showMessage(message: String?) {
+        
+        if var notification = self.notification {
+            notification.removeNotification()
+            self.notification = nil
+        }
+        
+        if var visibleViewController = self.navigationController?.visibleViewController {
+            if  visibleViewController == self {
+                
+                self.notification = MDWNotificationController()
+                
+                if var notification = self.notification {
+                
+                    addChildViewController(notification)
+                    if var notificationMessage = message {
+                        notification.setMessage(notificationMessage)
+                    }
+                    notification.type = MDWNotificationType.Error
+                
+                    notification.addNotificationToView(view)
+                }
+            }
+        }
+    }
+    
+    func restErrorHandler(notification: NSNotification)
+    {
+        let userInfo:Dictionary<String,String!> = notification.userInfo as! Dictionary<String,String!>
+    
+        if var error = userInfo["error"] {
+            showMessage(error)
+        } else {
+            showMessage("An error occured. Please check your settings.")
+        }
+    }
+    
+    func addRestObserver() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "restErrorHandler:", name: OHRestManagerConnectionDidFailNotification, object: nil)
+    }
 }

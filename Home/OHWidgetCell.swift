@@ -39,10 +39,33 @@ class OHWidgetCell: UICollectionViewCell {
         addSubview(label)
         
         selectedIcon.hidden = true
+        imageView.contentMode = UIViewContentMode.ScaleAspectFit
         imageView.addSubview(selectedIcon)
         
         contentView.layer.cornerRadius = 15
         contentView.layer.masksToBounds = true
+        
+        addLayoutContraints()
+    }
+    
+    func addLayoutContraints(){
+        
+        var views = [String: AnyObject]()
+        views["imageView"] = imageView
+        views["label"] = label
+        views["selectedIcon"] = selectedIcon
+        
+        imageView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        label.setTranslatesAutoresizingMaskIntoConstraints(false)
+        selectedIcon.setTranslatesAutoresizingMaskIntoConstraints(false)
+        calculateTextHeight()
+        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[imageView]-(==5@999)-[label(==\(textHeight!)@1000)]|", options: nil, metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[imageView]|", options: nil, metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[label]|", options: nil, metrics: nil, views: views))
+        
+        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[selectedIcon]-(10)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+        addConstraint(NSLayoutConstraint(item: selectedIcon, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: label, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: -2))
+        addConstraint(NSLayoutConstraint(item: selectedIcon, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: label, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: -2))
     }
     
     func calculateTextHeight() {
@@ -54,28 +77,6 @@ class OHWidgetCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        imageView.frame = CGRectMake(0, 0, self.frame.width, self.frame.height - self.textHeight!)
-        
-        if imageView.frame.width >= imageView.image?.size.width {
-            self.imageView.contentMode = UIViewContentMode.Center
-        } else {
-            self.imageView.contentMode = UIViewContentMode.ScaleAspectFit
-        }
-        
-        if var labelText = label.text {
-            if count(labelText) == 0 {
-                imageView.centerViewVerticallyInSuperview()
-            }
-        } else {
-            imageView.centerViewVerticallyInSuperview()
-        }
-        
-        label.frame = CGRectMake(0, self.frame.height - self.textHeight!, self.frame.width, self.textHeight!)
-        
-        selectedIcon.sizeToFit()
-        selectedIcon.marginRight = 0
-        selectedIcon.marginBottom = 0
     }
     
     override var selected : Bool {

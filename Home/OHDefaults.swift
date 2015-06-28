@@ -93,5 +93,18 @@ extension OHDefaults {
         
         return itemSize
     }
+    
+    static func colorWheelFrame() -> CGRect {
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        var width = appDelegate.window?.frame.size.width
+        
+        var frame = CGRect(x: 0, y: 0, width: 237, height: 237)
+        
+        if width > 320 {
+            frame = CGRect(x: 0, y: 0, width: 280, height: 280)
+        }
+        
+        return frame
+    }
 }
 

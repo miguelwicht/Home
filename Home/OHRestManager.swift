@@ -90,8 +90,9 @@ extension OHRestManager {
                 var leaf: String = homepageDict["leaf"] != nil ? homepageDict["leaf"]!.stringValue : ""
                 var homepageLink: String = homepageDict["link"] != nil ? homepageDict["link"]!.stringValue : ""
                 var sitemap: OHSitemap = OHSitemap(name: name, icon: "", label: label, link: link, leaf: leaf, homepageLink: homepageLink)
-                
-                sitemaps.append(sitemap)
+                if sitemap.name != "_default" {
+                    sitemaps.append(sitemap)
+                }
             }
             
             dispatch_async(dispatch_get_main_queue(), { () -> Void in

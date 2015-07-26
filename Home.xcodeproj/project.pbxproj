@@ -14,7 +14,6 @@
 		221D82AE1B10DA2F007135F1 /* OHRearMenuSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221D82AD1B10DA2F007135F1 /* OHRearMenuSectionHeader.swift */; };
 		223C7FB61AE79FF90079A41C /* OHRestParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223C7FB51AE79FF90079A41C /* OHRestParser.swift */; };
 		223C7FB81AE7C4040079A41C /* OHHomepage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223C7FB71AE7C4040079A41C /* OHHomepage.swift */; };
-		224F91F21B64FA4B007FC8A2 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 224F91F11B64FA4B007FC8A2 /* Default-568h@2x.png */; };
 		22599E621B0A13EC00EE7558 /* OHBeaconManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22599E611B0A13EC00EE7558 /* OHBeaconManager.swift */; };
 		226DC8D01B2881820070D23E /* OHButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226DC8CF1B2881820070D23E /* OHButton.swift */; };
 		226DC8D21B28A1210070D23E /* OHLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226DC8D11B28A1210070D23E /* OHLoadingView.swift */; };
@@ -83,7 +82,6 @@
 		221D82AD1B10DA2F007135F1 /* OHRearMenuSectionHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHRearMenuSectionHeader.swift; sourceTree = "<group>"; };
 		223C7FB51AE79FF90079A41C /* OHRestParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHRestParser.swift; sourceTree = "<group>"; };
 		223C7FB71AE7C4040079A41C /* OHHomepage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHHomepage.swift; sourceTree = "<group>"; };
-		224F91F11B64FA4B007FC8A2 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		22599E611B0A13EC00EE7558 /* OHBeaconManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHBeaconManager.swift; sourceTree = "<group>"; };
 		226DC8CF1B2881820070D23E /* OHButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHButton.swift; sourceTree = "<group>"; };
 		226DC8D11B28A1210070D23E /* OHLoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHLoadingView.swift; sourceTree = "<group>"; };
@@ -194,7 +192,6 @@
 		227DDC1B1ADBE25A001EAE08 = {
 			isa = PBXGroup;
 			children = (
-				224F91F11B64FA4B007FC8A2 /* Default-568h@2x.png */,
 				227DDC261ADBE25A001EAE08 /* Home */,
 				227DDC3C1ADBE25B001EAE08 /* HomeTests */,
 				227DDC251ADBE25A001EAE08 /* Products */,
@@ -454,7 +451,6 @@
 				22CC64AA1B1F0B2A00635978 /* Muli-Regular.ttf in Resources */,
 				22DFE53F1AF0CA1300390AC6 /* Settings.bundle in Resources */,
 				227DDC2F1ADBE25A001EAE08 /* Main.storyboard in Resources */,
-				224F91F21B64FA4B007FC8A2 /* Default-568h@2x.png in Resources */,
 				227DDC341ADBE25A001EAE08 /* LaunchScreen.xib in Resources */,
 				227DDC311ADBE25A001EAE08 /* Images.xcassets in Resources */,
 			);

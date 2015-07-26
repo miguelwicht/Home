@@ -22,7 +22,7 @@ class OHBaseViewController: UIViewController {
         addRestObserver()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         initNavigationBar()
@@ -52,7 +52,7 @@ class OHBaseViewController: UIViewController {
 extension OHBaseViewController {
     
     func addLoadingView() {
-        if var window = view.window {
+        if let window = view.window {
             window.addSubview(loadingView)
             loadingView.frame = self.view.frame
         }
@@ -67,8 +67,8 @@ extension OHBaseViewController: UIScrollViewDelegate {
     
     func initScrollView() {
         scrollView.delegate = self
-        scrollView.setTranslatesAutoresizingMaskIntoConstraints(false)
-        contentView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(contentView)
         view.addSubview(scrollView)
         
@@ -80,10 +80,10 @@ extension OHBaseViewController: UIScrollViewDelegate {
         views["scrollView"] = scrollView
         views["contentView"] = contentView
         
-        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(0)-[scrollView]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
-        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[scrollView]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
-        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(0)-[contentView(>=scrollView)]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
-        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[contentView]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(0)-[scrollView]-(0)-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[scrollView]-(0)-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(0)-[contentView(>=scrollView)]-(0)-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[contentView]-(0)-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
         self.view.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Width, multiplier: 1.0, constant: 0))
     }
 }
@@ -97,12 +97,12 @@ extension OHBaseViewController {
     
     func addLeftNavigationBarItems() {
         let revealController = self.revealViewController
-        var menuItemButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+        let menuItemButton = UIButton(type: UIButtonType.Custom)
         
         menuItemButton.setImage(UIImage(named: "menu")?.imageWithRenderingMode(.AlwaysTemplate), forState: UIControlState.Normal)
         menuItemButton.sizeToFit()
         
-        var item = UIBarButtonItem(customView: menuItemButton as UIView)
+        let item = UIBarButtonItem(customView: menuItemButton as UIView)
         self.navigationItem.leftBarButtonItems = [item]
         
         menuItemButton.setWidth(40)
@@ -117,7 +117,7 @@ extension OHBaseViewController {
     
     func toggleStatusBar() {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        var statusBar = appDelegate.statusBarBackgroundView
+        let statusBar = appDelegate.statusBarBackgroundView
         statusBar!.highlighted = statusBar!.highlighted ? false : true
     }
     
@@ -127,20 +127,20 @@ extension OHBaseViewController {
 extension OHBaseViewController {
     func showMessage(message: String?) {
         
-        if var notification = self.notification {
+        if let notification = self.notification {
             notification.removeNotification()
             self.notification = nil
         }
         
-        if var visibleViewController = self.navigationController?.visibleViewController {
+        if let visibleViewController = self.navigationController?.visibleViewController {
             if  visibleViewController == self {
                 
                 self.notification = MDWNotificationController()
                 
-                if var notification = self.notification {
+                if let notification = self.notification {
                 
                     addChildViewController(notification)
-                    if var notificationMessage = message {
+                    if let notificationMessage = message {
                         notification.setMessage(notificationMessage)
                     }
                     notification.type = MDWNotificationType.Error
@@ -155,7 +155,7 @@ extension OHBaseViewController {
     {
         let userInfo:Dictionary<String,String!> = notification.userInfo as! Dictionary<String,String!>
     
-        if var error = userInfo["error"] {
+        if let error = userInfo["error"] {
             showMessage(error)
         } else {
             showMessage("An error occured. Please check your settings.")

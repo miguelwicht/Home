@@ -79,7 +79,7 @@ extension OHDefaults {
     
     static func roomCollectionViewItemSize() -> CGSize {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        var width = appDelegate.window?.frame.size.width
+        let width = appDelegate.window?.frame.size.width
         
         var itemSize = CGSize(width: 0, height: 0)
         
@@ -96,7 +96,7 @@ extension OHDefaults {
     
     static func colorWheelFrame() -> CGRect {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        var width = appDelegate.window?.frame.size.width
+        let width = appDelegate.window?.frame.size.width
         
         var frame = CGRect(x: 0, y: 0, width: 237, height: 237)
         

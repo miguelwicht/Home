@@ -73,25 +73,25 @@ import UIKit
     }
     
     func initButton() {
-        button = PowerButton.buttonWithType(.Custom) as! PowerButton
+        button = PowerButton()// UIButton(type: .Custom) as! PowerButton
         button!.addTarget(button, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         
-        if var button = self.button {
+        if let button = self.button {
             button.clipsToBounds = false
             
             var buttonRect = CGRect(x: 0, y: 0, width: self.frame.width - ringWidth * 2, height: self.frame.height - ringWidth * 2)
-            var imageRect = CGRect(x: 0, y: 0, width: buttonRect.width + 40, height: buttonRect.height + 40)
+            let imageRect = CGRect(x: 0, y: 0, width: buttonRect.width + 40, height: buttonRect.height + 40)
             
-            var buttonColor = UIColor(red: (235.0 / 255.0), green: (235.0 / 255.0), blue: (235.0 / 255.0), alpha: 1.0)
-            var buttonTitleColor = UIColor(red: (126.0 / 255.0), green: (126.0 / 255.0), blue: (126.0 / 255.0), alpha: 1.0)
+            let buttonColor = UIColor(red: (235.0 / 255.0), green: (235.0 / 255.0), blue: (235.0 / 255.0), alpha: 1.0)
+            let buttonTitleColor = UIColor(red: (126.0 / 255.0), green: (126.0 / 255.0), blue: (126.0 / 255.0), alpha: 1.0)
             
-            var buttonImage = UIImage.drawCircleWithColor(buttonColor, rect: imageRect)
-            var buttonImageSelected = UIImage.drawCircleWithColor(buttonTitleColor, rect: imageRect)
+            let buttonImage = UIImage.drawCircleWithColor(buttonColor, rect: imageRect)
+            let buttonImageSelected = UIImage.drawCircleWithColor(buttonTitleColor, rect: imageRect)
             
             let buttonBuffer: CGFloat = 40.0
             
-            var buttonOrigin = CGPoint(x: self.bounds.origin.x + ringWidth + buttonBuffer, y: self.bounds.origin.y + ringWidth + buttonBuffer)
-            var buttonSize = CGSize(width: self.frame.width - ringWidth * 2 - buttonBuffer * 2, height: self.frame.height - ringWidth * 2 - buttonBuffer * 2)
+            let buttonOrigin = CGPoint(x: self.bounds.origin.x + ringWidth + buttonBuffer, y: self.bounds.origin.y + ringWidth + buttonBuffer)
+            let buttonSize = CGSize(width: self.frame.width - ringWidth * 2 - buttonBuffer * 2, height: self.frame.height - ringWidth * 2 - buttonBuffer * 2)
             
             button.frame = CGRect(x: buttonOrigin.x, y: buttonOrigin.y, width: buttonSize.width, height: buttonSize.height)
             button.layer.cornerRadius = (self.frame.width - ringWidth * 2) / 2.0
@@ -115,10 +115,10 @@ import UIKit
         self.addSubview(self.circleView!)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         self.circleView = UIImageView(frame: CGRectZero)
         self.handleView = UIImageView(frame: CGRectZero)
-        button = UIButton.buttonWithType(.Custom) as? UIButton
+        button = UIButton(type: .Custom)
         super.init(coder: aDecoder)
         
         self.addSubview(self.circleView!)
@@ -131,9 +131,9 @@ extension UIImage {
     static func drawCircleWithColor(color: UIColor, rect: CGRect) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(CGSizeMake(rect.width, rect.height), false, 0.0);
         
-        var ctx = UIGraphicsGetCurrentContext()
+        let ctx = UIGraphicsGetCurrentContext()
         CGContextSetLineWidth(ctx, 0.0);
-        CGContextSetBlendMode(ctx, kCGBlendModeNormal)
+        CGContextSetBlendMode(ctx, CGBlendMode.Normal)
         CGContextSetFillColorWithColor(ctx, color.CGColor)
         CGContextAddEllipseInRect(ctx, rect);
         CGContextFillPath(ctx);
@@ -151,11 +151,8 @@ extension ColorWheel {
     func drawHandle(size: CGSize) -> UIImage {
         let blurSize: CGFloat = 0
         UIGraphicsBeginImageContextWithOptions(CGSizeMake(size.width, size.height), false, 0.0)
-        var ctx = UIGraphicsGetCurrentContext()
+        let ctx = UIGraphicsGetCurrentContext()
         CGContextSetShadowWithColor(ctx, CGSizeMake(0, 0), blurSize, UIColor(red: 0, green: 0, blue: 0, alpha: 0.7).CGColor)
-        
-        //Get the handle position
-        var handleCenter = CGPointMake(size.width / 2 + blurSize, size.height / 2 + blurSize)
         
         //Draw It!
         UIColor(white:1.0, alpha:1.0).set()
@@ -176,7 +173,7 @@ extension ColorWheel {
         
         //Store the new angle
         angle = Int(360 - angleInt)
-        var newPoint: CGPoint = self.pointFromAngle(angle)
+        let newPoint: CGPoint = self.pointFromAngle(angle)
         angle = angleInt
         
         handleView!.frame.origin.x = newPoint.x - handleView!.frame.size.width
@@ -184,19 +181,19 @@ extension ColorWheel {
     }
     
     func getColorForAngle(angle: Int) -> UIColor {
-        var hue: CGFloat = CGFloat(angle) / CGFloat(sectors)
-        var color = UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: 1.0)
+        let hue: CGFloat = CGFloat(angle) / CGFloat(sectors)
+        let color = UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: 1.0)
         
         return color
     }
     
     func getAngleForColor(color: UIColor) -> Int {
-        var col = CIColor(color: color)
-        var red = CGFloat(col!.red() * 255)
-        var green = CGFloat(col!.green() * 255)
-        var blue = CGFloat(col!.blue() * 255)
-        var hue = calculateHue(Int(red), green: Int(green), blue: Int(blue))
-        var angle = Int(hue * CGFloat(sectors))
+        let col = CIColor(color: color)
+        let red = CGFloat(col.red * 255)
+        let green = CGFloat(col.green * 255)
+        let blue = CGFloat(col.blue * 255)
+        let hue = calculateHue(Int(red), green: Int(green), blue: Int(blue))
+        let angle = Int(hue * CGFloat(sectors))
         
         return angle
     }
@@ -260,8 +257,8 @@ extension ColorWheel {
     }
     
     func calculateHue(red: Int, green: Int, blue: Int) -> CGFloat {
-        var minVal = CGFloat(min(min(red, green), blue))
-        var maxVal = CGFloat(max(max(red, green), blue))
+        let minVal = CGFloat(min(min(red, green), blue))
+        let maxVal = CGFloat(max(max(red, green), blue))
         
         var hue: CGFloat = 0.0
         
@@ -283,8 +280,8 @@ extension ColorWheel {
     }
     
     func moveHandleToColor(color: UIColor) {
-        var angle = getAngleForColor(color)
-        var point = pointFromAngle(angle)
+        let angle = getAngleForColor(color)
+        let point = pointFromAngle(angle)
         
         updateHandleWithPoint(point)
         self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
@@ -317,7 +314,7 @@ extension ColorWheel {
             colorCirclePath.addLineToPoint(center)
             colorCirclePath.closePath()
             
-            var color = getColorForAngle(i)
+            let color = getColorForAngle(i)
             
             color.setFill()
             color.setStroke()
@@ -329,7 +326,7 @@ extension ColorWheel {
         CGContextSaveGState(ctx)
         
         CGContextSetLineWidth(ctx, 0.0)
-        CGContextSetBlendMode(ctx, kCGBlendModeClear) // Set blendMode to clear to erase center
+        CGContextSetBlendMode(ctx, CGBlendMode.Clear) // Set blendMode to clear to erase center
         CGContextSetFillColorWithColor(ctx, UIColor.blueColor().CGColor)
         let rectangle = CGRectMake(self.bounds.origin.x + self.ringWidth, self.bounds.origin.y + self.ringWidth, self.frame.width - self.ringWidth * 2, self.frame.height - self.ringWidth * 2)
         CGContextAddEllipseInRect(ctx, rectangle)
@@ -346,7 +343,7 @@ extension ColorWheel {
  //MARK: - Touch Tracking
 extension ColorWheel {
    
-    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
+    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
         super.beginTrackingWithTouch(touch, withEvent: event)
         
         updateHandleWithPoint(touch.locationInView(self))
@@ -355,7 +352,7 @@ extension ColorWheel {
         return true
     }
     
-    override func continueTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
+    override func continueTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
         super.continueTrackingWithTouch(touch, withEvent: event)
         
         updateHandleWithPoint(touch.locationInView(self))
@@ -364,7 +361,7 @@ extension ColorWheel {
         return true
     }
     
-    override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
+    override func endTrackingWithTouch(touch: UITouch?, withEvent event: UIEvent?) {
         super.endTrackingWithTouch(touch, withEvent: event)
     }
 }

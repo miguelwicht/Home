@@ -15,7 +15,7 @@ class OHStatusBarView: UIView {
     var highlightedStatusBarStyle: UIStatusBarStyle = UIStatusBarStyle.LightContent
     var normalStatusBarStyle: UIStatusBarStyle = UIStatusBarStyle.LightContent
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         backgroundColor = normalColor
@@ -29,8 +29,7 @@ class OHStatusBarView: UIView {
     
     var highlighted : Bool = false {
         didSet {
-            var interval: NSTimeInterval = 0.3
-            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            let interval: NSTimeInterval = 0.3
             
             if (highlighted) {
                 UIView.animateWithDuration(interval, animations: {

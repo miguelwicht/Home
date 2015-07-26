@@ -41,7 +41,7 @@ public class OHHomepage: NSObject {
         self.link = hp["link"]!.stringValue
         self.leaf = hp["leaf"]!.boolValue
         
-        if var widgets = hp["widgets"]?.arrayValue {
+        if let widgets = hp["widgets"]?.arrayValue {
           self.widgets = OHRestParser.parseWidgets(widgets)
         }
     }
@@ -49,11 +49,11 @@ public class OHHomepage: NSObject {
     func getItems() -> [String: OHItem] {
         var items = [String: OHItem]()
         
-        if var widgets = self.widgets {
-            for (index, widget) in enumerate(widgets) {
-                var widgetItems = widget.getItems()
+        if let widgets = self.widgets {
+            for (_, widget) in widgets.enumerate() {
+                let widgetItems = widget.getItems()
                 
-                for (index, item) in widgetItems {
+                for (_, item) in widgetItems {
                     items[item.link] = item
                 }
             }
@@ -65,18 +65,18 @@ public class OHHomepage: NSObject {
 }
 
 //MARK: - Printable
-extension OHHomepage: Printable {
-    
-    override public var description: String {
-        let className = reflect(self).summary
-        var desc:String = ""
-        desc += "\n\(className):\n{\n"
-        desc += "\tid: \(self.id),\n"
-        desc += "\ttitle: \(self.title),\n"
-        desc += "\tlink: \(self.link),\n"
-        desc += "\tleaf: \(self.leaf),\n"
-        desc += "\twidgets: \(self.widgets)\n}"
-        
-        return desc
-    }
-}
+//extension OHHomepage: CustomStringConvertible {
+//    
+//    override public var description: String {
+//        let className = reflect(self).summary
+//        var desc:String = ""
+//        desc += "\n\(className):\n{\n"
+//        desc += "\tid: \(self.id),\n"
+//        desc += "\ttitle: \(self.title),\n"
+//        desc += "\tlink: \(self.link),\n"
+//        desc += "\tleaf: \(self.leaf),\n"
+//        desc += "\twidgets: \(self.widgets)\n}"
+//        
+//        return desc
+//    }
+//}

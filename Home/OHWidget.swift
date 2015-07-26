@@ -90,23 +90,23 @@ public class OHWidget: NSObject {
         self.icon = widget["icon"]?.stringValue
         
         // parse linkedPage to OHLinkedPage
-        if var linkedPage = widget["linkedPage"] {
+        if let linkedPage = widget["linkedPage"] {
             self.linkedPage = OHLinkedPage(linkedPage: linkedPage)
         }
         
         // parse widgets to OHWidget
-        if var wid = widget["widgets"]?.arrayValue {
+        if let wid = widget["widgets"]?.arrayValue {
             self.widgets = OHRestParser.parseWidgets(wid)
         }
         
-        if var item = widget["item"] {
+        if let item = widget["item"] {
             self.item = OHItem(item: item)
         }
     }
     
     func getItems() -> [String: OHItem] {
         var items = [String: OHItem]()
-        var widgets = getWidgetsRecursevly()
+        let widgets = getWidgetsRecursevly()
         items = extractItemsFromWidgets(widgets)
         
         return items
@@ -115,10 +115,10 @@ public class OHWidget: NSObject {
     func extractItemsFromWidgets(widgets: [OHWidget]) -> [String: OHItem] {
         var items = [String: OHItem]()
         
-        for (index, widget) in enumerate(widgets) {
-            var widgetItem = widget.item
+        for (_, widget) in widgets.enumerate() {
+            let widgetItem = widget.item
             
-            if var item = widgetItem {
+            if let item = widgetItem {
                 items[item.link] = item
             }
         }
@@ -129,24 +129,24 @@ public class OHWidget: NSObject {
     func getWidgetsRecursevly() -> [OHWidget] {
         var widgetList = [OHWidget]()
         
-        if var widgets = self.widgets {
-            for (index, widget) in enumerate(widgets) {
+        if let widgets = self.widgets {
+            for (_, widget) in widgets.enumerate() {
                 widgetList.append(widget)
-                var widgetsFromWidget = widget.getWidgetsRecursevly()
+                let widgetsFromWidget = widget.getWidgetsRecursevly()
                 
-                for (i, w) in enumerate(widgetsFromWidget) {
+                for (_, w) in widgetsFromWidget.enumerate() {
                     widgetList.append(w)
                 }
             }
         }
         
-        if var linkedPage = self.linkedPage {
-            if var widgets = linkedPage.widgets {
-                for (index, widget) in enumerate(widgets) {
+        if let linkedPage = self.linkedPage {
+            if let widgets = linkedPage.widgets {
+                for (_, widget) in widgets.enumerate() {
                     widgetList.append(widget)
-                    var widgetsFromWidget = widget.getWidgetsRecursevly()
+                    let widgetsFromWidget = widget.getWidgetsRecursevly()
                     
-                    for (i, w) in enumerate(widgetsFromWidget) {
+                    for (_, w) in widgetsFromWidget.enumerate() {
                         widgetList.append(w)
                     }
                 }
@@ -158,20 +158,20 @@ public class OHWidget: NSObject {
 }
 
 //MARK: - Printable
-extension OHWidget : Printable {
-    
-    override public var description: String {
-        var desc: String = ""
-        desc += "OHWidget: {\n"
-        desc += "\titem: \(item) \n"
-        desc += "\twidgetId: \(widgetId)\n"
-        desc += "\tlabel: \(label) \n"
-        desc += "\ticon: \(icon) \n"
-        desc += "\ttype: \(type) \n"
-        desc += "\tlinkedPage: \(linkedPage)\n"
-        desc += "\twidgets: \(widgets)\n"
-        desc += "}"
-
-        return desc
-    }
-}
+//extension OHWidget : CustomStringConvertible {
+//    
+//    override public var description: String {
+//        var desc: String = ""
+//        desc += "OHWidget: {\n"
+//        desc += "\titem: \(item) \n"
+//        desc += "\twidgetId: \(widgetId)\n"
+//        desc += "\tlabel: \(label) \n"
+//        desc += "\ticon: \(icon) \n"
+//        desc += "\ttype: \(type) \n"
+//        desc += "\tlinkedPage: \(linkedPage)\n"
+//        desc += "\twidgets: \(widgets)\n"
+//        desc += "}"
+//
+//        return desc
+//    }
+//}

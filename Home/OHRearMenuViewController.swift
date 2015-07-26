@@ -23,7 +23,7 @@ class OHRearMenuViewController: UIViewController {
         tableView = UITableView(frame: CGRectZero, style: UITableViewStyle.Grouped)
         view.backgroundColor = UIColor(red: (236.0 / 255.0), green: (236.0 / 255.0), blue: (236.0 / 255.0), alpha: 1.0)
         
-        if var tableView = self.tableView {
+        if let tableView = self.tableView {
             view.addSubview(tableView)
             tableView.registerClass(OHRearMenuTableViewCell.self, forCellReuseIdentifier: "reuseIdentifier")
             tableView.frame = view.frame
@@ -38,18 +38,18 @@ class OHRearMenuViewController: UIViewController {
             footerView = OHRearMenuFooterView()
             view.addSubview(footerView!)
             
-            tableView.setTranslatesAutoresizingMaskIntoConstraints(false)
+            tableView.translatesAutoresizingMaskIntoConstraints = false
             headerView?.setWidth(tableView.frame.width)
             
-            var footerButton: UIButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
-            footerButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+            let footerButton: UIButton = UIButton(type: UIButtonType.Custom)
+            footerButton.translatesAutoresizingMaskIntoConstraints = false
             footerButton.setTitle("Settings".uppercaseString, forState: .Normal)
             footerButton.titleLabel?.font = OHDefaults.defaultFontWithSize(17)
             footerButton.setTitleColor(OHDefaults.defaultTextColor(), forState: .Normal)
             footerView!.addSubview(footerButton)
             footerButton.addTarget(self, action: "footerButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
             
-            footerView?.setTranslatesAutoresizingMaskIntoConstraints(false)
+            footerView?.translatesAutoresizingMaskIntoConstraints = false
             
             var views = [String: AnyObject]()
             views["footerView"] = footerView
@@ -58,31 +58,29 @@ class OHRearMenuViewController: UIViewController {
             
             view.addConstraint(NSLayoutConstraint(item: footerView!, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Height, multiplier: 0.0, constant:44.5))
             view.addConstraint(NSLayoutConstraint(item: footerView!, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant:0))
-            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[footerView]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
-            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(0)-[footerButton]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
-            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[footerButton]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[footerView]-(0)-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
+            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(0)-[footerButton]-(0)-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
+            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[footerButton]-(0)-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
             view.addConstraint(NSLayoutConstraint(item: tableView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: footerView, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant:0))
             view.addConstraint(NSLayoutConstraint(item: tableView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: headerView!, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant:0))
-            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[tableView]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[tableView]-(0)-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
         }
         
         updateMenu()
     }
     
     func footerButtonPressed(button: UIButton) {
-        var settingsViewController = OHSettingsViewController()
-        var navController = UINavigationController(rootViewController: settingsViewController)
+        let settingsViewController = OHSettingsViewController()
+        let navController = UINavigationController(rootViewController: settingsViewController)
         self.presentViewController(navController, animated: true, completion: nil)
     }
     
     func updateMenu() {
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        
         if var sitemaps = OHDataManager.sharedInstance.sitemaps {
-            var startIndex = sitemaps.startIndex
+            let startIndex = sitemaps.startIndex
             var sitemap = sitemaps[startIndex].1
             
-            if var currentSitemap = OHDataManager.sharedInstance.currentSitemap {
+            if let currentSitemap = OHDataManager.sharedInstance.currentSitemap {
                 sitemap = currentSitemap
             }
             
@@ -120,16 +118,16 @@ extension OHRearMenuViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         if var widgets = self.widgets {
-            if var sectionHeader = self.sectionHeaders[section] {
+            if let sectionHeader = self.sectionHeaders[section] {
                 return sectionHeader
             }
             else {
-                var button = OHRearMenuSectionHeader()
+                let button = OHRearMenuSectionHeader()
                 button.section = section
                 button.showSection = false
                 
                 sectionHeaders[section] = button
-                var widget = widgets[section]
+                let widget = widgets[section]
                 
                 button.setTitle(widget.label!.uppercaseString, forState: .Normal)
                 button.addTarget(self, action: "toggleSection:", forControlEvents: .TouchUpInside)
@@ -171,18 +169,16 @@ extension OHRearMenuViewController: UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var item = widgets![indexPath.section].linkedPage!.widgets![indexPath.row]
-
-        if var item = widgets![indexPath.section].linkedPage!.widgets![indexPath.row].item {
+        if let item = widgets![indexPath.section].linkedPage!.widgets![indexPath.row].item {
             if item.isLightFromTags() {
                 pushLightsController(widgets![indexPath.section].linkedPage!.widgets![indexPath.row])
             } else if item.hasTag("OH_Scene") {
                 item.sendCommand("ON")
                 tableView.deselectRowAtIndexPath(indexPath, animated: true)
             } else if item.hasTagWithPrefix("OH_Menu_Sitemap_") {
-                if var sitemapName = item.getTagWithoutPrefix("OH_Menu_Sitemap_") {
+                if let sitemapName = item.getTagWithoutPrefix("OH_Menu_Sitemap_") {
                     if var sitemaps = OHDataManager.sharedInstance.sitemaps {
-                        if var sitemap = sitemaps[sitemapName] {
+                        if let sitemap = sitemaps[sitemapName] {
                             OHDataManager.sharedInstance.currentSitemap = sitemap
                         }
                     }
@@ -193,17 +189,17 @@ extension OHRearMenuViewController: UITableViewDelegate {
     
     func pushLightsController(widget: OHWidget) {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        if var containerViewController = appDelegate.window?.rootViewController as? SWRevealViewController {
-            if var rootViewController = containerViewController.frontViewController as? OHRootViewController {
-                var vc = OHLightController()
+        if let containerViewController = appDelegate.window?.rootViewController as? SWRevealViewController {
+            if let rootViewController = containerViewController.frontViewController as? OHRootViewController {
+                let vc = OHLightController()
                 vc.title = widget.label
                 
-                if var bulbs = widget.linkedPage?.widgets {
+                if let bulbs = widget.linkedPage?.widgets {
                     vc.initWidget(bulbs)
                     var lights = [OHLight]()
                     
-                    for (index, bulb) in enumerate(bulbs) {
-                        var light = OHLight(widget: bulb)
+                    for (index, bulb) in bulbs.enumerate() {
+                        let light = OHLight(widget: bulb)
                         lights.append(light)
                     }
                     
@@ -225,8 +221,8 @@ extension OHRearMenuViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let sectionHeader = sectionHeaders[section] {
-            var button = sectionHeader
-            var numberOfItems = widgets?[section].linkedPage?.widgets?.count != nil ? widgets![section].linkedPage!.widgets!.count : 0
+            let button = sectionHeader
+            let numberOfItems = widgets?[section].linkedPage?.widgets?.count != nil ? widgets![section].linkedPage!.widgets!.count : 0
             
             return button!.showSection ? numberOfItems : 0
         } else {
@@ -236,13 +232,13 @@ extension OHRearMenuViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as! OHRearMenuTableViewCell
-        var numberOfItemsInSection = self.tableView(tableView, numberOfRowsInSection: indexPath.section)
+        let numberOfItemsInSection = self.tableView(tableView, numberOfRowsInSection: indexPath.section)
         cell.lineView.hidden = numberOfItemsInSection == indexPath.row + 1 ? true : false
         
-        var item = widgets![indexPath.section].linkedPage!.widgets![indexPath.row]
+        let item = widgets![indexPath.section].linkedPage!.widgets![indexPath.row]
         cell.textLabel?.text = item.label
         
-        if var iconName = item.item?.iconNameFromTags() {
+        if let iconName = item.item?.iconNameFromTags() {
             cell.imageView?.image = UIImage(named: iconName)?.imageWithRenderingMode(.AlwaysTemplate)
         }
         //TODO: reset image if there was no icon defined

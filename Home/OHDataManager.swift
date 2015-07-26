@@ -50,12 +50,12 @@ class OHDataManager: NSObject {
     }
     
     func updateItemsFromSitemaps() {
-        if var sitemaps = self.sitemaps {
-            for (key, sitemap) in sitemaps {
-                if var homepage = sitemap.homepage {
-                    var homepageItems = homepage.getItems()
+        if let sitemaps = self.sitemaps {
+            for (_, sitemap) in sitemaps {
+                if let homepage = sitemap.homepage {
+                    let homepageItems = homepage.getItems()
                     
-                    for (index, item) in homepageItems {
+                    for (_, item) in homepageItems {
                         items[item.link] = item
                     }
                 }
@@ -70,7 +70,7 @@ class OHDataManager: NSObject {
         if appDelegate.beaconManager == nil {
             var beacons = [OHBeacon]()
         
-            for(beacon, widget) in beaconWidget! {
+            for(beacon, _) in beaconWidget! {
                 beacons.append(beacon)
             }
         
@@ -88,33 +88,33 @@ class OHDataManager: NSObject {
 extension OHDataManager {
     
     func saveData() {
-        var path: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("sitemapsData") as NSString
+        let path: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("sitemapsData") as NSString
         
-        if var sitemaps = self.sitemaps {
+        if let sitemaps = self.sitemaps {
             NSKeyedArchiver.archiveRootObject(sitemaps, toFile: path as String)
         } else {
-            println("No Sitemaps to save")
+            print("No Sitemaps to save")
         }
         
-        if var currentSitemap = self.currentSitemap {
-            var currentSitemapPath: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("currentSitemapData") as NSString
+        if let currentSitemap = self.currentSitemap {
+            let currentSitemapPath: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("currentSitemapData") as NSString
             NSKeyedArchiver.archiveRootObject(currentSitemap, toFile: currentSitemapPath as String)
         }
     }
     
     func saveCurrentSitemap() {
-        if var currentSitemap = self.currentSitemap {
-            var currentSitemapPath: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("currentSitemapData") as NSString
+        if let currentSitemap = self.currentSitemap {
+            let currentSitemapPath: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("currentSitemapData") as NSString
             NSKeyedArchiver.archiveRootObject(currentSitemap, toFile: currentSitemapPath as String)
         }
     }
     
     func loadData() {
-        if var sitemaps = loadSitemapsData() {
+        if let sitemaps = loadSitemapsData() {
             self.sitemaps = sitemaps
         }
         
-        if var currentSitemap = loadCurrentSitemapData() {
+        if let currentSitemap = loadCurrentSitemapData() {
             self.currentSitemap = currentSitemap
         }
     }
@@ -122,11 +122,11 @@ extension OHDataManager {
     func loadSitemapsData() -> [String: OHSitemap]? {
         var sitemaps: [String: OHSitemap]?
         
-        var path: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("sitemapsData") as NSString
-        if var sitemapsFromDisc = NSKeyedUnarchiver.unarchiveObjectWithFile(path as String) as? [String: OHSitemap] {
+        let path: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("sitemapsData") as NSString
+        if let sitemapsFromDisc = NSKeyedUnarchiver.unarchiveObjectWithFile(path as String) as? [String: OHSitemap] {
             sitemaps = sitemapsFromDisc
         } else {
-            print("could not load data")
+            print("could not load data", appendNewline: false)
         }
         
         return sitemaps
@@ -134,12 +134,12 @@ extension OHDataManager {
     
     func loadCurrentSitemapData() -> OHSitemap? {
         var sitemap: OHSitemap?
-        var path: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("currentSitemapData") as NSString
+        let path: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("currentSitemapData") as NSString
         
-        if var currentSitemapFromDisc = NSKeyedUnarchiver.unarchiveObjectWithFile(path as String) as? OHSitemap {
+        if let currentSitemapFromDisc = NSKeyedUnarchiver.unarchiveObjectWithFile(path as String) as? OHSitemap {
             sitemap = currentSitemapFromDisc
         } else {
-            print("could not load current Sitemap data")
+            print("could not load current Sitemap data", appendNewline: false)
         }
         
         return sitemap
@@ -158,7 +158,7 @@ extension OHDataManager: OHRestManagerDelegate {
     func didGetSitemaps(sitemaps: [OHSitemap]) {
         var sitemapsDict = [String: OHSitemap]()
         
-        for (index, sitemap) in enumerate(sitemaps) {
+        for (_, sitemap) in sitemaps.enumerate() {
             sitemapsDict[sitemap.name] = sitemap
         }
         
@@ -169,7 +169,7 @@ extension OHDataManager: OHRestManagerDelegate {
             self.currentSitemap = self.sitemaps!.values.first
         } else {
             // update current sitemap if updated one exists
-            if var sitemap = self.sitemaps![self.currentSitemap!.name] {
+            if let sitemap = self.sitemaps![self.currentSitemap!.name] {
                 self.currentSitemap = sitemap
             }
         }

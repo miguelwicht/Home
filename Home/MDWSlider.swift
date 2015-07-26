@@ -14,7 +14,7 @@ class MDWSlider: UIControl {
     var rightImageView: UIImageView?
     var slider = UISlider()
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         addSubview(slider)
@@ -36,7 +36,7 @@ class MDWSlider: UIControl {
     }
     
     func addLeftImage(image: UIImage) {
-        if var leftImageView = self.leftImageView {
+        if let leftImageView = self.leftImageView {
             leftImageView.image = image
         } else {
             leftImageView = UIImageView(image: image)
@@ -45,7 +45,7 @@ class MDWSlider: UIControl {
     }
     
     func addRightImage(image: UIImage) {
-        if var rightImageView = self.rightImageView {
+        if let rightImageView = self.rightImageView {
             rightImageView.image = image
         } else {
             rightImageView = UIImageView(image: image)
@@ -59,13 +59,13 @@ class MDWSlider: UIControl {
         var leftMargin = CGFloat(0)
         var rightMargin = CGFloat(0)
         
-        if var leftImageView = self.leftImageView {
+        if let leftImageView = self.leftImageView {
             leftImageView.marginLeft = 0
             leftImageView.sizeToFit()
             leftMargin = leftImageView.neededSpaceWidth
         }
         
-        if var rightImageView = self.rightImageView {
+        if let rightImageView = self.rightImageView {
             rightImageView.marginRight = 0
             rightImageView.sizeToFit()
             rightMargin = frame.width - rightImageView.frame.origin.x

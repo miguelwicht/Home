@@ -16,7 +16,7 @@ class OHRearMenuSectionHeader: UIButton {
     var borderTop = UIView()
     var borderBottom = UIView()
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -29,8 +29,8 @@ class OHRearMenuSectionHeader: UIButton {
         setTitleColor(OHDefaults.defaultTextColor(), forState: .Normal)
         setTitleColor(OHDefaults.defaultTextColor(), forState: .Highlighted)
         
-        if var titleLabel = self.titleLabel {
-            titleLabel.font = OHDefaults.defaultFontWithSize(20)
+        if let titleLabel = self.titleLabel {
+            titleLabel.font = OHDefaults.defaultFontWithSize(18)
         }
         backgroundColor = OHDefaults.defaultMenuHeaderBackgroundColor()
         
@@ -45,7 +45,7 @@ class OHRearMenuSectionHeader: UIButton {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        if var titleLabel = self.titleLabel {
+        if let titleLabel = self.titleLabel {
             titleLabel.marginLeft = 15
             titleLabel.sizeToFit()
             titleLabel.centerViewVerticallyInSuperview()

@@ -25,7 +25,7 @@ class OHRearMenuTableViewCell: UITableViewCell {
         preservesSuperviewLayoutMargins = true
         
         textLabel?.textColor = OHDefaults.defaultTextColor()
-        textLabel?.font = OHDefaults.defaultFontWithSize(18)
+        textLabel?.font = OHDefaults.defaultFontWithSize(16)
         imageView?.image = UIImage(named: "bulb")?.imageWithRenderingMode(.AlwaysTemplate)
         imageView?.tintColor = OHDefaults.defaultTextColor()
         lineView.backgroundColor = UIColor(red: (194.0 / 255.0), green: (194.0 / 255.0), blue: (194.0 / 255.0), alpha: 1.0)
@@ -35,7 +35,7 @@ class OHRearMenuTableViewCell: UITableViewCell {
         selectedBackgroundView?.backgroundColor = OHDefaults.defaultCellBackgroundColorSelected()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -59,7 +59,7 @@ class OHRearMenuTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        if var imageView = self.imageView {
+        if let imageView = self.imageView {
             imageView.setHeight(30)
             imageView.setWidth(30)
             imageView.centerViewVerticallyInSuperview()

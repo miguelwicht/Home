@@ -56,7 +56,7 @@ import Foundation
         self.leaf = map["leaf"]?.stringValue
         self.homepageLink = map["homepageLink"]?.stringValue
         
-        if var hp = map["homepage"] {
+        if let hp = map["homepage"] {
             self.homepage = OHHomepage(homepage: hp)
         }
     }
@@ -64,8 +64,8 @@ import Foundation
     func roomsInSitemap() -> [OHWidget]? {
         var rooms: OHWidget?
         
-        if var homepage = self.homepage {
-            for (i, e) in enumerate(homepage.widgets!) {
+        if let homepage = self.homepage {
+            for (_, e) in (homepage.widgets!).enumerate() {
                 if e.label == "Rooms" {
                     rooms = e
                     break
@@ -79,8 +79,8 @@ import Foundation
     func menuFromSitemap() -> OHWidget? {
         var menuWidget: OHWidget?
         
-        if var homepage = self.homepage {
-            for (i, e) in enumerate(homepage.widgets!) {
+        if let homepage = self.homepage {
+            for (_, e) in (homepage.widgets!).enumerate() {
                 if e.label == "Menu" {
                     menuWidget = e
                     break
@@ -93,19 +93,19 @@ import Foundation
 }
 
 //MARK: - Printable
-extension OHSitemap : Printable {
-    
-    override public var description:String {
-        let className = reflect(self).summary
-        var desc:String = ""
-        desc += "\n\(className):\n{\n"
-        desc += "\tname: \(self.name),\n"
-        desc += "\tlabel: \(self.label),\n"
-        desc += "\tlink: \(self.link),\n"
-        desc += "\tleaf: \(self.leaf),\n"
-        desc += "\thomepageLink: \(self.homepageLink)\n}"
-        desc += "\thomepage: \(self.homepage)\n"
-        
-        return desc
-    }
-}
+//extension OHSitemap : CustomStringConvertible {
+//    
+//    override public var description:String {
+//        let className = reflect(self).summary
+//        var desc:String = ""
+//        desc += "\n\(className):\n{\n"
+//        desc += "\tname: \(self.name),\n"
+//        desc += "\tlabel: \(self.label),\n"
+//        desc += "\tlink: \(self.link),\n"
+//        desc += "\tleaf: \(self.leaf),\n"
+//        desc += "\thomepageLink: \(self.homepageLink)\n}"
+//        desc += "\thomepage: \(self.homepage)\n"
+//        
+//        return desc
+//    }
+//}

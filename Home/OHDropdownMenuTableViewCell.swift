@@ -14,7 +14,7 @@ class OHDropdownMenuTableViewCell: UITableViewCell {
         super.awakeFromNib()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -45,7 +45,7 @@ class OHDropdownMenuTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        if var imageView = self.imageView {
+        if let imageView = self.imageView {
             imageView.setHeight(40)
             imageView.setWidth(40)
             imageView.centerViewVerticallyInSuperview()

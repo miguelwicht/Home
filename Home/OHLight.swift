@@ -8,7 +8,7 @@
 
 import Foundation
 
-@objc public class OHLight {
+public class OHLight {
     
     public var dimmer: OHItem?
     public var color: OHItem?
@@ -23,9 +23,9 @@ import Foundation
     public init(widget: OHWidget) {
         self.widget = widget
         
-        if var widgets = self.widget?.linkedPage?.widgets {
-            for (index, w) in enumerate(widgets) {
-                if var item = w.item {
+        if let widgets = self.widget?.linkedPage?.widgets {
+            for (_, w) in widgets.enumerate() {
+                if let item = w.item {
                     if item.type == "ColorItem" {
                         color = item
                     } else if (item.type == "DimmerItem") {
@@ -37,27 +37,27 @@ import Foundation
     }
     
     public func setColorValue(value: String) {
-        if var color = self.color {
+        if let color = self.color {
             color.sendCommand(value)
         }
     }
     
     public func setDimmerValue(value: Int) {
-        if var dimmer = self.dimmer {
+        if let dimmer = self.dimmer {
             dimmer.sendCommand("\(value)")
             dimmer.state = "\(value)"
         }
     }
     
     public func setState(state: String) {
-        if var dimmer = self.dimmer {
+        if let dimmer = self.dimmer {
             dimmer.sendCommand("\(state)")
         }
     }
 }
 
 //MARK: OHLight: Printable
-extension OHLight : Printable {
+extension OHLight : CustomStringConvertible {
     
     public var description: String {
         var desc = ""

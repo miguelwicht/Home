@@ -45,12 +45,12 @@ extension OHRestManager {
             data, response, error in
             
             if error != nil {
-                println("error=\(error)")
+                print("error=\(error)")
                 return
             }
             
-            let responseString = NSString(data: data, encoding: NSUTF8StringEncoding)
-            let json = JSON(data: data).dictionaryValue
+            let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            let json = JSON(data: data!).dictionaryValue
         }
         task.resume()
     }
@@ -69,27 +69,27 @@ extension OHRestManager {
             data, response, error in
                 
             if error != nil {
-                println("error=\(error)")
+                print("error=\(error)")
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
 //                    NSNotificationCenter.defaultCenter().postNotificationName("OHRestManagerCouldNotLoadData", object:self, userInfo: 
-                    var userInfo: [String: String] = ["error": error.localizedDescription]
+                    let userInfo: [String: String] = ["error": error!.localizedDescription]
                     NSNotificationCenter.defaultCenter().postNotificationName(OHRestManagerConnectionDidFailNotification, object: self, userInfo: userInfo)
                 })
                 return
             }
             
-            let json = JSON(data: data).arrayValue
+            let json = JSON(data: data!).arrayValue
             var sitemaps: [OHSitemap] = [OHSitemap]()
             
-            for(index, element) in enumerate(json) {
+            for(_, element) in json.enumerate() {
                 var elementDict = element.dictionaryValue
                 var homepageDict = elementDict["homepage"]!.dictionaryValue
-                var name: String = elementDict["name"] != nil ? elementDict["name"]!.stringValue : ""
-                var link: String = elementDict["link"] != nil ? elementDict["link"]!.stringValue : ""
-                var label: String = elementDict["label"] != nil ? elementDict["label"]!.stringValue : ""
-                var leaf: String = homepageDict["leaf"] != nil ? homepageDict["leaf"]!.stringValue : ""
-                var homepageLink: String = homepageDict["link"] != nil ? homepageDict["link"]!.stringValue : ""
-                var sitemap: OHSitemap = OHSitemap(name: name, icon: "", label: label, link: link, leaf: leaf, homepageLink: homepageLink)
+                let name: String = elementDict["name"] != nil ? elementDict["name"]!.stringValue : ""
+                let link: String = elementDict["link"] != nil ? elementDict["link"]!.stringValue : ""
+                let label: String = elementDict["label"] != nil ? elementDict["label"]!.stringValue : ""
+                let leaf: String = homepageDict["leaf"] != nil ? homepageDict["leaf"]!.stringValue : ""
+                let homepageLink: String = homepageDict["link"] != nil ? homepageDict["link"]!.stringValue : ""
+                let sitemap: OHSitemap = OHSitemap(name: name, icon: "", label: label, link: link, leaf: leaf, homepageLink: homepageLink)
                 if sitemap.name != "_default" {
                     sitemaps.append(sitemap)
                 }
@@ -103,7 +103,7 @@ extension OHRestManager {
     }
     
     func getSitemapInBackground(url: String) {
-        var semaphore: dispatch_semaphore_t = dispatch_semaphore_create(0);
+        let semaphore: dispatch_semaphore_t = dispatch_semaphore_create(0);
         
         let request = NSMutableURLRequest(URL: NSURL(string: url)!)
         request.HTTPMethod = "GET"
@@ -113,11 +113,11 @@ extension OHRestManager {
             data, response, error in
             
             if error != nil {
-                println("error=\(error)")
+                print("error=\(error)")
                 return
             }
         
-            let json = JSON(data: data)
+            let json = JSON(data: data!)
             let sitemap = OHSitemap(sitemap: json)
             self.sitemaps.append(sitemap)
             
@@ -130,9 +130,9 @@ extension OHRestManager {
 
     func getMultipleSitemaps(sitemaps: [OHSitemap]) {
         self.sitemaps = [OHSitemap]()
-        var group: dispatch_group_t = dispatch_group_create()
+        let group: dispatch_group_t = dispatch_group_create()
         
-        for (index, sitemap) in enumerate(sitemaps) {
+        for (_, sitemap) in sitemaps.enumerate() {
             dispatch_group_enter(group)
         
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
@@ -143,7 +143,7 @@ extension OHRestManager {
         }
         
         dispatch_group_notify(group, dispatch_get_main_queue()) { () -> Void in
-            var sitemaps = self.sitemaps
+            //var sitemaps = self.sitemaps
             self.delegate?.didGetSitemaps?(self.sitemaps)
             self.sitemaps = [OHSitemap]()
         }

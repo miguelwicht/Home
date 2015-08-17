@@ -12,7 +12,7 @@ class PowerButton: ButtonWithCustomBackgroundSize {
     
     var iconView: UIImageView = UIImageView()
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         iconView.image = UIImage(named: "power")

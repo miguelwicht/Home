@@ -22,7 +22,7 @@ class OHWidgetCell: UICollectionViewCell {
         initOutlets()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         calculateTextHeight()
         initOutlets()
@@ -55,23 +55,23 @@ class OHWidgetCell: UICollectionViewCell {
         views["label"] = label
         views["selectedIcon"] = selectedIcon
         
-        imageView.setTranslatesAutoresizingMaskIntoConstraints(false)
-        label.setTranslatesAutoresizingMaskIntoConstraints(false)
-        selectedIcon.setTranslatesAutoresizingMaskIntoConstraints(false)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        label.translatesAutoresizingMaskIntoConstraints = false
+        selectedIcon.translatesAutoresizingMaskIntoConstraints = false
         calculateTextHeight()
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[imageView]-(==5@999)-[label(==\(textHeight!)@1000)]|", options: nil, metrics: nil, views: views))
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[imageView]|", options: nil, metrics: nil, views: views))
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[label]|", options: nil, metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[imageView]-(==5@999)-[label(==\(textHeight!)@1000)]|", options: [], metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[imageView]|", options: [], metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[label]|", options: [], metrics: nil, views: views))
         
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[selectedIcon]-(10)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[selectedIcon]-(10)-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
         addConstraint(NSLayoutConstraint(item: selectedIcon, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: label, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: -2))
         addConstraint(NSLayoutConstraint(item: selectedIcon, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: label, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: -2))
     }
     
     func calculateTextHeight() {
-        var dummyText: NSString = "LoremIpsumg"
-        var font = OHDefaults.defaultLightFontWithSize(14)!
-        var textSize: CGSize = dummyText.sizeWithAttributes([NSFontAttributeName:font])
+        let dummyText: NSString = "LoremIpsumg"
+        let font = OHDefaults.defaultLightFontWithSize(14)!
+        let textSize: CGSize = dummyText.sizeWithAttributes([NSFontAttributeName:font])
         textHeight = textSize.height
     }
     

@@ -18,7 +18,7 @@ public class OHSitemapParser {
     }
     
     func getWidgets() -> [OHWidget] {
-        var widgets = self.sitemap.homepage!.widgets!
+        let widgets = self.sitemap.homepage!.widgets!
         return widgets
     }
     
@@ -26,7 +26,7 @@ public class OHSitemapParser {
     static func parseWidgets(widgets: [JSON]) -> [OHWidget] {
         var widgetObjects: [OHWidget] = [OHWidget]()
         
-        for (index, element) in enumerate(widgets) {
+        for (_, element) in widgets.enumerate() {
             widgetObjects.append(OHWidget(widget: element.dictionaryValue))
         }
         

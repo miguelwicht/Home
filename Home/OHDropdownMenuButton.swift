@@ -10,7 +10,7 @@ import UIKit
 
 class OHDropdownMenuButton: UIButton {
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -18,7 +18,7 @@ class OHDropdownMenuButton: UIButton {
         super.init(frame: frame)
         
         self.setImage(UIImage(named: "arrow_down"), forState: .Normal)
-        var normalColor = UIColor(red: (68.0 / 255.0), green: (68.0 / 255.0), blue: (68.0 / 255.0), alpha: 1.0)
+        let normalColor = UIColor(red: (68.0 / 255.0), green: (68.0 / 255.0), blue: (68.0 / 255.0), alpha: 1.0)
         self.tintColor = normalColor
         setTitleColor(normalColor, forState: .Normal)
         titleLabel?.font = OHDefaults.defaultFontWithSize(30)
@@ -28,18 +28,18 @@ class OHDropdownMenuButton: UIButton {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        var spacerWidth: CGFloat = 10.0
-        var buttonContentWidth = titleLabel!.frame.width + spacerWidth + imageView!.frame.width
+        let spacerWidth: CGFloat = 10.0
+        let buttonContentWidth = titleLabel!.frame.width + spacerWidth + imageView!.frame.width
         
         if buttonContentWidth > self.frame.width - 30 {
             self.titleLabel?.setWidth(self.frame.width - 30 - spacerWidth - imageView!.frame.width)
         }
 
         var imageViewSize = self.imageView?.frame
-        var marginLeft = (frame.width - (imageViewSize!.width + self.titleLabel!.frame.width + spacerWidth)) / 2
+        let marginLeft = (frame.width - (imageViewSize!.width + self.titleLabel!.frame.width + spacerWidth)) / 2
         
         self.titleLabel!.marginLeft = marginLeft
-        var pos = titleLabel!.neededSpaceWidth + spacerWidth
+        let pos = titleLabel!.neededSpaceWidth + spacerWidth
         
         imageView!.marginLeft = pos
         

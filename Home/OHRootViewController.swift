@@ -10,13 +10,13 @@ import UIKit
 
 class OHRootViewController: UINavigationController {
     
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        super.init(nibName: nil, bundle: nil)
-    }
+//    required init?(coder aDecoder: NSCoder) {
+//        super.init(coder: aDecoder)
+//    }
+//    
+//    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+//        super.init(nibName: nil, bundle: nil)
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,9 +26,9 @@ class OHRootViewController: UINavigationController {
         super.loadView()
         
         var sitemaps = OHDataManager.sharedInstance.sitemaps!
-        var startIndex = sitemaps.startIndex
+        let startIndex = sitemaps.startIndex
         
-        if var menuViewController = revealViewController().rearViewController as? OHRearMenuViewController {
+        if let menuViewController = revealViewController().rearViewController as? OHRearMenuViewController {
             menuViewController.updateMenu()
         }
         
@@ -56,13 +56,11 @@ class OHRootViewController: UINavigationController {
 extension OHRootViewController {
     
     func sitemapDidChangeHandler() {
-        var dataManager = OHDataManager.sharedInstance
-        
-        if var currentSitemap = OHDataManager.sharedInstance.currentSitemap {
+        if let currentSitemap = OHDataManager.sharedInstance.currentSitemap {
             self.popToRootViewControllerAnimated(false)
             self.pushViewControllerWithSitemap(currentSitemap)
             
-            if var menuViewController = revealViewController().rearViewController as? OHRearMenuViewController {
+            if let menuViewController = revealViewController().rearViewController as? OHRearMenuViewController {
                 menuViewController.updateMenu()
             }
             
@@ -71,12 +69,12 @@ extension OHRootViewController {
     }
     
     func initSettings() {
-        var settingsVC = OHSettingsViewController()
+        let settingsVC = OHSettingsViewController()
         self.presentViewController(settingsVC, animated: true, completion: nil)
     }
     
     func pushViewControllerWithSitemap(sitemap: OHSitemap) {
-        var vc: OHRoomsViewController = OHRoomsViewController(sitemap: sitemap)
+        let vc: OHRoomsViewController = OHRoomsViewController(sitemap: sitemap)
         vc.title = sitemap.label
         self.pushViewController(vc, animated: false)
     }

@@ -14,20 +14,20 @@ class OHSitemapsTableViewController: UIViewController {
     var restManager: OHRestManager?
     var sitemaps: [OHSitemap] = []
     
-    required init(coder aDecoder: NSCoder)
+    required init?(coder aDecoder: NSCoder)
     {
         let defaults = NSUserDefaults.standardUserDefaults()
         
         if let url = defaults.objectForKey("SettingsOpenHABURL") as? String {
             self.restManager = OHRestManager(baseUrl: url)
-            println("URL: \(url)")
+            print("URL: \(url)")
         } else {
-            println("no url")
+            print("no url")
         }
         
         super.init(coder: aDecoder)
         
-        if var restManager = self.restManager {
+        if let restManager = self.restManager {
             restManager.delegate = self
         }
     }
@@ -48,7 +48,7 @@ extension OHSitemapsTableViewController: UITableViewDelegate
 //        println("You selected cell #\(indexPath.row)!")
         //self.restManager.getSitemap(self.sitemaps[indexPath.row].name)
         
-        println(self.sitemaps[indexPath.row])
+        print(self.sitemaps[indexPath.row])
 //
 //        var homepage = self.sitemaps[indexPath.row].homepage!
 //        
@@ -62,14 +62,14 @@ extension OHSitemapsTableViewController: UITableViewDelegate
 //        var widgets = widget!.widgets
         
         
-        var rooms = self.sitemaps[indexPath.row].roomsInSitemap()
+//        var rooms = self.sitemaps[indexPath.row].roomsInSitemap()
         
         
 //        println("widgets to pass: \(widgets)")
         
 //        var vc: OHRoomsViewController = OHRoomsViewController(rooms: rooms!)
         
-        var vc: OHRoomsViewController = OHRoomsViewController(sitemap: self.sitemaps[indexPath.row])
+        let vc: OHRoomsViewController = OHRoomsViewController(sitemap: self.sitemaps[indexPath.row])
         
         self.presentViewController(vc, animated: true, completion: nil)
     }
@@ -83,7 +83,7 @@ extension OHSitemapsTableViewController: UITableViewDataSource
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("cell") as! UITableViewCell
+        let cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("cell")!
         
         cell.textLabel?.text = self.sitemaps[indexPath.row].name
         
@@ -95,11 +95,11 @@ extension OHSitemapsTableViewController: UITableViewDataSource
 extension OHSitemapsTableViewController: OHRestManagerDelegate
 {
     func didGetItems(items: [JSON]) {
-        println(items)
+        print(items)
     }
     
     func didGetBeacons(beacons: [OHBeacon]) {
-        println(beacons)
+        print(beacons)
     }
     
 //    func didGetSitemaps(sitemaps: [OHSitemap]) {

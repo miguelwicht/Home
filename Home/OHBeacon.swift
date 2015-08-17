@@ -40,34 +40,31 @@ import Foundation
         self.minor = minor
         self.link = link
     }
-}
-
-//MARK: - Printable
-extension OHBeacon : Printable {
-
-    override public var description: String {
-        var desc = ""
-        desc += "OpenhabBeacon: {\n"
-        desc += "\tuuid: \(uuid), \n"
-        desc += "\tmajor: \(major), \n"
-        desc += "\tminor: \(minor), \n"
-        desc += "\tproximity: \(proximity)\n"
-        desc += "\trssi: \(rssi)\n"
-        desc += "\tlink: \(link) \n"
-        desc += "}"
-        
-        return desc
-    }
-}
-
-//MARK: - Hashable
-extension OHBeacon: Hashable {
+    
     override public var hashValue: Int {
         get {
             return "\(self.uuid) - \(self.major) - \(self.minor)".hashValue
         }
     }
 }
+
+//MARK: - Printable
+//extension OHBeacon : CustomStringConvertible {
+//
+//    override public var description: String {
+//        var desc = ""
+//        desc += "OpenhabBeacon: {\n"
+//        desc += "\tuuid: \(uuid), \n"
+//        desc += "\tmajor: \(major), \n"
+//        desc += "\tminor: \(minor), \n"
+//        desc += "\tproximity: \(proximity)\n"
+//        desc += "\trssi: \(rssi)\n"
+//        desc += "\tlink: \(link) \n"
+//        desc += "}"
+//        
+//        return desc
+//    }
+//}
 
 //MARK: - Equatable
 public func ==(lhs: OHBeacon, rhs: OHBeacon) -> Bool {

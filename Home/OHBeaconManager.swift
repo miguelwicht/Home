@@ -39,7 +39,7 @@ class OHBeaconManager : NSObject {
     convenience init(beacons:[OHBeacon]) {
         self.init()
         
-        createBeaconRegionsFromBeacons(beacons)
+        beaconRegions = createBeaconRegionsFromBeacons(beacons)
         initLocationManager()
     }
     
@@ -47,22 +47,22 @@ class OHBeaconManager : NSObject {
         return CLLocationManager.authorizationStatus()
     }
     
-    func createBeaconRegionsFromBeacons(beacons: [OHBeacon]) {
-        
+    /// Creates the corresponding regions from a list of beacons
+    /// - parameter beacons: beacons that should be used for finding regions
+    func createBeaconRegionsFromBeacons(beacons: [OHBeacon]) -> [CLBeaconRegion]? {
         var regions = [CLBeaconRegion]()
-        // regionIdentifiers have to be different for every region!!!
-        let beaconIdentifier = "miguelwicht.com"
         
-        for (index, beacon) in enumerate(beacons) {
-            var beaconUUID = NSUUID(UUIDString: beacon.uuid)
+        for (_, beacon) in beacons.enumerate() {
+            let beaconUUID = NSUUID(UUIDString: beacon.uuid)
             
-            if var uuid = beaconUUID {
-                var beaconRegion: CLBeaconRegion = CLBeaconRegion(proximityUUID: beaconUUID, identifier: "\(uuid.UUIDString)")
+            if let uuid = beaconUUID {
+                // regionIdentifiers have to be different for every region!!!
+                let beaconRegion: CLBeaconRegion = CLBeaconRegion(proximityUUID: beaconUUID!, identifier: "\(uuid.UUIDString)")
                 
                 var regionAlreadyAdded = false
                 
-                for(i, element) in enumerate(regions) {
-                    println(element.proximityUUID.UUIDString)
+                for(_, element) in regions.enumerate() {
+                    print(element.proximityUUID.UUIDString)
                     if element.proximityUUID.UUIDString == uuid.UUIDString {
                         regionAlreadyAdded = true
                     }
@@ -74,9 +74,7 @@ class OHBeaconManager : NSObject {
             }
         }
         
-        if regions.count > 0 {
-            beaconRegions = regions
-        }
+        return regions.count > 0 ? regions : nil
     }
     
     func initLocationManager() {
@@ -87,14 +85,8 @@ class OHBeaconManager : NSObject {
         locationManager.delegate = self
         locationManager.pausesLocationUpdatesAutomatically = false
         
-        if var beaconRegions = self.beaconRegions {
+        if let beaconRegions = self.beaconRegions {
             locationManager.startMonitoringForRegions(beaconRegions)
-            
-//            for (i, region) in enumerate(beaconRegions)
-//            {
-//                locationManager.startMonitoringForRegion(region)
-//                locationManager.startRangingBeaconsInRegion(region)
-//            }
         }
 
 //        locationManager.startRangingBeaconsInRegion(region)
@@ -106,21 +98,30 @@ class OHBeaconManager : NSObject {
         regionsToRange = self.beaconRegions
         rangedRegions = [CLBeaconRegion]()
         
-        if var regions = beaconRegions {
-            var interval = NSTimeInterval(5)
+        if let regions = beaconRegions {
+            let interval = NSTimeInterval(5)
             startRangingBeaconsInRegions(regions, forTime: interval)
         }
     }
     
+    /// Starts ranging for beacons in mulitple regions and stops after the defined interval.
+    /// If there is only one region the interval is ignored.
+    /// - parameter regions: The regions that should be ranged.
+    /// - parameter time: Interval defining how long should be ranged for beacons if there are multiple regions.
     func startRangingBeaconsInRegions(regions: [CLBeaconRegion], forTime time: NSTimeInterval) {
-        println("startRangingBeacons")
+        print("startRangingBeacons")
         locationManager.startRangingBeaconsInRegions(regions)
-        rangingTimer = NSTimer.scheduledTimerWithTimeInterval(time, target: self, selector: Selector("stopRangingBeaconsInRegionsHandler"), userInfo: nil, repeats: false)
+        
+        // if we only have one region we don't need a timer
+        if regionsToRange?.count > 1 {
+            rangingTimer = NSTimer.scheduledTimerWithTimeInterval(time, target: self, selector: Selector("stopRangingBeaconsInRegionsHandler"), userInfo: nil, repeats: false)
+        }
     }
     
+    /// Stops ranging all regions
     func stopRangingBeaconsInRegionsHandler() {
-        println("stopRangingBeacons")
-        if var regionsToRange = self.regionsToRange {
+        print("stopRangingBeacons")
+        if let regionsToRange = self.regionsToRange {
             locationManager.stopRangingBeaconsInRegions(regionsToRange)
             getNearestRangedBeacon()
         }
@@ -128,45 +129,18 @@ class OHBeaconManager : NSObject {
     
 }
 
-extension CLLocationManager {
-    
-    func startRangingBeaconsInRegions(regions: [CLBeaconRegion]) {
-        for (i, region) in enumerate(regions) {
-            startRangingBeaconsInRegion(region)
-        }
-    }
-    
-    func stopRangingBeaconsInRegions(regions: [CLBeaconRegion]) {
-        for (i, region) in enumerate(regions) {
-            stopRangingBeaconsInRegion(region)
-        }
-    }
-    
-    func startMonitoringForRegions(regions: [CLBeaconRegion]) {
-        for (i, region) in enumerate(regions) {
-            startMonitoringForRegion(region)
-        }
-    }
-    
-    func stopMonitoringForRegions(regions: [CLBeaconRegion]) {
-        for (i, region) in enumerate(regions) {
-            stopMonitoringForRegion(region)
-        }
-    }
-}
-
 extension OHBeaconManager {
     
-    // adds Beacons as OHBeacons to array without adding them mulitple times
+    /// Adds Beacons as OHBeacons to array without adding them mulitple times
     func addBeaconsToList(beacons: [CLBeacon]) {
-        for(i, element) in enumerate(beacons) {
-            var beacon = OHBeacon(uuid: element.proximityUUID.UUIDString, major: element.major.integerValue, minor: element.minor.integerValue, link: "")
+        for(_, element) in beacons.enumerate() {
+            let beacon = OHBeacon(uuid: element.proximityUUID.UUIDString, major: element.major.integerValue, minor: element.minor.integerValue, link: "")
             beacon.proximity = element.proximity.rawValue
             beacon.rssi = element.rssi
 
-            if var currentBeaconsInRange = self.currentBeaconsInRange {
-                if contains(self.currentBeaconsInRange!, beacon) {
-                    var index = find(self.currentBeaconsInRange!, beacon)
+            if var _ = self.currentBeaconsInRange {
+                if (self.currentBeaconsInRange!).contains(beacon) {
+                    let index = (self.currentBeaconsInRange!).indexOf(beacon)
                     
                     if index != nil {
                         if self.currentBeaconsInRange![index!].proximity != CLProximity.Unknown.rawValue {
@@ -183,12 +157,12 @@ extension OHBeaconManager {
     }
     
     func getNearestRangedBeacon() {
-        println("getNearestBeacon")
+        print("getNearestBeacon")
         var nearestBeacon: OHBeacon?
         
-        if var currentBeaconsInRange = self.currentBeaconsInRange {
-            for(i, element) in enumerate(currentBeaconsInRange) {
-                if var beacon = nearestBeacon {
+        if let currentBeaconsInRange = self.currentBeaconsInRange {
+            for(_, element) in currentBeaconsInRange.enumerate() {
+                if let beacon = nearestBeacon {
                     nearestBeacon = (beacon.rssi! >= element.rssi! && beacon.rssi! != 0) ? beacon : element
                 }
                 else {
@@ -205,38 +179,35 @@ extension OHBeaconManager {
 
 extension OHBeaconManager: CLLocationManagerDelegate {
     
-    func locationManager(manager: CLLocationManager!, didRangeBeacons beacons: [AnyObject]!, inRegion region: CLBeaconRegion!) {
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    func locationManager(manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], inRegion region: CLBeaconRegion) {
+        if let _ = beacons.first {
+            addBeaconsToList(beacons)
+        }
         
-        if var beacon = beacons.first as? CLBeacon {
-            addBeaconsToList(beacons as! [CLBeacon])
-            
-            var beaconOH = OHBeacon(uuid: beacon.proximityUUID.UUIDString, major: beacon.major.integerValue, minor: beacon.minor.integerValue, link: "")
-            var room = OHDataManager.sharedInstance.beaconWidget![beaconOH]
+        // if we only have one region we can stop ranging at this point
+        if regionsToRange?.count <= 1 {
+            stopRangingBeaconsInRegionsHandler()
         }
     }
     
-    func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
+    func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
 //        manager.startRangingBeaconsInRegion(region as! CLBeaconRegion)
         manager.startUpdatingLocation()
         
         NSNotificationCenter.defaultCenter().postNotificationName(OHBeaconManagerDidEnterRegionNotification, object: region)
     }
     
-    func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
+    func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
 //        manager.stopRangingBeaconsInRegion(region as! CLBeaconRegion)
         manager.stopUpdatingLocation()
         
         NSNotificationCenter.defaultCenter().postNotificationName(OHBeaconManagerDidExitRegionNotification, object: region)
     }
     
-}
-
-extension OHBeaconManager: CLLocationManagerDelegate {
-    
-    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == CLAuthorizationStatus.AuthorizedAlways || status == CLAuthorizationStatus.AuthorizedWhenInUse {
             manager.startUpdatingLocation()
         }
     }
+    
 }

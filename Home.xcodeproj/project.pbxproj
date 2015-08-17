@@ -15,6 +15,7 @@
 		223C7FB61AE79FF90079A41C /* OHRestParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223C7FB51AE79FF90079A41C /* OHRestParser.swift */; };
 		223C7FB81AE7C4040079A41C /* OHHomepage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223C7FB71AE7C4040079A41C /* OHHomepage.swift */; };
 		22599E621B0A13EC00EE7558 /* OHBeaconManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22599E611B0A13EC00EE7558 /* OHBeaconManager.swift */; };
+		225B400A1B765A6700BB3E83 /* CLLocationManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225B40091B765A6700BB3E83 /* CLLocationManager+Extension.swift */; };
 		226DC8D01B2881820070D23E /* OHButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226DC8CF1B2881820070D23E /* OHButton.swift */; };
 		226DC8D21B28A1210070D23E /* OHLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226DC8D11B28A1210070D23E /* OHLoadingView.swift */; };
 		226F9E7B1B0CC97D00231D5C /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 226F9E7A1B0CC97D00231D5C /* SWRevealViewController.m */; };
@@ -83,6 +84,7 @@
 		223C7FB51AE79FF90079A41C /* OHRestParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHRestParser.swift; sourceTree = "<group>"; };
 		223C7FB71AE7C4040079A41C /* OHHomepage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHHomepage.swift; sourceTree = "<group>"; };
 		22599E611B0A13EC00EE7558 /* OHBeaconManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHBeaconManager.swift; sourceTree = "<group>"; };
+		225B40091B765A6700BB3E83 /* CLLocationManager+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CLLocationManager+Extension.swift"; sourceTree = "<group>"; };
 		226DC8CF1B2881820070D23E /* OHButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHButton.swift; sourceTree = "<group>"; };
 		226DC8D11B28A1210070D23E /* OHLoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OHLoadingView.swift; sourceTree = "<group>"; };
 		226F9E791B0CC97D00231D5C /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
@@ -222,7 +224,6 @@
 				22C632F21B04BD6A00BB0A17 /* Deprecated */,
 				22C632F41B04E42400BB0A17 /* Home-Bridging-Header.h */,
 			);
-			name = Home;
 			path = Home;
 			sourceTree = "<group>";
 		};
@@ -245,7 +246,6 @@
 				22D4879D1B361418008533B8 /* HomeTests.swift */,
 				227DDC3D1ADBE25B001EAE08 /* Supporting Files */,
 			);
-			name = HomeTests;
 			path = HomeTests;
 			sourceTree = "<group>";
 		};
@@ -285,6 +285,7 @@
 				226DC8CF1B2881820070D23E /* OHButton.swift */,
 				226DC8D11B28A1210070D23E /* OHLoadingView.swift */,
 				22AB93991B31F1C800990BFC /* MDWNotificationController.swift */,
+				225B40091B765A6700BB3E83 /* CLLocationManager+Extension.swift */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -409,8 +410,9 @@
 		227DDC1C1ADBE25A001EAE08 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0630;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Miguel dos Santos Vaz Dias Wicht";
 				TargetAttributes = {
 					227DDC231ADBE25A001EAE08 = {
@@ -476,6 +478,7 @@
 				22E83C0C1ADEACFD0055B77A /* OHLinkedPage.swift in Sources */,
 				22AB939A1B31F1C800990BFC /* MDWNotificationController.swift in Sources */,
 				22C7EFF51B258A5E00A430C4 /* UIColor+Extension.swift in Sources */,
+				225B400A1B765A6700BB3E83 /* CLLocationManager+Extension.swift in Sources */,
 				221D82AC1B10AD89007135F1 /* OHRearMenuHeaderView.swift in Sources */,
 				221AA8631B074651008805A5 /* OHDropdownMenuButton.swift in Sources */,
 				223C7FB61AE79FF90079A41C /* OHRestParser.swift in Sources */,
@@ -580,6 +583,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -651,6 +655,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Home/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.miguelwicht.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Home;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Home/Home-Bridging-Header.h";
@@ -667,6 +672,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Home/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.miguelwicht.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Home;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Home/Home-Bridging-Header.h";
@@ -687,6 +693,7 @@
 				);
 				INFOPLIST_FILE = HomeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.miguelwicht.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = HomeTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Home.app/Home";
 			};
@@ -702,6 +709,7 @@
 				);
 				INFOPLIST_FILE = HomeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.miguelwicht.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = HomeTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Home.app/Home";
 			};

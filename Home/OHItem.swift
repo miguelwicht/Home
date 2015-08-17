@@ -59,13 +59,13 @@ public class OHItem: NSObject {
     func addTags(tags: [JSON]) {
         self.tags = [String]()
         
-        for(index, tag) in enumerate(tags) {
+        for(_, tag) in tags.enumerate() {
             self.tags?.append(tag.stringValue)
         }
     }
     
     public func stateAsInt() -> Int {
-        return state.toInt()!
+        return Int(state)!
     }
     
     public func stateAsFloat() -> Float {
@@ -103,12 +103,12 @@ public class OHItem: NSObject {
             data, response, error in
             
             if error != nil {
-                println("error=\(error)")
+                print("error=\(error)")
                 return
             }
             
-            let responseString = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println(responseString)
+            let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print(responseString)
             
             self.updateState()
         }
@@ -125,15 +125,15 @@ public class OHItem: NSObject {
             data, response, error in
             
             if error != nil {
-                println("error=\(error)")
+                print("error=\(error)")
                 return
             }
             
-            let responseString = NSString(data: data, encoding: NSUTF8StringEncoding)
-            println(responseString)
+            let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print(responseString)
             
-            var json = JSON(data: data)
-            var item = OHItem(item: json)
+            let json = JSON(data: data!)
+            let item = OHItem(item: json)
             self.state = item.state
         }
         task.resume()
@@ -141,21 +141,21 @@ public class OHItem: NSObject {
 }
 
 //MARK: OHSitemap: Printable
-extension OHItem : Printable {
-    
-    override public var description:String {
-        let className = reflect(self).summary
-        var desc:String = ""
-        desc += "\n\(className):\n{\n"
-        desc += "\tname: \(self.type),\n"
-        desc += "\tlabel: \(self.name),\n"
-        desc += "\tstate: \(self.state),\n"
-        desc += "\tlink: \(self.link),\n"
-        desc += "\ttags: \(self.tags),\n"
-        
-        return desc
-    }
-}
+//extension OHItem : CustomStringConvertible {
+//    
+//    override public var description:String {
+//        let className = reflect(self).summary
+//        var desc:String = ""
+//        desc += "\n\(className):\n{\n"
+//        desc += "\tname: \(self.type),\n"
+//        desc += "\tlabel: \(self.name),\n"
+//        desc += "\tstate: \(self.state),\n"
+//        desc += "\tlink: \(self.link),\n"
+//        desc += "\ttags: \(self.tags),\n"
+//        
+//        return desc
+//    }
+//}
 
 //MARK: Tag helpers
 extension OHItem {
@@ -163,8 +163,8 @@ extension OHItem {
     func iconNameFromTags() -> String? {
         var name: String?
         
-        if var tags = self.tags {
-            for (index, tag) in enumerate(tags) {
+        if let tags = self.tags {
+            for (_, tag) in tags.enumerate() {
                 if tag.rangeOfString("OH_Icon_") != nil {
                     name = tag.stringByReplacingOccurrencesOfString("OH_Icon_", withString: "")
                     break
@@ -178,11 +178,11 @@ extension OHItem {
     func numberOfRowsFromTags() -> Int? {
         var numberOfRows: Int?
     
-        if var tags = self.tags {
-            for (index, tag) in enumerate(tags) {
+        if let tags = self.tags {
+            for (_, tag) in tags.enumerate() {
                 if tag.rangeOfString("OH_Outlet_Rows_") != nil {
-                    var tagString = tag.stringByReplacingOccurrencesOfString("OH_Outlet_Rows_", withString: "")
-                    numberOfRows = tagString.toInt()!
+                    let tagString = tag.stringByReplacingOccurrencesOfString("OH_Outlet_Rows_", withString: "")
+                    numberOfRows = Int(tagString)!
                     break
                 }
             }
@@ -194,8 +194,8 @@ extension OHItem {
     func isLightFromTags() -> Bool {
         var isLight = false
         
-        if var tags = self.tags {
-            for (index, tag) in enumerate(tags) {
+        if let tags = self.tags {
+            for (_, tag) in tags.enumerate() {
                 if tag.rangeOfString("OH_Light") != nil {
                     isLight = true
                     break
@@ -209,8 +209,8 @@ extension OHItem {
     func hasTag(tag: String) -> Bool {
         var hasTag = false
         
-        if var tags = self.tags {
-            hasTag = contains(tags, tag)
+        if let tags = self.tags {
+            hasTag = tags.contains(tag)
         }
         
         return hasTag
@@ -219,8 +219,8 @@ extension OHItem {
     func hasTagWithPrefix(prefix: String) -> Bool {
         var hasTag = false
         
-        if var tags = self.tags {
-            for (index, tag) in enumerate(tags) {
+        if let tags = self.tags {
+            for (_, tag) in tags.enumerate() {
                 if tag.rangeOfString(prefix) != nil {
                     hasTag = true
                     break
@@ -234,8 +234,8 @@ extension OHItem {
     func getTagWithoutPrefix(prefix: String) -> String? {
         var tagWithoutPrefix: String?
         
-        if var tags = self.tags {
-            for (index, tag) in enumerate(tags) {
+        if let tags = self.tags {
+            for (_, tag) in tags.enumerate() {
                 if tag.rangeOfString(prefix) != nil {
                     tagWithoutPrefix = tag.stringByReplacingOccurrencesOfString(prefix, withString: "")
                     break
@@ -244,5 +244,33 @@ extension OHItem {
         }
         
         return tagWithoutPrefix
+    }
+    
+    func getBeaconFromTags() -> OHBeacon? {
+        
+        var uuidOpt: String?
+        var majorOpt: Int?
+        var minorOpt: Int?
+        let link: String = self.link
+        
+        if self.hasTag("OH_Beacon") {
+            if let tags = self.tags {
+                for (_, tag) in tags.enumerate() {
+                    if tag.rangeOfString("OH_Beacon_UUID_") != nil {
+                        uuidOpt = tag.stringByReplacingOccurrencesOfString("OH_Beacon_UUID_", withString: "")
+                    } else if tag.rangeOfString("OH_Beacon_Major_") != nil {
+                        majorOpt = Int(tag.stringByReplacingOccurrencesOfString("OH_Beacon_Major_", withString: ""))
+                    } else if tag.rangeOfString("OH_Beacon_Minor_") != nil {
+                        minorOpt = Int(tag.stringByReplacingOccurrencesOfString("OH_Beacon_Minor_", withString: ""))
+                    }
+                }
+            }
+        }
+        
+        guard let uuid = uuidOpt, let major = majorOpt, let minor = minorOpt else {
+                return nil
+        }
+        
+        return OHBeacon(uuid: uuid, major: major, minor: minor, link: link)
     }
 }

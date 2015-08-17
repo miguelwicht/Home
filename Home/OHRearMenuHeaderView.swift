@@ -20,11 +20,11 @@ class OHRearMenuHeaderView: UIView {
         addSubview(lineView)
         lineView.backgroundColor = UIColor(red: (142.0 / 255.0), green: (136.0 / 255.0), blue: (136.0 / 255.0), alpha: 1.0)
         label.textColor = OHDefaults.defaultTextColor()
-        label.font = OHDefaults.defaultFontWithSize(22)
+        label.font = OHDefaults.defaultFontWithSize(20)
         backgroundColor = OHDefaults.defaultMenuHeaderBackgroundColor()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

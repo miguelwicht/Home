@@ -40,7 +40,7 @@ import Foundation
         self.title = title
         self.link = link
         
-        if var wids = widgets {
+        if let wids = widgets {
             self.widgets = OHRestParser.parseWidgets(wids)
         }
     }
@@ -53,30 +53,30 @@ import Foundation
         self.title = linkedPageDict["title"]!.stringValue
         self.link = linkedPageDict["icon"]!.stringValue
         
-        if var subPage = linkedPageDict["linkedPage"] {
+        if let subPage = linkedPageDict["linkedPage"] {
             self.linkedPage = OHLinkedPage(linkedPage: subPage)
         }
         
-        if var wids = linkedPageDict["widgets"]?.arrayValue {
+        if let wids = linkedPageDict["widgets"]?.arrayValue {
             self.widgets = OHRestParser.parseWidgets(wids)
         }
     }
 }
 
 //MARK: - Printable
-extension OHLinkedPage : Printable {
-    
-    override public var description:String {
-        let className = reflect(self).summary
-        var desc:String = ""
-        desc += "\(className):\n{\n"
-        desc += "\tpageId: \(self.pageId),\n"
-        desc += "\ttitle: \(self.title),\n"
-        desc += "\tlink: \(self.link),\n"
-        desc += "\ticon: \(self.icon)\n}"
-        desc += "\twidgets: \(self.widgets)\n"
-        desc += "\tlinkedPage: \(self.linkedPage)\n"
-        
-        return desc
-    }
-}
+//extension OHLinkedPage : CustomStringConvertible {
+//    
+//    override public var description:String {
+//        let className = reflect(self).summary
+//        var desc:String = ""
+//        desc += "\(className):\n{\n"
+//        desc += "\tpageId: \(self.pageId),\n"
+//        desc += "\ttitle: \(self.title),\n"
+//        desc += "\tlink: \(self.link),\n"
+//        desc += "\ticon: \(self.icon)\n}"
+//        desc += "\twidgets: \(self.widgets)\n"
+//        desc += "\tlinkedPage: \(self.linkedPage)\n"
+//        
+//        return desc
+//    }
+//}

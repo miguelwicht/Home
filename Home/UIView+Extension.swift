@@ -71,13 +71,13 @@ extension UIView {
     }
     
     func centerViewHorizontallyInSuperview() {
-        if var superview = self.superview {
+        if let superview = self.superview {
             self.marginLeft = CGFloat((superview.frame.width - self.frame.width) / CGFloat(2))
         }
     }
     
     func centerViewVerticallyInSuperview() {
-        if var superview = self.superview {
+        if let superview = self.superview {
             self.marginTop = CGFloat((superview.frame.height - self.frame.height) / CGFloat(2))
         }
     }

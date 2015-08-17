@@ -22,7 +22,7 @@ class MDWNotificationController: UIViewController {
     var errorColor = UIColor.redColor()
     var customColor: UIColor?
     
-    var notificationConstraints: [AnyObject]?
+    var notificationConstraints: [NSLayoutConstraint]?
     
     var dismissButton = UIButton()
     var textLabel = UILabel()
@@ -38,8 +38,6 @@ class MDWNotificationController: UIViewController {
                     view.backgroundColor = errorColor
                 case .Custom:
                     view.backgroundColor = customColor
-                default:
-                    view.backgroundColor = normalColor
             }
         }
     }
@@ -58,7 +56,7 @@ class MDWNotificationController: UIViewController {
     
     override func loadView() {
         super.loadView()
-        view.setTranslatesAutoresizingMaskIntoConstraints(false)
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(textLabel)
         
 //        textLabel.text = "Awesome message awdasdasd asd asdasd asda sda sdasd asdasd a"
@@ -66,10 +64,10 @@ class MDWNotificationController: UIViewController {
         
         
         
-        var views = ["label": textLabel]
-        textLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(15)-[label]-(15)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(15)-[label]-(15)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views))
+        let views = ["label": textLabel]
+        textLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(15)-[label]-(15)-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(15)-[label]-(15)-|", options: NSLayoutFormatOptions(), metrics: nil, views: views))
     }
 
     override func didReceiveMemoryWarning() {
@@ -85,28 +83,28 @@ class MDWNotificationController: UIViewController {
         view.addSubview(self.view)
         
         if notificationConstraints == nil {
-            var views: [String: AnyObject] = ["notification": self.view]
+            let views: [String: AnyObject] = ["notification": self.view]
             notificationConstraints = [NSLayoutConstraint]()
             
-            var verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:[notification]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views)
-            var horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[notification]-(0)-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: views)
+            let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:[notification]-(0)-|", options: NSLayoutFormatOptions(), metrics: nil, views: views)
+            let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-(0)-[notification]-(0)-|", options: NSLayoutFormatOptions(), metrics: nil, views: views)
 
-            for (_, element) in enumerate(verticalConstraints) {
+            for (_, element) in verticalConstraints.enumerate() {
                 notificationConstraints?.append(element)
             }
             
-            for (_, element) in enumerate(horizontalConstraints) {
+            for (_, element) in horizontalConstraints.enumerate() {
                 notificationConstraints?.append(element)
             }
         }
         
-        if var notificationConstraints = self.notificationConstraints {
+        if let notificationConstraints = self.notificationConstraints {
             view.addConstraints(notificationConstraints)
         }
     }
     
     func removeNotification() {
-        if var notificationConstraints = self.notificationConstraints {
+        if let notificationConstraints = self.notificationConstraints {
             view.superview?.removeConstraints(notificationConstraints)
         }
         

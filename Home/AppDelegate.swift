@@ -43,29 +43,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func loadData() {
         OHDataManager.sharedInstance.loadData()
-        var dataManager = OHDataManager.sharedInstance
     }
     
     func prepareViewController() {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        
         var frontViewController: UIViewController?
         
-        if let sitemaps = OHDataManager.sharedInstance.sitemaps, rooms = OHDataManager.sharedInstance.currentSitemap?.roomsInSitemap()  {
-            frontViewController = OHRootViewController.new()
+        if let _ = OHDataManager.sharedInstance.sitemaps, _ = OHDataManager.sharedInstance.currentSitemap?.roomsInSitemap()  {
+            frontViewController = OHRootViewController()
         } else {
-            frontViewController = UINavigationController(rootViewController: OHSettingsViewController.new())
+            frontViewController = UINavigationController(rootViewController: OHSettingsViewController())
         }
         
-        var rearViewController = OHRearMenuViewController.new()
-        var containerViewController = SWRevealViewController(rearViewController: rearViewController, frontViewController: frontViewController)
+        let rearViewController = OHRearMenuViewController()
+        let containerViewController = SWRevealViewController(rearViewController: rearViewController, frontViewController: frontViewController)
         containerViewController.rearViewRevealOverdraw = 0
         containerViewController.rearViewRevealWidth = self.window!.frame.width - CGFloat(60)
         rearViewController.view.setWidth(containerViewController.rearViewRevealWidth)
         
         self.window?.rootViewController = containerViewController
         
-        if var statusBarBackgroundView = self.statusBarBackgroundView {
+        if let statusBarBackgroundView = self.statusBarBackgroundView {
             containerViewController.view.addSubview(statusBarBackgroundView)
         }
     }
@@ -73,7 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func setupAppearance() {
         statusBarBackgroundView = OHStatusBarView(frame: CGRect(x: 0, y: 0, width: self.window!.frame.width, height: 20))
         
-        var font = UIFont(name: "Muli", size: UIFont.systemFontSize())
+        let font = UIFont(name: "Muli", size: UIFont.systemFontSize())
         UILabel.appearance().font = font
         
         UINavigationBar.appearance().barTintColor = OHDefaults.defaultNavigationBarColor()

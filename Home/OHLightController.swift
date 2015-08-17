@@ -53,6 +53,8 @@ class OHLightController: OHBaseViewController {
         addLayoutConstraints()
         
         selectAllLights()
+        
+        collectionViewController?.showArrows()
     }
     
     func toggleSlider(button: UIButton) {

@@ -183,28 +183,9 @@ extension OHRoomsViewController {
         beaconButton.imageView!.stopAnimating()
         
         if isWaitingForBeacons {
-        
             if let beaconOH = notification!.object as? OHBeacon {
-//                let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//                var navController = self.navigationController as! OHRootViewController
-                let roomWidget = OHDataManager.sharedInstance.beaconWidget![beaconOH]
-                
-                if let room = roomWidget {
-                    switchToRoom(room)
-                } else {
-                    print("room not found")
-                }
-            }
-            
-            if let beaconCL = notification!.object as? CLBeacon {
-//                let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//                var navController = self.navigationController as! OHRootViewController
-                let beacon = OHBeacon(uuid: beaconCL.proximityUUID.UUIDString, major: beaconCL.major.integerValue, minor: beaconCL.minor.integerValue, link: "000")
-                let roomWidget = OHDataManager.sharedInstance.beaconWidget![beacon]
-                
-                if let room = roomWidget {
-                    print("room found")
-                    switchToRoom(room)
+                if let (_, roomWidget) = OHDataManager.sharedInstance.beaconWidget!.filter({$0.0.hashValue == beaconOH.hashValue}).first {
+                    switchToRoom(roomWidget)
                 } else {
                     print("room not found")
                 }

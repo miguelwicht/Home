@@ -66,15 +66,6 @@ import Foundation
 //    }
 //}
 
-//MARK: - Hashable
-//extension OHBeacon: Hashable {
-//    override public var hashValue: Int {
-//        get {
-//            return "\(self.uuid) - \(self.major) - \(self.minor)".hashValue
-//        }
-//    }
-//}
-
 //MARK: - Equatable
 public func ==(lhs: OHBeacon, rhs: OHBeacon) -> Bool {
     return lhs.hashValue == rhs.hashValue

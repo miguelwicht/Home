@@ -59,13 +59,15 @@ class OHWidgetCollectionViewController: UICollectionViewController {
         
         self.collectionView!.reloadData()
 
-//        leftArrowButton.setImage(UIImage(named: "arrow_left"), forState: .Normal)
-//        leftArrowButton.imageView?.contentMode = UIViewContentMode.Center
-//        self.view.addSubview(leftArrowButton)
-//        
-//        rightArrowButton.setImage(UIImage(named: "arrow_right"), forState: .Normal)
-//        rightArrowButton.imageView?.contentMode = UIViewContentMode.Center
-//        self.view.addSubview(rightArrowButton)
+        leftArrowButton.setImage(UIImage(named: "arrow_left"), forState: .Normal)
+        leftArrowButton.imageView?.contentMode = UIViewContentMode.Center
+        self.view.addSubview(leftArrowButton)
+        
+        rightArrowButton.setImage(UIImage(named: "arrow_right"), forState: .Normal)
+        rightArrowButton.imageView?.contentMode = UIViewContentMode.Center
+        self.view.addSubview(rightArrowButton)
+        
+        hideArrows()
         
         self.view.backgroundColor = UIColor.purpleColor()
     }
@@ -73,9 +75,10 @@ class OHWidgetCollectionViewController: UICollectionViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-//        self.leftArrowButton.marginTop = (self.view.frame.height / 2) - (self.leftArrowButton.frame.height / 2)
-//        self.rightArrowButton.marginTop = (self.view.frame.height / 2) - (self.leftArrowButton.frame.height / 2)
-//        self.rightArrowButton.marginLeft = self.view.frame.width - self.rightArrowButton.frame.width
+        self.leftArrowButton.marginTop = (self.view.frame.height / 2) - (self.leftArrowButton.frame.height / 2)
+        self.leftArrowButton.marginLeft = 15
+        self.rightArrowButton.marginTop = (self.view.frame.height / 2) - (self.leftArrowButton.frame.height / 2)
+        self.rightArrowButton.marginLeft = self.view.frame.width - self.rightArrowButton.frame.width - 15
         pageControl?.numberOfPages = numberOfPages
     }
     
@@ -179,5 +182,15 @@ extension OHWidgetCollectionViewController {
         var contentOffset = collectionView!.contentOffset
         contentOffset.x = CGFloat(control.currentPage) * collectionView!.frame.size.width
         self.collectionView!.setContentOffset(contentOffset, animated: true)
+    }
+    
+    func showArrows() {
+        leftArrowButton.hidden = false
+        rightArrowButton.hidden = false
+    }
+    
+    func hideArrows() {
+        leftArrowButton.hidden = true
+        rightArrowButton.hidden = true
     }
 }

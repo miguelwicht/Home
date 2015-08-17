@@ -245,4 +245,32 @@ extension OHItem {
         
         return tagWithoutPrefix
     }
+    
+    func getBeaconFromTags() -> OHBeacon? {
+        
+        var uuidOpt: String?
+        var majorOpt: Int?
+        var minorOpt: Int?
+        let link: String = self.link
+        
+        if self.hasTag("OH_Beacon") {
+            if let tags = self.tags {
+                for (_, tag) in tags.enumerate() {
+                    if tag.rangeOfString("OH_Beacon_UUID_") != nil {
+                        uuidOpt = tag.stringByReplacingOccurrencesOfString("OH_Beacon_UUID_", withString: "")
+                    } else if tag.rangeOfString("OH_Beacon_Major_") != nil {
+                        majorOpt = Int(tag.stringByReplacingOccurrencesOfString("OH_Beacon_Major_", withString: ""))
+                    } else if tag.rangeOfString("OH_Beacon_Minor_") != nil {
+                        minorOpt = Int(tag.stringByReplacingOccurrencesOfString("OH_Beacon_Minor_", withString: ""))
+                    }
+                }
+            }
+        }
+        
+        guard let uuid = uuidOpt, let major = majorOpt, let minor = minorOpt else {
+                return nil
+        }
+        
+        return OHBeacon(uuid: uuid, major: major, minor: minor, link: link)
+    }
 }

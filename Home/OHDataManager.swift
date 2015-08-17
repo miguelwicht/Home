@@ -38,7 +38,7 @@ class OHDataManager: NSObject {
     }
     
     override init() {
-        restManager = OHRestManager(baseUrl:"http://10.10.32.251:8888")
+        restManager = OHRestManager(baseUrl:"http://raspberrypi:8080")
 //        restManager = OHRestManager(baseUrl:"http://192.168.0.251:8888")
         super.init()
         
@@ -88,8 +88,8 @@ class OHDataManager: NSObject {
 extension OHDataManager {
     
     func saveData() {
-        let path: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("sitemapsData") as NSString
-        
+        //let path: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("sitemapsData")
+        let path: NSString = (S3FileManager.applicationDocumentsDirectory().path! as NSString).stringByAppendingPathComponent("sitemapsData")
         if let sitemaps = self.sitemaps {
             NSKeyedArchiver.archiveRootObject(sitemaps, toFile: path as String)
         } else {
@@ -97,14 +97,14 @@ extension OHDataManager {
         }
         
         if let currentSitemap = self.currentSitemap {
-            let currentSitemapPath: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("currentSitemapData") as NSString
+            let currentSitemapPath: NSString = (S3FileManager.applicationDocumentsDirectory().path! as NSString).stringByAppendingPathComponent("currentSitemapData") as NSString
             NSKeyedArchiver.archiveRootObject(currentSitemap, toFile: currentSitemapPath as String)
         }
     }
     
     func saveCurrentSitemap() {
         if let currentSitemap = self.currentSitemap {
-            let currentSitemapPath: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("currentSitemapData") as NSString
+            let currentSitemapPath: NSString = (S3FileManager.applicationDocumentsDirectory().path! as NSString).stringByAppendingPathComponent("currentSitemapData") as NSString
             NSKeyedArchiver.archiveRootObject(currentSitemap, toFile: currentSitemapPath as String)
         }
     }
@@ -120,9 +120,12 @@ extension OHDataManager {
     }
     
     func loadSitemapsData() -> [String: OHSitemap]? {
+        
+        getItemsWithTags()
+        
         var sitemaps: [String: OHSitemap]?
         
-        let path: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("sitemapsData") as NSString
+        let path: NSString = (S3FileManager.applicationDocumentsDirectory().path! as NSString).stringByAppendingPathComponent("sitemapsData") as NSString
         if let sitemapsFromDisc = NSKeyedUnarchiver.unarchiveObjectWithFile(path as String) as? [String: OHSitemap] {
             sitemaps = sitemapsFromDisc
         } else {
@@ -134,7 +137,7 @@ extension OHDataManager {
     
     func loadCurrentSitemapData() -> OHSitemap? {
         var sitemap: OHSitemap?
-        let path: NSString = S3FileManager.applicationDocumentsDirectory().path!.stringByAppendingPathComponent("currentSitemapData") as NSString
+        let path: NSString = (S3FileManager.applicationDocumentsDirectory().path! as NSString).stringByAppendingPathComponent("currentSitemapData") as NSString
         
         if let currentSitemapFromDisc = NSKeyedUnarchiver.unarchiveObjectWithFile(path as String) as? OHSitemap {
             sitemap = currentSitemapFromDisc
@@ -150,6 +153,33 @@ extension OHDataManager {
     
     func updateBaseUrl(url: String) {
         restManager.baseUrl = url
+    }
+    
+    func getItemsWithTags() {
+        let tags = [String](arrayLiteral: "OH_Beacon")
+        restManager.getItemsWithTags(tags)
+    }
+    
+    func getBeaconsFromItems(items: [OHItem]) -> [OHBeacon]? {
+        var beacons = [OHBeacon]()
+        
+        for (_, item) in items.enumerate() {
+            if let beaconItem = item.getBeaconFromTags() {
+                beacons.append(beaconItem);
+            }
+        }
+        
+//        var beaconsToReturn:[OHBeacon]?
+//        
+//        if beacons.count > 0 {
+//            beaconsToReturn = beacons
+//        }
+        
+        return beacons.count > 0 ? beacons : nil
+    }
+    
+    func getBeacons() {
+        restManager.getBeacons()
     }
 }
 
@@ -179,5 +209,9 @@ extension OHDataManager: OHRestManagerDelegate {
     
     func didGetListOfSitemaps(sitemaps: [OHSitemap]) {
         restManager.getMultipleSitemaps(sitemaps)
+    }
+    
+    func didGetBeacons(beacons: [OHBeacon]) {
+        self.beacons = beacons
     }
 }

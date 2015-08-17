@@ -49,12 +49,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var frontViewController: UIViewController?
         
         if let _ = OHDataManager.sharedInstance.sitemaps, _ = OHDataManager.sharedInstance.currentSitemap?.roomsInSitemap()  {
-            frontViewController = OHRootViewController.new()
+            frontViewController = OHRootViewController()
         } else {
-            frontViewController = UINavigationController(rootViewController: OHSettingsViewController.new())
+            frontViewController = UINavigationController(rootViewController: OHSettingsViewController())
         }
         
-        let rearViewController = OHRearMenuViewController.new()
+        let rearViewController = OHRearMenuViewController()
         let containerViewController = SWRevealViewController(rearViewController: rearViewController, frontViewController: frontViewController)
         containerViewController.rearViewRevealOverdraw = 0
         containerViewController.rearViewRevealWidth = self.window!.frame.width - CGFloat(60)

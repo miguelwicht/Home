@@ -17,6 +17,7 @@ let OHRestManagerConnectionDidFailNotification = "OHRestManagerConnectionDidFail
     optional func didGetSitemap(sitemap: OHSitemap)
     optional func didGetSitemapUrls(urls: [OHSitemap])
     optional func didGetListOfSitemaps(sitemaps: [OHSitemap])
+    optional func didGetItemsWithTags(tags: [OHItem])
 }
 
 //MARK: OHRestManager
@@ -51,6 +52,77 @@ extension OHRestManager {
             
             let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
             let json = JSON(data: data!).dictionaryValue
+        }
+        task.resume()
+    }
+    
+    func getItemsWithTags(tags: [String])
+    {
+        let tagString = ",".join(tags)
+        
+        let urlPath = "\(baseUrl)/rest/items?tags=\(tagString)&recursive=false"
+        print(urlPath)
+        let request = NSMutableURLRequest(URL: NSURL(string: urlPath)!)
+        request.HTTPMethod = "GET"
+        request.setValue(self.acceptHeader, forHTTPHeaderField: "Accept")
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
+            data, response, error in
+            
+            if error != nil {
+                print("error=\(error)")
+                return
+            }
+            
+            let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            let json = JSON(data: data!).arrayValue
+            
+            var items = [OHItem]()
+            for (_, item) in json.enumerate() {
+                items.append(OHItem(item: item))
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.delegate?.didGetItemsWithTags?(items)
+            })
+        }
+        task.resume()
+    }
+    
+    func getBeacons() {
+        let urlPath = "\(baseUrl)/rest/items?tags=OH_Beacon&recursive=false"
+        print(urlPath)
+        let request = NSMutableURLRequest(URL: NSURL(string: urlPath)!)
+        request.HTTPMethod = "GET"
+        request.setValue(self.acceptHeader, forHTTPHeaderField: "Accept")
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
+            data, response, error in
+            
+            if error != nil {
+                print("error=\(error)")
+                return
+            }
+            
+            let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            let json = JSON(data: data!).arrayValue
+            
+            var items = [OHItem]()
+            for (_, item) in json.enumerate() {
+                items.append(OHItem(item: item))
+            }
+            
+            var beacons = [OHBeacon]()
+            
+            for (_, item) in items.enumerate() {
+                if let beaconItem = item.getBeaconFromTags() {
+                    beacons.append(beaconItem);
+                }
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.delegate?.didGetBeacons?(beacons)
+            })
         }
         task.resume()
     }

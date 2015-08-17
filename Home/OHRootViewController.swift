@@ -10,13 +10,13 @@ import UIKit
 
 class OHRootViewController: UINavigationController {
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        super.init(nibName: nil, bundle: nil)
-    }
+//    required init?(coder aDecoder: NSCoder) {
+//        super.init(coder: aDecoder)
+//    }
+//    
+//    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+//        super.init(nibName: nil, bundle: nil)
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -12,9 +12,9 @@ class OHSettingsViewController: OHBaseViewController {
     
     let defaults = NSUserDefaults.standardUserDefaults()
     var urlTextField: UITextField?
-    let saveButton = OHButton.new()
-    let loadSitemapsButton = OHButton.new()
-    let dismissButton = OHButton.new()
+    let saveButton = OHButton()
+    let loadSitemapsButton = OHButton()
+    let dismissButton = OHButton()
     
     var sitemapChooserController: OHDropdownMenuTableViewController?
     var sitemapChooserButton: OHDropdownMenuButton?
@@ -226,7 +226,7 @@ extension OHSettingsViewController {
             self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
         }
         else {
-            self.revealViewController().setFrontViewController(OHRootViewController.new(), animated: true)
+            self.revealViewController().setFrontViewController(OHRootViewController(), animated: true)
         }
     }
 }
